@@ -6,7 +6,7 @@ var NoninSPO2_NotifyCharacteristic=require('./characteristics/NoninSPO2/NoninSPO
 // var NoninSPO2_WriteCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_WriteCharacteristic');
 
 
-let rawdata4=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/Service_UUIDs.json');
+let rawdata4=require('../extra/Service_UUIDs.json');
 var data4=JSON.stringify(rawdata4);
 let test4=JSON.parse(data4);
 
