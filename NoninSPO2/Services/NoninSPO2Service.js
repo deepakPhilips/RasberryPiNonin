@@ -1,27 +1,20 @@
-var bleno = require('@abandonware/bleno');               
-var util=require('util');
+const bleno = require('@abandonware/bleno');
+const NoninSPO2_NotifyCharacteristic = require('./characteristics/NoninSPO2/NoninSPO2_NotifyCharacteristic');
+const NoninSPO2_WriteCharacteristic = require('./characteristics/NoninSPO2/NoninSPO2_WriteCharacteristic');
 
-var NoninSPO2_NotifyCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_NotifyCharacteristic');
+const rawdata4 = require('./../extra/Service_UUIDs.json');
+const test4 = JSON.parse(JSON.stringify(rawdata4));
 
-var NoninSPO2_WriteCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_WriteCharacteristic');
+class NoninSPO2Service extends bleno.PrimaryService {
+  constructor() {
+    super({
+      uuid: test4["NoninSPO2"].uuid,
+      characteristics: [
+        new NoninSPO2_NotifyCharacteristic(),
+        new NoninSPO2_WriteCharacteristic(),
+      ],
+    });
+  }
+}
 
-
-let rawdata4=require('./../extra/Service_UUIDs.json');
-var data4=JSON.stringify(rawdata4);
-let test4=JSON.parse(data4);
-
-function  NoninSPO2Service(){
-
-
-	bleno.PrimaryService.call(this,{
-		uuid:test4["NoninSPO2"].uuid,
-		characteristics:[ new NoninSPO2_NotifyCharacteristic() ,
-                                    new NoninSPO2_WriteCharacteristic() 
-                               
-
-		         ]
-	  } );
-
-};
-util.inherits(NoninSPO2Service,bleno.PrimaryService);
-module.exports=NoninSPO2Service;
+module.exports = NoninSPO2Service;
