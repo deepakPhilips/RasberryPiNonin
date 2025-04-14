@@ -53,7 +53,7 @@ bleno.on('advertisingStart', function(error) {
   if (!error) {
 
     bleno.setServices([
-      systemInformationService,NoninSPO2Service,batteryService
+      NoninSPO2Service
     ]);
   }
 });
