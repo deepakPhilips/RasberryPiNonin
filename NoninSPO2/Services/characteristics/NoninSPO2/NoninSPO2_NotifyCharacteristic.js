@@ -38,12 +38,12 @@ let test3=JSON.parse(data3);
 
 var NoninSPO2_NotifyCharacteristic=function(){
 
-NoninSPO2_NotifyCharacteristic.super_.call(this,{
-	 uuid:test3["NoninSPO2_Notify"].uuid,
-	 properties:['indicate'],
-         secure:['indicate']
-     }
-	)
+BlenoCharacteristic.call(this, {
+	 uuid: test3["NoninSPO2_Notify"].uuid,
+	 properties: ['indicate'],
+		 secure: ['indicate']
+	 }
+	);
 
 };
 

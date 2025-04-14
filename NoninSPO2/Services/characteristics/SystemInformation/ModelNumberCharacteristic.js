@@ -27,9 +27,9 @@ let test3=JSON.parse(data3);
 
 var ModelNumberCharacteristic = function() {
 
- ModelNumberCharacteristic.super_.call(this, {
-     uuid:test3["Model"].uuid,
-    properties: ['read'],
+ BlenoCharacteristic.call(this, {
+     uuid: test3["Model"].uuid,
+     properties: ['read'],
   });
 
  this._value = new Buffer(0);

@@ -40,12 +40,12 @@ let test3=JSON.parse(data3);
 
 var NoninSPO2_WriteCharacteristic=function(){
 
-NoninSPO2_WriteCharacteristic.super_.call(this,{
-	 uuid:test3["NoninSPO2_Notify"].uuid,
-	 properties:['indicate','write'],
-         secure:['indicate','write']
-     }
-	)
+Characteristic.call(this, {
+	 uuid: test3["NoninSPO2_Notify"].uuid,
+	 properties: ['indicate', 'write'],
+		 secure: ['indicate', 'write']
+	 }
+	);
 
 };
 
