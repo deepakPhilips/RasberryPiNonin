@@ -1,4 +1,4 @@
-var bleno = require('bleno');
+var bleno = require('@abandonware/bleno');
 var readline=require('readline-sync');
 
 var SystemInformationService = require('./Services/SystemInformationService');

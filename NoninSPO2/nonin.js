@@ -1,4 +1,4 @@
-var bleno = require('bleno');
+var bleno = require('@abandonware/bleno');
 bleno.on('stateChange', function(state) {
  logger.log('on -> stateChange: ' + state);
 

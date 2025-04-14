@@ -1,9 +1,9 @@
-var bleno=require('bleno')
+var bleno = require('@abandonware/bleno');
 var os=require('os')
 var util=require('util')
 
 var fs = require('fs');
-var program = require('commander');
+var program = require('commander').program;
 
 var PrimaryService = bleno.PrimaryService;
 var Characteristic = bleno.Characteristic;
@@ -16,8 +16,8 @@ var timeoutId;
 var timeout = 1;
 
 program
-	.option('-s, --saturation <n>', 'saturation', parseInt) 
-	.option('-p, --pulse <n>', 'pulse', parseInt)
+	.requiredOption('-s, --write-saturation <n>', 'saturation', parseInt) 
+	.requiredOption('-p, --write-pulse <n>', 'pulse', parseInt)
 	.parse(process.argv);
 
 var BlenoCharacteristic=bleno.Characteristic;

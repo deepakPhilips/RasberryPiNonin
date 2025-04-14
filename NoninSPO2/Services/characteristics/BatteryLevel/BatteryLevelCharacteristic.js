@@ -1,4 +1,4 @@
-var bleno=require('bleno')
+var bleno = require('@abandonware/bleno');
 var os=require('os')
 var util=require('util')
 var Logger=require('../../../Logger.js');
