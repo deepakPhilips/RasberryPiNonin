@@ -2,39 +2,37 @@ const bleno = require('@abandonware/bleno');
 
 // === Constants ===
 const NONIN_SERVICE_UUID = '46A970E0-0D5F-11E2-8B5E-0002A5D5C51B';
-const NONIN_MEASUREMENT_UUID = '0AAD7EA0-0D60-11E2-8E3C-0002A5D5C51B'; // mock characteristic
+const NONIN_CHARACTERISTIC_UUID = '0AAD7EA0-0D60-11E2-8E3C-0002A5D5C51B'; // Validic expects this
 
-// === Pulse Oximeter Data Simulation ===
-function createPulseOximeterPacket() {
+// === Simulated Pulse Oximeter Packet ===
+function createNoninPacket() {
   const buffer = Buffer.alloc(4);
-  const flags = 0x00;
-
-  const spo2 = 98;        // % SpO2
-  const pulseRate = 72;   // BPM
+  const flags = 0x00;         // Reserved / Status
+  const spo2 = 98;            // SpO₂ %
+  const pulseRate = 72;       // BPM
 
   buffer.writeUInt8(flags, 0);
   buffer.writeUInt8(spo2, 1);
-  buffer.writeUInt16LE(pulseRate, 2); // 2-byte pulse rate (little endian)
+  buffer.writeUInt16LE(pulseRate, 2); // 2 bytes, little-endian
 
   return buffer;
 }
 
-// === Characteristic ===
+// === BLE Characteristic ===
 const measurementCharacteristic = new bleno.Characteristic({
-  uuid: NONIN_MEASUREMENT_UUID,
+  uuid: NONIN_CHARACTERISTIC_UUID,
   properties: ['notify'],
-  value: null,
-  onSubscribe: (maxSize, updateValueCallback) => {
-    console.log('Central subscribed to Nonin data');
+  onSubscribe: (maxValueSize, updateValueCallback) => {
+    console.log('Validic app subscribed.');
 
     measurementCharacteristic._interval = setInterval(() => {
-      const packet = createPulseOximeterPacket();
-      console.log('Sending pulse oximeter data:', packet);
-      updateValueCallback(packet);
-    }, 5000);
+      const data = createNoninPacket();
+      console.log('Sending packet:', data.toString('hex'));
+      updateValueCallback(data);
+    }, 5000); // Send every 5 seconds
   },
   onUnsubscribe: () => {
-    console.log('Central unsubscribed');
+    console.log('Unsubscribed.');
     clearInterval(measurementCharacteristic._interval);
   }
 });
@@ -44,12 +42,12 @@ const noninService = new bleno.PrimaryService({
   characteristics: [measurementCharacteristic]
 });
 
-// === Device Information Service ===
+// === Device Info Service (optional but realistic) ===
 const deviceInfoService = new bleno.PrimaryService({
   uuid: '180A',
   characteristics: [
     new bleno.Characteristic({
-      uuid: '2A29', // Manufacturer Name
+      uuid: '2A29', // Manufacturer
       properties: ['read'],
       value: Buffer.from('Nonin Medical Inc.')
     }),
@@ -66,22 +64,22 @@ const deviceInfoService = new bleno.PrimaryService({
   ]
 });
 
-// === BLE Setup ===
+// === BLE Lifecycle ===
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
-    console.log('Bluetooth on — advertising as Nonin3230');
+    console.log('BLE powered on, advertising as Nonin3230...');
     bleno.startAdvertising('Nonin3230', [NONIN_SERVICE_UUID]);
   } else {
+    console.log('BLE not powered — stopping advertising.');
     bleno.stopAdvertising();
-    console.log('Bluetooth off or unavailable');
   }
 });
 
-bleno.on('advertisingStart', (error) => {
-  if (!error) {
-    console.log('Advertising started');
+bleno.on('advertisingStart', (err) => {
+  if (!err) {
+    console.log('Advertising started.');
     bleno.setServices([noninService, deviceInfoService]);
   } else {
-    console.error('Advertising error:', error);
+    console.error('Advertising error:', err);
   }
 });
