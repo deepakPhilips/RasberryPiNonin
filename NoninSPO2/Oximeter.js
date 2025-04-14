@@ -1,58 +1,69 @@
 const bleno = require('@abandonware/bleno');
-var os=require('os')
-var util=require('util')
-var program = require('commander').program;
+const util = require('util');
+const program = require('commander').program;
 
 program
-	.requiredOption('-s, --saturation <n>', 'saturation', parseInt) 
-	.requiredOption('-p, --pulse <n>', 'pulse', parseInt)
-	.parse(process.argv);
+  .requiredOption('-s, --saturation <n>', 'Saturation level', parseInt)
+  .requiredOption('-p, --pulse <n>', 'Pulse rate', parseInt)
+  .parse(process.argv);
 
 const BlenoPrimaryService = bleno.PrimaryService;
 const BlenoCharacteristic = bleno.Characteristic;
 
-// UUID for the characteristic
-const CHARACTERISTIC_UUID = '1447af800d6011e288b60002a5d5c51b';
+// UUIDs for the characteristics
+const CHARACTERISTIC_UUID_NOTIFY = '1447af800d6011e288b60002a5d5c51b';
+const CHARACTERISTIC_UUID_WRITE = '1447af810d6011e288b60002a5d5c51b';
 
 // Define the Notify Characteristic
 const OximeterNotifyCharacteristic = new BlenoCharacteristic({
-  uuid: CHARACTERISTIC_UUID,
+  uuid: CHARACTERISTIC_UUID_NOTIFY,
   properties: ['indicate'],
   secure: ['indicate'],
 });
 
-const OximeterWriteCharacteristic = new BlenoCharacteristic({
-    uuid: CHARACTERISTIC_UUID,
-    properties: ['indicate', 'write'],
-    secure: ['indicate', 'write'],
-  });
+let notifyInterval = null;
 
 // Add the onSubscribe handler for the Notify Characteristic
 OximeterNotifyCharacteristic.onSubscribe = function (maxValueSize, updateValueCallback) {
-  console.log("Subscribed to notify characteristic");
-  // Example: You can send data here using updateValueCallback
-    // meas_buffer = process_meas(); //generate measurement buffer
-    // console.log(meas_buffer);
-	// updateValueCallback(meas_buffer);
+  console.log("Device subscribed to notify characteristic");
 
-  const data = Buffer.from([0x01, 0x02, 0x03]); // Example data
-  updateValueCallback(data);
+  // Start sending measurement data periodically
+  notifyInterval = setInterval(() => {
+    const measBuffer = process_meas(); // Generate measurement buffer
+    console.log('Sending measurement:', measBuffer);
+    updateValueCallback(Buffer.from(measBuffer)); // Send data to the subscribed device
+  }, 1000); // Send data every 1 second
 };
 
+// Add the onUnsubscribe handler for the Notify Characteristic
+OximeterNotifyCharacteristic.onUnsubscribe = function () {
+  console.log("Device unsubscribed from notify characteristic");
+
+  // Stop sending data when the device unsubscribes
+  if (notifyInterval) {
+    clearInterval(notifyInterval);
+    notifyInterval = null;
+  }
+};
+
+// Define the Write Characteristic
+const OximeterWriteCharacteristic = new BlenoCharacteristic({
+  uuid: CHARACTERISTIC_UUID_WRITE,
+  properties: ['write'],
+  secure: ['write'],
+});
+
+// Add the onWriteRequest handler for the Write Characteristic
 OximeterWriteCharacteristic.onWriteRequest = function (data, offset, withoutResponse, callback) {
-    console.log('Write request received:', data.toString('hex'));
-    
-    // Example: Process the received data and send a response
-    const receivedValue = data.toString('hex');
-    console.log('Processing received value:', receivedValue);
+  console.log('Write request received:', data.toString('hex'));
 
-    // Example: Send a response back to the Notify Characteristic
-    const responseData = Buffer.from([0x04, 0x05, 0x06]); // Example response data
-    OximeterNotifyCharacteristic.emit('data', responseData);
+  // Example: Process the received data
+  const receivedValue = data.toString('hex');
+  console.log('Processing received value:', receivedValue);
 
-    callback(this.RESULT_SUCCESS);
+  // Example: Respond to the write request
+  callback(this.RESULT_SUCCESS);
 };
-
 
 // Define the Primary Service
 const exampleService = new BlenoPrimaryService({
@@ -64,7 +75,7 @@ const exampleService = new BlenoPrimaryService({
 bleno.on('stateChange', (state) => {
   console.log(`Bluetooth state changed to: ${state}`);
   if (state === 'poweredOn') {
-    bleno.startAdvertising('NoninServcie', [exampleService.uuid]);
+    bleno.startAdvertising('NoninService', [exampleService.uuid]);
   } else {
     bleno.stopAdvertising();
   }
@@ -80,21 +91,21 @@ bleno.on('advertisingStart', (error) => {
   }
 });
 
+// Function to generate the measurement array
+function process_meas() {
+  const pai = Math.floor(Math.random() * 6 + 1); // Random pulse amplitude index
+  const pai2 = Math.floor(Math.random() * 100 + 1); // Random decimal places
+  const counter = Math.floor(Math.random() * 256); // Random counter value
 
-function process_meas() { //generates the measurement array
-	var pai = Math.floor((Math.random() * 6) + 1); //random values for pulupdateValueCallbackse amplitude index
-	var pai2 = Math.floor((Math.random() * 100) + 1); //and its decimal places
-	counter = counter + 1; //increment counter
-	if (program.pulse > 256) { //if larger than one byte
-		pulse = '0' + program.pulse.toString(16);
-		pulse1 = parseInt(pulse.slice(0, 2), 16);
-		pulse2 = parseInt(pulse.slice(2, 4), 16); //convert to two hex bytes
-		//measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, program.saturation, pulse1, pulse2];
-measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, 25, 70, 70];
-		}
-	else {
-		measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, 25, 0x00, 70];
-		}
-	
-	return measurement; 
+  let measurement;
+  if (program.pulse > 256) {
+    const pulse = '0' + program.pulse.toString(16);
+    const pulse1 = parseInt(pulse.slice(0, 2), 16);
+    const pulse2 = parseInt(pulse.slice(2, 4), 16); // Convert to two hex bytes
+    measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, program.saturation, pulse1, pulse2];
+  } else {
+    measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, program.saturation, 0x00, program.pulse];
+  }
+
+  return measurement;
 }
