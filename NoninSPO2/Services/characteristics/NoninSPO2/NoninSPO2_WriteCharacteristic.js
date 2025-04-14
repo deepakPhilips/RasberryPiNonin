@@ -2,7 +2,6 @@ const bleno = require('@abandonware/bleno');
 const Logger = require('../../../Logger.js');
 const logger = new Logger();
 
-const program = require('commander').program;
 
 const rawdata1 = require('../../../extra/ConsoleLogComments.json');
 const test1 = JSON.parse(JSON.stringify(rawdata1));
@@ -10,12 +9,11 @@ const test1 = JSON.parse(JSON.stringify(rawdata1));
 const rawdata3 = require('../../../extra/Characteristic_UUIDs.json');
 const test3 = JSON.parse(JSON.stringify(rawdata3));
 
-program
-  .requiredOption('-s, --write-saturation <n>', 'saturation', parseInt)
-  .requiredOption('-p, --write-pulse <n>', 'pulse', parseInt)
-  .parse(process.argv);
+// program
+//   .requiredOption('-s, --write-saturation <n>', 'saturation', parseInt)
+//   .requiredOption('-p, --write-pulse <n>', 'pulse', parseInt)
+//   .parse(process.argv);
 
-const options = program.opts();
 
 class NoninSPO2_WriteCharacteristic extends bleno.Characteristic {
   constructor() {
