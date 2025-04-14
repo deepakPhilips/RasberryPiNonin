@@ -25,27 +25,27 @@ var data3=JSON.stringify(rawdata3);
 let test3=JSON.parse(data3);
 
 
-var ManufacturerNameCharacteristic = function() {
- ManufacturerNameCharacteristic.super_.call(this, {
-    uuid:test3["Manu"].uuid,
-    properties: ['read'],
-  });
+class ManufacturerNameCharacteristic extends BlenoCharacteristic {
+  constructor() {
+    super({
+      uuid: test3["Manu"].uuid,
+      properties: ['read'],
+    });
 
- this._value = new Buffer(0);
-};
-
-ManufacturerNameCharacteristic.prototype.onReadRequest = function(offset, callback) {
-
-  if(!offset) {
-    this._value = new Buffer(test1[35].string);
+    this._value = Buffer.alloc(0);
   }
 
- logger.log(test1[14].string+
-		this._value.slice(offset,offset+bleno.mtu).toString()
-  );
+  onReadRequest(offset, callback) {
+    if (!offset) {
+      this._value = Buffer.from(test1[35].string);
+    }
 
-  callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
-};
+    logger.log(
+      test1[14].string +
+      this._value.slice(offset, offset + bleno.mtu).toString()
+    );
 
-util.inherits(ManufacturerNameCharacteristic, BlenoCharacteristic);
+    callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
+  }
+}
 module.exports = ManufacturerNameCharacteristic;
