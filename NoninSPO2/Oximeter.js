@@ -24,7 +24,7 @@ function handleStateChange(state) {
 	console.log('GATT oximeter server running');
 	console.log('saturation value: %j, pulse value: %j', options.saturation, options.pulse);
 	if (state === 'poweredOn') {
-		bleno.startAdvertising('Nonin3230_501599389', ['180A', '46a970e00d5f11e28b5e0002a5d5c51b']);
+		bleno.startAdvertising('Nonin3230_501599389', ['46A970E0-0D5F-11E2-8B5E-0002A5D5C51B']);
 		startTimeout();
 	} else {
 		bleno.stopAdvertising();
@@ -57,19 +57,12 @@ function handleAdvertisingStart(error) {
 			createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
 			createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
 		]),
-		createPrimaryService('46a970e00d5f11e28b5e0002a5d5c51b', [
+		createPrimaryService('46A970E0-0D5F-11E2-8B5E-0002A5D5C51B', [
 			createNotifyCharacteristic(
-				'0aad7ea00d6011e28e3c0002a5d5c51b',
+				'0AAD7EA0-0D60-11E2-8E3C-0002A5D5C51B',
 				'Measurement',
 				handleMeasurementSubscribe,
 				handleMeasurementUnsubscribe
-			),
-			createWriteNotifyCharacteristic(
-				'1447af800d6011e288b60002a5d5c51b',
-				'Control Point',
-				handleControlWrite,
-				handleControlSubscribe,
-				handleControlUnsubscribe
 			),
 		]),
 	]);
