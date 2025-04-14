@@ -3,27 +3,33 @@ const bleno = require('@abandonware/bleno');
 const BlenoPrimaryService = bleno.PrimaryService;
 const BlenoCharacteristic = bleno.Characteristic;
 
-let updateInterval = null;
+let notifyInterval = null;
 
 const NotifyCharacteristic = new BlenoCharacteristic({
   uuid: 'ec0e',
   properties: ['notify'],
-  
-  onSubscribe: function(maxValueSize, updateValueCallback) {
-    console.log('Central subscribed to notify characteristic');
+
+  onSubscribe: (maxValueSize, updateValueCallback) => {
+    console.log('🔗 Central subscribed to characteristic');
 
     let counter = 0;
-    updateInterval = setInterval(() => {
-      const message = Buffer.from(`Value: ${counter++}`);
-      console.log('Sending:', message.toString());
-      updateValueCallback(message);
+
+    // Start sending values every 2 seconds
+    notifyInterval = setInterval(() => {
+      const value = `Value: ${counter++}`;
+      const buffer = Buffer.from(value);
+
+      console.log('📤 Notifying:', value);
+      updateValueCallback(buffer);
     }, 2000);
   },
 
-  onUnsubscribe: function() {
-    console.log('Central unsubscribed');
-    clearInterval(updateInterval);
-    updateInterval = null;
+  onUnsubscribe: () => {
+    console.log('❌ Central unsubscribed');
+    if (notifyInterval) {
+      clearInterval(notifyInterval);
+      notifyInterval = null;
+    }
   }
 });
 
@@ -33,19 +39,19 @@ const NotifyService = new BlenoPrimaryService({
 });
 
 bleno.on('stateChange', (state) => {
-  console.log(`Bluetooth state changed: ${state}`);
+  console.log(`🔄 Bluetooth state changed to: ${state}`);
   if (state === 'poweredOn') {
-    bleno.startAdvertising('Notifier', [NotifyService.uuid]);
+    bleno.startAdvertising('NotifierDevice', [NotifyService.uuid]);
   } else {
     bleno.stopAdvertising();
   }
 });
 
-bleno.on('advertisingStart', (err) => {
-  if (!err) {
-    console.log('Advertising started...');
+bleno.on('advertisingStart', (error) => {
+  if (!error) {
+    console.log('📣 Started advertising');
     bleno.setServices([NotifyService]);
   } else {
-    console.error('Advertising error:', err);
+    console.error('⚠️ Advertising error:', error);
   }
 });
