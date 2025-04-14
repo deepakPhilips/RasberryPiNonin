@@ -2,7 +2,7 @@ const bleno = require('@abandonware/bleno');
 
 // === Constants ===
 const NONIN_SERVICE_UUID = '46A970E0-0D5F-11E2-8B5E-0002A5D5C51B';
-const NONIN_MEASUREMENT_UUID = '46A970E1-0D5F-11E2-8B5E-0002A5D5C51B'; // mock characteristic
+const NONIN_MEASUREMENT_UUID = '0AAD7EA0-0D60-11E2-8E3C-0002A5D5C51B'; // mock characteristic
 
 // === Pulse Oximeter Data Simulation ===
 function createPulseOximeterPacket() {
