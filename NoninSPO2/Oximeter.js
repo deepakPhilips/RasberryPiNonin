@@ -75,21 +75,21 @@ const exampleService = new BlenoPrimaryService({
 bleno.on('stateChange', (state) => {
   console.log(`Bluetooth state changed to: ${state}`);
   if (state === 'poweredOn') {
-    bleno.startAdvertising('NoninService', [exampleService.uuid]);
+    bleno.startAdvertising('NoninService', ['180A', '46a970e00d5f11e28b5e0002a5d5c51b']);
   } else {
     bleno.stopAdvertising();
   }
 });
 
-// Handle advertising start
-bleno.on('advertisingStart', (error) => {
-  if (!error) {
-    console.log('Started advertising...');
-    bleno.setServices([exampleService]);
-  } else {
-    console.error('Failed to start advertising:', error);
-  }
-});
+// // Handle advertising start
+// bleno.on('advertisingStart', (error) => {
+//   if (!error) {
+//     console.log('Started advertising...');
+//     bleno.setServices([exampleService]);
+//   } else {
+//     console.error('Failed to start advertising:', error);
+//   }
+// });
 
 // Function to generate the measurement array
 function process_meas() {
@@ -108,4 +108,146 @@ function process_meas() {
   }
 
   return measurement;
+}
+
+
+
+bleno.on('advertisingStart', function(error) {
+	if (error) {
+		console.error('Error starting advertising:', error);
+		return;
+	}
+
+	console.log('Started advertising');
+	bleno.setServices([
+		new bleno.PrimaryService({
+			uuid: '180A',
+			characteristics: [
+				createCharacteristic('2A29', ['read'], 'Nonin_Medical_Inc', 'Manufacturer Name'),
+				createCharacteristic('2A24', ['read'], 'Model3230', 'Model'),
+				createCharacteristic('2A25', ['read'], 'nonin_sim', 'Serial'),
+				createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
+				createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
+			],
+		}),
+		new bleno.PrimaryService({
+			uuid: '46a970e00d5f11e28b5e0002a5d5c51b',
+			characteristics: [
+				createNotifyCharacteristic(
+					'0aad7ea00d6011e28e3c0002a5d5c51b',
+					'Measurement',
+					handleMeasurementSubscribe,
+					handleMeasurementUnsubscribe
+				),
+				createWriteNotifyCharacteristic(
+					'1447af800d6011e288b60002a5d5c51b',
+					'Control Point',
+					handleControlWrite,
+					handleControlSubscribe,
+					handleControlUnsubscribe
+				),
+			],
+		}),
+	]);
+});
+
+function createCharacteristic(uuid, properties, value, descriptorValue) {
+	return new bleno.Characteristic({
+		uuid,
+		properties,
+		value: Buffer.from(value),
+		descriptors: [
+			new bleno.Descriptor({
+				uuid: '2901',
+				value: descriptorValue,
+			}),
+		],
+	});
+}
+
+function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
+	return new bleno.Characteristic({
+		uuid,
+		properties: ['notify'],
+		descriptors: [
+			new bleno.Descriptor({
+				uuid: '2901',
+				value: descriptorValue,
+			}),
+		],
+		onSubscribe,
+		onUnsubscribe,
+	});
+}
+
+function createWriteNotifyCharacteristic(uuid, descriptorValue, onWriteRequest, onSubscribe, onUnsubscribe) {
+	return new bleno.Characteristic({
+		uuid,
+		properties: ['write', 'notify'],
+		descriptors: [
+			new bleno.Descriptor({
+				uuid: '2901',
+				value: descriptorValue,
+			}),
+		],
+		onWriteRequest,
+		onSubscribe,
+		onUnsubscribe,
+	});
+}
+
+function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
+	counter = 0;
+	timeout = 1;
+	console.log('Device subscribed, sending measurement');
+	if (options.saturation <= 100 && options.saturation > 0 && options.pulse > 0 && options.pulse < 322) {
+		const measBuffer = process_meas();
+		console.log(measBuffer);
+		updateValueCallback(measBuffer);
+		write_ox();
+	} else {
+		process.exit(2);
+	}
+}
+
+function handleMeasurementUnsubscribe() {
+	console.log('Measurement unsubscribed');
+	clearInterval(intervalId);
+	process.exit(3);
+}
+
+function handleControlWrite(data, offset, withoutResponse, callback) {
+	this.value = data;
+	const len = data.length;
+	control = Array.from(data.slice(0, len));
+	writeflag = true;
+	console.log('Write request: value =', control, ', length =', len);
+	callback(this.RESULT_SUCCESS);
+}
+
+function handleControlSubscribe(maxValueSize, updateValueCallback) {
+	console.log('Device subscribed to control');
+	intervalId = setTimeout(() => {
+		if (writeflag) {
+			if (control[0] === 97) {
+				const time = control[1];
+				if (syncflag) {
+					updateValueCallback([0xE1, 0x02]);
+					console.log('E102, still syncing');
+				} else if (time <= 25 && time >= 5) {
+					updateValueCallback([0xE1, 0x00]);
+					console.log('E100, sync initialized');
+					syncflag = true;
+				} else {
+					updateValueCallback([0xE1, 0x01]);
+					console.log('E101, out of range value');
+				}
+			}
+		}
+	}, 1000);
+}
+
+function handleControlUnsubscribe() {
+	console.log('Control unsubscribed');
+	clearInterval(intervalId);
 }
