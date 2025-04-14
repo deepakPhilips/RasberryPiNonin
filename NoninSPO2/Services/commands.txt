@@ -1,0 +1,18 @@
+hcitool | grep ver                  if doesnt work -> sudo apt-get install pi-bluetooth
+
+sudo systemctl stop bluetooth
+sudo systemctl status bluetooth
+
+
+sudo hciconfig hci0 up
+sudo node index.js
+
+
+cd ~wget https://nodejs.org/dist/v5.9.1/node-v5.9.1-linux-armv7l.tar.xztar xfv node-v5.9.1-linux-armv7l.tar.xzcd node-v5.9.1-linux-armv7l/
+
+sudo cp -R * /usr/local/
+
+
+node -v (should output v5.9.1)npm -v (should output 3.7.3)
+
+

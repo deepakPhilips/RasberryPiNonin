@@ -1,0 +1,71 @@
+{
+
+"1":{"string":"IndicateOnlyCharacteristic subscribe"},
+
+"2":{"string":"IndicateOnlyCharacteristic unsubscribe"},
+
+"3":{"string":"IndicateOnlyCharacteristic on Indicate"},
+
+"4":{"string":"BloodPressureCharacteristic-IndicateRequest :   Count= " },
+
+"5":{"string":"BatteryLevelCharacteristic-onReadRequest :  Value = "},
+
+"6":{"string":"BodyCompositionCharacteristic-IndicateRequest :  Value = "},
+
+"7":{"string":"  Count=" },
+
+"8":{"string":"CurrentTimeCharacteristic-IndicateRequest :  Value = " },
+
+"9":{"string":"GlucoseMeasurementCharacteristic-IndicateRequest :  Value = "},
+
+"10":{"string":"HealthThermometerCharacteristic-IndicateRequest :   Count= " },
+
+"11":{"string":"HeartRateCharacteristic-IndicateRequest :   Count= "},
+
+"12":{"string":"PLXSpotCheckCharacteristic-IndicateRequest :  Value = " },
+
+"13":{"string":"PLXContinuousCharacteristic-IndicateRequest :  Value = " },
+
+"14":{"string":"ManufacturerNameCharacteristic - onReadRequest: value = " },
+
+"15":{"string":"Philips" },
+
+"16":{"string":"ModelNumberCharacteristic - onReadRequest: value = "},
+
+"17":{"string":"81247282" },
+
+"18":{"string":"51782192"},
+
+"19":{"string":"SerialNumberCharacteristic - onReadRequest: value = "},
+
+"20":{"string":"WeightScaleCharacteristic-IndicateRequest :  Value = "},
+
+"21":{"string":"Philips Simulator"},
+
+"22":{"string":"Please Enter the Preferred Primary Service \n1.heartRateService\n2.systemInformationService\n3.weightScaleService\n4.batteryService\n5.bloodPressureService\n6.glucoseMeasurementService\n7.currentTimeService\n8.HealthThermometerService\n9. pulseOximeterService\n"}
+
+,"23":{"string":"BM57"}
+
+,"24":{"string":"MI_SCALE"}
+
+,"25":{"string":"Philips Ear Thermometer"}
+
+,"26":{"string":"Beurer GL50EVO"}
+
+,"27":{"string":"Characteristic - onWriteRequest: value = "}
+
+,"28":{"string":"Characteristic - onWriteRequest: notifying"}
+
+,"29":{"string":"The number of notifications has exceeded"} 
+
+
+
+,"30":{"string":"Philips"} 
+
+,"31":{"string":"Contour"} 
+
+,"32":{"string":"Beurer"} 
+
+,"33":{"string":"Xiaomi"} 
+,"34":{"string":"Contour GL"} 
+}

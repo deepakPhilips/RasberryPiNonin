@@ -1,0 +1,1430 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', 'bluez' ]
+2 info using npm@1.4.21
+3 info using node@v8.11.1
+4 verbose cache add [ 'bluez', null ]
+5 verbose cache add name=undefined spec="bluez" args=["bluez",null]
+6 verbose parsed url Url {
+6 verbose parsed url   protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'bluez',
+6 verbose parsed url   path: 'bluez',
+6 verbose parsed url   href: 'bluez' }
+7 silly lockFile 09b959d4-bluez bluez
+8 verbose lock bluez /root/.npm/09b959d4-bluez.lock
+9 silly lockFile 09b959d4-bluez bluez
+10 silly lockFile 09b959d4-bluez bluez
+11 verbose addNamed [ 'bluez', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile de5088eb-bluez bluez@
+14 verbose lock bluez@ /root/.npm/de5088eb-bluez.lock
+15 silly addNameRange { name: 'bluez', range: '*', hasData: false }
+16 verbose request where is /bluez
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id d52858daf6cf029d
+19 verbose url raw /bluez
+20 verbose url resolving [ 'https://registry.npmjs.org/', './bluez' ]
+21 verbose url resolved https://registry.npmjs.org/bluez
+22 verbose request where is https://registry.npmjs.org/bluez
+23 info trying registry request attempt 1 at 10:49:20
+24 http GET https://registry.npmjs.org/bluez
+25 http 200 https://registry.npmjs.org/bluez
+26 silly registry.get cb [ 200,
+26 silly registry.get   { date: 'Mon, 01 Apr 2019 09:49:22 GMT',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'transfer-encoding': 'chunked',
+26 silly registry.get     connection: 'close',
+26 silly registry.get     'set-cookie':
+26 silly registry.get      [ '__cfduid=df35d484efd527afbea1c75b55cd97fec1554112161; expires=Tue, 31-Mar-20 09:49:21 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+26 silly registry.get     'cf-cache-status': 'MISS',
+26 silly registry.get     'cache-control': 'max-age=300',
+26 silly registry.get     'cf-ray': '4c09a70f9bb98a85-BOM',
+26 silly registry.get     etag: 'W/"2066e5de3d427fa11c4874877ec1bb62"',
+26 silly registry.get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+26 silly registry.get     'last-modified': 'Mon, 22 Oct 2018 08:27:38 GMT',
+26 silly registry.get     vary: 'accept-encoding, accept',
+26 silly registry.get     'x-amz-meta-rev': '5-b5b81b05606924e911bab51300acadf4',
+26 silly registry.get     server: 'cloudflare',
+26 silly registry.get     'content-encoding': 'gzip' } ]
+27 silly addNameRange number 2 { name: 'bluez', range: '*', hasData: true }
+28 silly addNameRange versions [ 'bluez', [ '0.1.0', '0.1.1', '0.2.0', '0.2.1', '0.2.2' ] ]
+29 verbose addNamed [ 'bluez', '0.2.2' ]
+30 verbose addNamed [ '0.2.2', '0.2.2' ]
+31 silly lockFile fe679652-bluez-0-2-2 bluez@0.2.2
+32 verbose lock bluez@0.2.2 /root/.npm/fe679652-bluez-0-2-2.lock
+33 silly lockFile dc8139a0--npmjs-org-bluez-bluez-0-2-2-tgz https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz
+34 verbose lock https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz /root/.npm/dc8139a0--npmjs-org-bluez-bluez-0-2-2-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz',
+35 verbose addRemoteTarball   'b792c624a46f1d0e72f758f5ed528be3dfcc236c' ]
+36 info retry fetch attempt 1 at 10:49:23
+37 verbose fetch to= /tmp/npm-1603-rqq1QOqQ/registry.npmjs.org/bluez/-/bluez-0.2.2.tgz
+38 http GET https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz
+39 http 200 https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz
+40 silly lockFile dc8139a0--npmjs-org-bluez-bluez-0-2-2-tgz https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz
+41 silly lockFile dc8139a0--npmjs-org-bluez-bluez-0-2-2-tgz https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz
+42 silly lockFile fe679652-bluez-0-2-2 bluez@0.2.2
+43 silly lockFile fe679652-bluez-0-2-2 bluez@0.2.2
+44 silly lockFile de5088eb-bluez bluez@
+45 silly lockFile de5088eb-bluez bluez@
+46 silly resolved [ { name: 'bluez',
+46 silly resolved     version: '0.2.2',
+46 silly resolved     description: 'Bluez5 D-Bus library for easy to use bluetooth access in node',
+46 silly resolved     keywords: [ 'bluez', 'bluez5', 'bluetooth', 'dbus', 'd-bus' ],
+46 silly resolved     main: 'index.js',
+46 silly resolved     types: 'types.d.ts',
+46 silly resolved     scripts:
+46 silly resolved      { test: 'echo "Error: no test specified" && exit 1',
+46 silly resolved        install: 'node-gyp configure build' },
+46 silly resolved     author: { name: 'WaeCo', email: 'aaqqws@googlemail.com' },
+46 silly resolved     license: 'MIT',
+46 silly resolved     homepage: 'https://github.com/waeco/node-bluez#readme',
+46 silly resolved     dependencies: { dbus: '^1.0.3', errno: '^0.1.5', nan: '^2.1.0' },
+46 silly resolved     repository: { type: 'git', url: 'git://github.com/waeco/node-bluez.git' },
+46 silly resolved     bugs: { url: 'https://github.com/waeco/node-bluez/issues' },
+46 silly resolved     os: [ '!win32' ],
+46 silly resolved     gitHead: '0e8c5b856e47bf4c5319c83bb620177dd5aa8a3b',
+46 silly resolved     _id: 'bluez@0.2.2',
+46 silly resolved     _npmVersion: '6.4.1',
+46 silly resolved     _nodeVersion: '8.11.1',
+46 silly resolved     _npmUser: { name: 'waeco', email: 'aaqqws@googlemail.com' },
+46 silly resolved     dist:
+46 silly resolved      { integrity: 'sha512-5KyNFshhwRMJKc+Ljj7cmMBIUelGmkog0bNgE6s7zaLmg3nO19cxpDYLN8nN7RvPkFKgMRcuUszpxNA+LigxKA==',
+46 silly resolved        shasum: 'b792c624a46f1d0e72f758f5ed528be3dfcc236c',
+46 silly resolved        tarball: 'https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz',
+46 silly resolved        fileCount: 20,
+46 silly resolved        unpackedSize: 90602,
+46 silly resolved        'npm-signature': '-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJbzYn1CRA9TVsSAnZWagAAxtAP/jStQvgvz0pvRUbDp6SC\ne+W+etQYd1731JCTA9FLfhC7KmqViu1XzxEAc3cYwY17k6xJm6TwheaS6S14\nA4RtUtyZQ36JF9yAWzmVy0Lgc0oQRwehi56q4nBAaN8+JNg0cw4W2HJOfUIz\nmvVqxd7NiveoV8Iv9uBXYXgNCvtWR8MdQvHRBWaFn5Pl2Ic1/cwh8rWbQjZ0\nJu5tQaN0SkCSelK5r3ERJz0PUEnZPxPkU0zu61UQS1A5dWRWHi7bX1veqc1s\ntTVbSbcasa9uSfcHKkYjlOJhCd5OqCSufZBBzxojlFfnRoMlYm65lZsuTiyk\nbVz3oIJLgJO8+S67xM+rmzLkQhEQg6ywAcWZXeYSmpFAugA6esjpcBQmqF1/\n8/XXqjYhHFNII7HOhQL2nTQEchxJn3d0Qo2mIrS0t2mvissDy5ZHtlbEELba\n4BbDCaZK1UlGa+vznsz2pact0Sw6EhGtcWaB7Ma+waTBxKmPyIIoMXNsFaWW\nczTBB8PxyT3qzhu6ilQjn2DCvemTackL3ThmyzV97bXz9bQuipRsm+53o8Jw\nvHm9DUFjsWKt+EtLJ0p67M+mZVn2+I3iaPkRAtDupELJglLx7Cy82MWu12ML\nQOXE1l6wSZ4/X2hvhZ1ucA4aBZ0KT/g+p75H5OFQPIiqL1Ol/ikgiJEumcl8\nGUBS\r\n=sWSH\r\n-----END PGP SIGNATURE-----\r\n' },
+46 silly resolved     maintainers: [ [Object] ],
+46 silly resolved     directories: {},
+46 silly resolved     _npmOperationalInternal:
+46 silly resolved      { host: 's3://npm-registry-packages',
+46 silly resolved        tmp: 'tmp/bluez_0.2.2_1540196853021_0.8958328879623436' },
+46 silly resolved     _hasShrinkwrap: false,
+46 silly resolved     _shasum: 'b792c624a46f1d0e72f758f5ed528be3dfcc236c',
+46 silly resolved     _from: 'bluez@',
+46 silly resolved     _resolved: 'https://registry.npmjs.org/bluez/-/bluez-0.2.2.tgz' } ]
+47 info install bluez@0.2.2 into /home/pi/Documents/RaspberryPi_Project/Buerer GL 50
+48 info installOne bluez@0.2.2
+49 verbose node_modules/bluez unbuild
+50 verbose tar unpack /root/.npm/bluez/0.2.2/package.tgz
+51 silly lockFile 1bfeedca--Buerer-GL-50-node-modules-bluez tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+52 verbose lock tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez /root/.npm/1bfeedca--Buerer-GL-50-node-modules-bluez.lock
+53 silly lockFile fc9604f0-root-npm-bluez-0-2-2-package-tgz tar:///root/.npm/bluez/0.2.2/package.tgz
+54 verbose lock tar:///root/.npm/bluez/0.2.2/package.tgz /root/.npm/fc9604f0-root-npm-bluez-0-2-2-package-tgz.lock
+55 silly gunzTarPerm modes [ '755', '644' ]
+56 silly gunzTarPerm extractEntry package.json
+57 silly gunzTarPerm extractEntry binding.gyp
+58 silly gunzTarPerm extractEntry index.js
+59 silly gunzTarPerm modified mode [ 'index.js', 436, 420 ]
+60 silly gunzTarPerm extractEntry LICENCE
+61 silly gunzTarPerm extractEntry README.md
+62 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+63 silly gunzTarPerm extractEntry types.d.ts
+64 silly gunzTarPerm modified mode [ 'types.d.ts', 436, 420 ]
+65 silly gunzTarPerm extractEntry examples/ble.js
+66 silly gunzTarPerm modified mode [ 'examples/ble.js', 436, 420 ]
+67 silly gunzTarPerm extractEntry examples/serial.js
+68 silly gunzTarPerm extractEntry lib/Adapter.js
+69 silly gunzTarPerm extractEntry lib/Agent.js
+70 silly gunzTarPerm extractEntry lib/Bluez.js
+71 silly gunzTarPerm modified mode [ 'lib/Bluez.js', 436, 420 ]
+72 silly gunzTarPerm extractEntry lib/Characteristic.js
+73 silly gunzTarPerm modified mode [ 'lib/Characteristic.js', 436, 420 ]
+74 silly gunzTarPerm extractEntry lib/Descriptor.js
+75 silly gunzTarPerm modified mode [ 'lib/Descriptor.js', 436, 420 ]
+76 silly gunzTarPerm extractEntry lib/Device.js
+77 silly gunzTarPerm modified mode [ 'lib/Device.js', 436, 420 ]
+78 silly gunzTarPerm extractEntry lib/Profile.js
+79 silly gunzTarPerm extractEntry lib/RawFdSocket.js
+80 silly gunzTarPerm extractEntry lib/SerialProfile.js
+81 silly gunzTarPerm extractEntry lib/Service.js
+82 silly gunzTarPerm modified mode [ 'lib/Service.js', 436, 420 ]
+83 silly gunzTarPerm extractEntry src/raw-fd.cc
+84 silly gunzTarPerm modified mode [ 'src/raw-fd.cc', 436, 420 ]
+85 silly gunzTarPerm extractEntry src/raw-fd.h
+86 silly lockFile 1bfeedca--Buerer-GL-50-node-modules-bluez tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+87 silly lockFile 1bfeedca--Buerer-GL-50-node-modules-bluez tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+88 silly lockFile fc9604f0-root-npm-bluez-0-2-2-package-tgz tar:///root/.npm/bluez/0.2.2/package.tgz
+89 silly lockFile fc9604f0-root-npm-bluez-0-2-2-package-tgz tar:///root/.npm/bluez/0.2.2/package.tgz
+90 info preinstall bluez@0.2.2
+91 verbose readDependencies using package.json deps
+92 verbose readDependencies using package.json deps
+93 verbose cache add [ 'dbus@^1.0.3', null ]
+94 verbose cache add name=undefined spec="dbus@^1.0.3" args=["dbus@^1.0.3",null]
+95 verbose parsed url Url {
+95 verbose parsed url   protocol: null,
+95 verbose parsed url   slashes: null,
+95 verbose parsed url   auth: null,
+95 verbose parsed url   host: null,
+95 verbose parsed url   port: null,
+95 verbose parsed url   hostname: null,
+95 verbose parsed url   hash: null,
+95 verbose parsed url   search: null,
+95 verbose parsed url   query: null,
+95 verbose parsed url   pathname: 'dbus@%5E1.0.3',
+95 verbose parsed url   path: 'dbus@%5E1.0.3',
+95 verbose parsed url   href: 'dbus@%5E1.0.3' }
+96 verbose cache add [ 'errno@^0.1.5', null ]
+97 verbose cache add name=undefined spec="errno@^0.1.5" args=["errno@^0.1.5",null]
+98 verbose parsed url Url {
+98 verbose parsed url   protocol: null,
+98 verbose parsed url   slashes: null,
+98 verbose parsed url   auth: null,
+98 verbose parsed url   host: null,
+98 verbose parsed url   port: null,
+98 verbose parsed url   hostname: null,
+98 verbose parsed url   hash: null,
+98 verbose parsed url   search: null,
+98 verbose parsed url   query: null,
+98 verbose parsed url   pathname: 'errno@%5E0.1.5',
+98 verbose parsed url   path: 'errno@%5E0.1.5',
+98 verbose parsed url   href: 'errno@%5E0.1.5' }
+99 verbose cache add [ 'nan@^2.1.0', null ]
+100 verbose cache add name=undefined spec="nan@^2.1.0" args=["nan@^2.1.0",null]
+101 verbose parsed url Url {
+101 verbose parsed url   protocol: null,
+101 verbose parsed url   slashes: null,
+101 verbose parsed url   auth: null,
+101 verbose parsed url   host: null,
+101 verbose parsed url   port: null,
+101 verbose parsed url   hostname: null,
+101 verbose parsed url   hash: null,
+101 verbose parsed url   search: null,
+101 verbose parsed url   query: null,
+101 verbose parsed url   pathname: 'nan@%5E2.1.0',
+101 verbose parsed url   path: 'nan@%5E2.1.0',
+101 verbose parsed url   href: 'nan@%5E2.1.0' }
+102 verbose cache add name="dbus" spec="^1.0.3" args=["dbus","^1.0.3"]
+103 verbose parsed url Url {
+103 verbose parsed url   protocol: null,
+103 verbose parsed url   slashes: null,
+103 verbose parsed url   auth: null,
+103 verbose parsed url   host: null,
+103 verbose parsed url   port: null,
+103 verbose parsed url   hostname: null,
+103 verbose parsed url   hash: null,
+103 verbose parsed url   search: null,
+103 verbose parsed url   query: null,
+103 verbose parsed url   pathname: '%5E1.0.3',
+103 verbose parsed url   path: '%5E1.0.3',
+103 verbose parsed url   href: '%5E1.0.3' }
+104 verbose addNamed [ 'dbus', '^1.0.3' ]
+105 verbose addNamed [ null, '>=1.0.3 <2.0.0' ]
+106 silly lockFile 0834fa9d-dbus-1-0-3 dbus@^1.0.3
+107 verbose lock dbus@^1.0.3 /root/.npm/0834fa9d-dbus-1-0-3.lock
+108 verbose cache add name="errno" spec="^0.1.5" args=["errno","^0.1.5"]
+109 verbose parsed url Url {
+109 verbose parsed url   protocol: null,
+109 verbose parsed url   slashes: null,
+109 verbose parsed url   auth: null,
+109 verbose parsed url   host: null,
+109 verbose parsed url   port: null,
+109 verbose parsed url   hostname: null,
+109 verbose parsed url   hash: null,
+109 verbose parsed url   search: null,
+109 verbose parsed url   query: null,
+109 verbose parsed url   pathname: '%5E0.1.5',
+109 verbose parsed url   path: '%5E0.1.5',
+109 verbose parsed url   href: '%5E0.1.5' }
+110 verbose addNamed [ 'errno', '^0.1.5' ]
+111 verbose addNamed [ null, '>=0.1.5 <0.2.0' ]
+112 silly lockFile 31b9ba42-errno-0-1-5 errno@^0.1.5
+113 verbose lock errno@^0.1.5 /root/.npm/31b9ba42-errno-0-1-5.lock
+114 verbose cache add name="nan" spec="^2.1.0" args=["nan","^2.1.0"]
+115 verbose parsed url Url {
+115 verbose parsed url   protocol: null,
+115 verbose parsed url   slashes: null,
+115 verbose parsed url   auth: null,
+115 verbose parsed url   host: null,
+115 verbose parsed url   port: null,
+115 verbose parsed url   hostname: null,
+115 verbose parsed url   hash: null,
+115 verbose parsed url   search: null,
+115 verbose parsed url   query: null,
+115 verbose parsed url   pathname: '%5E2.1.0',
+115 verbose parsed url   path: '%5E2.1.0',
+115 verbose parsed url   href: '%5E2.1.0' }
+116 verbose addNamed [ 'nan', '^2.1.0' ]
+117 verbose addNamed [ null, '>=2.1.0 <3.0.0' ]
+118 silly lockFile 2529492e-nan-2-1-0 nan@^2.1.0
+119 verbose lock nan@^2.1.0 /root/.npm/2529492e-nan-2-1-0.lock
+120 silly addNameRange { name: 'dbus', range: '>=1.0.3 <2.0.0', hasData: false }
+121 silly addNameRange { name: 'errno', range: '>=0.1.5 <0.2.0', hasData: false }
+122 silly addNameRange { name: 'nan', range: '>=2.1.0 <3.0.0', hasData: false }
+123 verbose request where is /dbus
+124 verbose request registry https://registry.npmjs.org/
+125 verbose url raw /dbus
+126 verbose url resolving [ 'https://registry.npmjs.org/', './dbus' ]
+127 verbose url resolved https://registry.npmjs.org/dbus
+128 verbose request where is https://registry.npmjs.org/dbus
+129 info trying registry request attempt 1 at 10:49:24
+130 http GET https://registry.npmjs.org/dbus
+131 verbose request where is /errno
+132 verbose request registry https://registry.npmjs.org/
+133 verbose url raw /errno
+134 verbose url resolving [ 'https://registry.npmjs.org/', './errno' ]
+135 verbose url resolved https://registry.npmjs.org/errno
+136 verbose request where is https://registry.npmjs.org/errno
+137 info trying registry request attempt 1 at 10:49:24
+138 http GET https://registry.npmjs.org/errno
+139 verbose request where is /nan
+140 verbose request registry https://registry.npmjs.org/
+141 verbose url raw /nan
+142 verbose url resolving [ 'https://registry.npmjs.org/', './nan' ]
+143 verbose url resolved https://registry.npmjs.org/nan
+144 verbose request where is https://registry.npmjs.org/nan
+145 info trying registry request attempt 1 at 10:49:24
+146 http GET https://registry.npmjs.org/nan
+147 http 200 https://registry.npmjs.org/errno
+148 silly registry.get cb [ 200,
+148 silly registry.get   { date: 'Mon, 01 Apr 2019 09:49:24 GMT',
+148 silly registry.get     'content-type': 'application/json; charset=UTF-8',
+148 silly registry.get     'transfer-encoding': 'chunked',
+148 silly registry.get     connection: 'close',
+148 silly registry.get     'set-cookie':
+148 silly registry.get      [ '__cfduid=da8a0c73d81f6f5de37efaf847d1777951554112164; expires=Tue, 31-Mar-20 09:49:24 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+148 silly registry.get     'cf-cache-status': 'HIT',
+148 silly registry.get     'cache-control': 'max-age=300',
+148 silly registry.get     'cf-ray': '4c09a72469328a55-BOM',
+148 silly registry.get     etag: 'W/"93d3c79a655f99137298121fc95d36c6"',
+148 silly registry.get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+148 silly registry.get     'last-modified': 'Sat, 26 May 2018 23:40:24 GMT',
+148 silly registry.get     vary: 'accept-encoding, accept',
+148 silly registry.get     server: 'cloudflare',
+148 silly registry.get     'content-encoding': 'gzip' } ]
+149 silly addNameRange number 2 { name: 'errno', range: '>=0.1.5 <0.2.0', hasData: true }
+150 silly addNameRange versions [ 'errno',
+150 silly addNameRange   [ '0.0.1',
+150 silly addNameRange     '0.0.2',
+150 silly addNameRange     '0.0.3',
+150 silly addNameRange     '0.0.4',
+150 silly addNameRange     '0.0.5',
+150 silly addNameRange     '0.1.0',
+150 silly addNameRange     '0.1.1',
+150 silly addNameRange     '0.1.2',
+150 silly addNameRange     '0.1.3',
+150 silly addNameRange     '0.1.4',
+150 silly addNameRange     '0.1.5',
+150 silly addNameRange     '0.1.6',
+150 silly addNameRange     '0.1.7' ] ]
+151 verbose addNamed [ 'errno', '0.1.7' ]
+152 verbose addNamed [ '0.1.7', '0.1.7' ]
+153 silly lockFile d2210d9d-errno-0-1-7 errno@0.1.7
+154 verbose lock errno@0.1.7 /root/.npm/d2210d9d-errno-0-1-7.lock
+155 silly lockFile 7ffbfe22--npmjs-org-errno-errno-0-1-7-tgz https://registry.npmjs.org/errno/-/errno-0.1.7.tgz
+156 verbose lock https://registry.npmjs.org/errno/-/errno-0.1.7.tgz /root/.npm/7ffbfe22--npmjs-org-errno-errno-0-1-7-tgz.lock
+157 verbose addRemoteTarball [ 'https://registry.npmjs.org/errno/-/errno-0.1.7.tgz',
+157 verbose addRemoteTarball   '4684d71779ad39af177e3f007996f7c67c852618' ]
+158 info retry fetch attempt 1 at 10:49:24
+159 verbose fetch to= /tmp/npm-1603-rqq1QOqQ/registry.npmjs.org/errno/-/errno-0.1.7.tgz
+160 http GET https://registry.npmjs.org/errno/-/errno-0.1.7.tgz
+161 http 200 https://registry.npmjs.org/nan
+162 silly registry.get cb [ 200,
+162 silly registry.get   { date: 'Mon, 01 Apr 2019 09:49:24 GMT',
+162 silly registry.get     'content-type': 'application/json',
+162 silly registry.get     'transfer-encoding': 'chunked',
+162 silly registry.get     connection: 'close',
+162 silly registry.get     'set-cookie':
+162 silly registry.get      [ '__cfduid=dca8acfc40b482160fbe256a5cc6ddd421554112164; expires=Tue, 31-Mar-20 09:49:24 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+162 silly registry.get     'cf-cache-status': 'HIT',
+162 silly registry.get     'cache-control': 'max-age=300',
+162 silly registry.get     'cf-ray': '4c09a724ab508a6d-BOM',
+162 silly registry.get     etag: 'W/"d9774cf846d746fcaab396a90dcaef66"',
+162 silly registry.get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+162 silly registry.get     'last-modified': 'Sun, 24 Mar 2019 14:32:23 GMT',
+162 silly registry.get     vary: 'accept-encoding, accept',
+162 silly registry.get     'x-amz-meta-rev': '186-083b72552a0fb3a089a4c5cb95d68c1a',
+162 silly registry.get     server: 'cloudflare',
+162 silly registry.get     'content-encoding': 'gzip' } ]
+163 silly addNameRange number 2 { name: 'nan', range: '>=2.1.0 <3.0.0', hasData: true }
+164 silly addNameRange versions [ 'nan',
+164 silly addNameRange   [ '0.3.0-wip',
+164 silly addNameRange     '0.3.0-wip2',
+164 silly addNameRange     '0.3.0',
+164 silly addNameRange     '0.3.1',
+164 silly addNameRange     '0.3.2',
+164 silly addNameRange     '0.4.0',
+164 silly addNameRange     '0.4.1',
+164 silly addNameRange     '0.4.2',
+164 silly addNameRange     '0.4.3',
+164 silly addNameRange     '0.4.4',
+164 silly addNameRange     '0.5.0',
+164 silly addNameRange     '0.5.1',
+164 silly addNameRange     '0.5.2',
+164 silly addNameRange     '0.6.0',
+164 silly addNameRange     '0.7.0',
+164 silly addNameRange     '0.7.1',
+164 silly addNameRange     '0.8.0',
+164 silly addNameRange     '1.0.0',
+164 silly addNameRange     '1.1.0',
+164 silly addNameRange     '1.1.1',
+164 silly addNameRange     '1.1.2',
+164 silly addNameRange     '1.2.0',
+164 silly addNameRange     '1.3.0',
+164 silly addNameRange     '1.4.0',
+164 silly addNameRange     '1.4.1',
+164 silly addNameRange     '1.5.0',
+164 silly addNameRange     '1.4.2',
+164 silly addNameRange     '1.4.3',
+164 silly addNameRange     '1.5.1',
+164 silly addNameRange     '1.5.2',
+164 silly addNameRange     '1.6.0',
+164 silly addNameRange     '1.5.3',
+164 silly addNameRange     '1.6.1',
+164 silly addNameRange     '1.6.2',
+164 silly addNameRange     '1.7.0',
+164 silly addNameRange     '1.8.0',
+164 silly addNameRange     '1.8.1',
+164 silly addNameRange     '1.8.2',
+164 silly addNameRange     '1.8.3',
+164 silly addNameRange     '1.8.4',
+164 silly addNameRange     '1.9.0',
+164 silly addNameRange     '2.0.0',
+164 silly addNameRange     '2.0.1',
+164 silly addNameRange     '2.0.2',
+164 silly addNameRange     '2.0.3',
+164 silly addNameRange     '2.0.4',
+164 silly addNameRange     '2.0.5',
+164 silly addNameRange     '2.0.6',
+164 silly addNameRange     '2.0.7',
+164 silly addNameRange     '2.0.8',
+164 silly addNameRange     '2.0.9',
+164 silly addNameRange     '2.1.0',
+164 silly addNameRange     '2.2.0',
+164 silly addNameRange     '2.2.1',
+164 silly addNameRange     '2.3.0',
+164 silly addNameRange     '2.3.1',
+164 silly addNameRange     '2.3.2',
+164 silly addNameRange     '2.3.3',
+164 silly addNameRange     '2.3.4',
+164 silly addNameRange     '2.3.5',
+164 silly addNameRange     '2.4.0',
+164 silly addNameRange     '2.5.0',
+164 silly addNameRange     '2.5.1',
+164 silly addNameRange     '2.6.0',
+164 silly addNameRange     '2.6.1',
+164 silly addNameRange     '2.6.2',
+164 silly addNameRange     '2.7.0',
+164 silly addNameRange     '2.8.0',
+164 silly addNameRange     '2.9.1',
+164 silly addNameRange     '2.9.2',
+164 silly addNameRange     '2.10.0',
+164 silly addNameRange     '2.11.0',
+164 silly addNameRange     '2.11.1',
+164 silly addNameRange     '2.12.0',
+164 silly addNameRange     '2.12.1',
+164 silly addNameRange     '2.13.0',
+164 silly addNameRange     '2.13.1',
+164 silly addNameRange     '2.13.2' ] ]
+165 verbose addNamed [ 'nan', '2.13.2' ]
+166 verbose addNamed [ '2.13.2', '2.13.2' ]
+167 silly lockFile 865039d2-nan-2-13-2 nan@2.13.2
+168 verbose lock nan@2.13.2 /root/.npm/865039d2-nan-2-13-2.lock
+169 silly lockFile 39a949fb-try-npmjs-org-nan-nan-2-13-2-tgz https://registry.npmjs.org/nan/-/nan-2.13.2.tgz
+170 verbose lock https://registry.npmjs.org/nan/-/nan-2.13.2.tgz /root/.npm/39a949fb-try-npmjs-org-nan-nan-2-13-2-tgz.lock
+171 verbose addRemoteTarball [ 'https://registry.npmjs.org/nan/-/nan-2.13.2.tgz',
+171 verbose addRemoteTarball   'f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7' ]
+172 info retry fetch attempt 1 at 10:49:24
+173 verbose fetch to= /tmp/npm-1603-rqq1QOqQ/registry.npmjs.org/nan/-/nan-2.13.2.tgz
+174 http GET https://registry.npmjs.org/nan/-/nan-2.13.2.tgz
+175 http 200 https://registry.npmjs.org/errno/-/errno-0.1.7.tgz
+176 silly lockFile 7ffbfe22--npmjs-org-errno-errno-0-1-7-tgz https://registry.npmjs.org/errno/-/errno-0.1.7.tgz
+177 silly lockFile 7ffbfe22--npmjs-org-errno-errno-0-1-7-tgz https://registry.npmjs.org/errno/-/errno-0.1.7.tgz
+178 silly lockFile d2210d9d-errno-0-1-7 errno@0.1.7
+179 silly lockFile d2210d9d-errno-0-1-7 errno@0.1.7
+180 silly lockFile 31b9ba42-errno-0-1-5 errno@^0.1.5
+181 silly lockFile 31b9ba42-errno-0-1-5 errno@^0.1.5
+182 http 200 https://registry.npmjs.org/nan/-/nan-2.13.2.tgz
+183 silly lockFile 39a949fb-try-npmjs-org-nan-nan-2-13-2-tgz https://registry.npmjs.org/nan/-/nan-2.13.2.tgz
+184 silly lockFile 39a949fb-try-npmjs-org-nan-nan-2-13-2-tgz https://registry.npmjs.org/nan/-/nan-2.13.2.tgz
+185 silly lockFile 865039d2-nan-2-13-2 nan@2.13.2
+186 silly lockFile 865039d2-nan-2-13-2 nan@2.13.2
+187 silly lockFile 2529492e-nan-2-1-0 nan@^2.1.0
+188 silly lockFile 2529492e-nan-2-1-0 nan@^2.1.0
+189 http 200 https://registry.npmjs.org/dbus
+190 silly registry.get cb [ 200,
+190 silly registry.get   { date: 'Mon, 01 Apr 2019 09:49:26 GMT',
+190 silly registry.get     'content-type': 'application/json; charset=UTF-8',
+190 silly registry.get     'transfer-encoding': 'chunked',
+190 silly registry.get     connection: 'close',
+190 silly registry.get     'set-cookie':
+190 silly registry.get      [ '__cfduid=da8a0c73d81f6f5de37efaf847d1777951554112164; expires=Tue, 31-Mar-20 09:49:24 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+190 silly registry.get     'cf-cache-status': 'MISS',
+190 silly registry.get     'cache-control': 'max-age=300',
+190 silly registry.get     'cf-ray': '4c09a724a96f8a55-BOM',
+190 silly registry.get     etag: 'W/"960c6b784f1eaa6e1792a2bfb0666f3c"',
+190 silly registry.get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+190 silly registry.get     'last-modified': 'Sat, 26 May 2018 21:50:18 GMT',
+190 silly registry.get     vary: 'accept-encoding, accept',
+190 silly registry.get     server: 'cloudflare',
+190 silly registry.get     'content-encoding': 'gzip' } ]
+191 silly addNameRange number 2 { name: 'dbus', range: '>=1.0.3 <2.0.0', hasData: true }
+192 silly addNameRange versions [ 'dbus',
+192 silly addNameRange   [ '0.0.1',
+192 silly addNameRange     '0.0.2',
+192 silly addNameRange     '0.0.3',
+192 silly addNameRange     '0.0.4',
+192 silly addNameRange     '0.0.5',
+192 silly addNameRange     '0.0.6',
+192 silly addNameRange     '0.0.7',
+192 silly addNameRange     '0.0.8',
+192 silly addNameRange     '0.0.9',
+192 silly addNameRange     '0.0.10',
+192 silly addNameRange     '0.0.11',
+192 silly addNameRange     '0.2.0',
+192 silly addNameRange     '0.2.1',
+192 silly addNameRange     '0.2.2',
+192 silly addNameRange     '0.2.3',
+192 silly addNameRange     '0.2.4',
+192 silly addNameRange     '0.2.5',
+192 silly addNameRange     '0.2.6',
+192 silly addNameRange     '0.2.8',
+192 silly addNameRange     '0.2.9',
+192 silly addNameRange     '0.2.10',
+192 silly addNameRange     '0.2.11',
+192 silly addNameRange     '0.2.12',
+192 silly addNameRange     '0.2.13',
+192 silly addNameRange     '0.2.14',
+192 silly addNameRange     '0.2.15',
+192 silly addNameRange     '0.2.16',
+192 silly addNameRange     '0.2.17',
+192 silly addNameRange     '0.2.18',
+192 silly addNameRange     '0.2.19',
+192 silly addNameRange     '0.2.20',
+192 silly addNameRange     '0.2.22',
+192 silly addNameRange     '0.2.23',
+192 silly addNameRange     '1.0.0',
+192 silly addNameRange     '1.0.1',
+192 silly addNameRange     '1.0.2',
+192 silly addNameRange     '1.0.3' ] ]
+193 verbose addNamed [ 'dbus', '1.0.3' ]
+194 verbose addNamed [ '1.0.3', '1.0.3' ]
+195 silly lockFile 048e29b3-dbus-1-0-3 dbus@1.0.3
+196 verbose lock dbus@1.0.3 /root/.npm/048e29b3-dbus-1-0-3.lock
+197 silly lockFile 40528275-ry-npmjs-org-dbus-dbus-1-0-3-tgz https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz
+198 verbose lock https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz /root/.npm/40528275-ry-npmjs-org-dbus-dbus-1-0-3-tgz.lock
+199 verbose addRemoteTarball [ 'https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz',
+199 verbose addRemoteTarball   'bceda148673bc2fcca2042ba06a95965762689bc' ]
+200 info retry fetch attempt 1 at 10:49:26
+201 verbose fetch to= /tmp/npm-1603-rqq1QOqQ/registry.npmjs.org/dbus/-/dbus-1.0.3.tgz
+202 http GET https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz
+203 http 200 https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz
+204 silly lockFile 40528275-ry-npmjs-org-dbus-dbus-1-0-3-tgz https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz
+205 silly lockFile 40528275-ry-npmjs-org-dbus-dbus-1-0-3-tgz https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz
+206 silly lockFile 048e29b3-dbus-1-0-3 dbus@1.0.3
+207 silly lockFile 048e29b3-dbus-1-0-3 dbus@1.0.3
+208 silly lockFile 0834fa9d-dbus-1-0-3 dbus@^1.0.3
+209 silly lockFile 0834fa9d-dbus-1-0-3 dbus@^1.0.3
+210 silly resolved [ { name: 'errno',
+210 silly resolved     authors: [ 'Rod Vagg @rvagg <rod@vagg.org> (https://github.com/rvagg)' ],
+210 silly resolved     description: 'libuv errno details exposed',
+210 silly resolved     keywords: [ 'errors', 'errno', 'libuv' ],
+210 silly resolved     version: '0.1.7',
+210 silly resolved     main: 'errno.js',
+210 silly resolved     dependencies: { prr: '~1.0.1' },
+210 silly resolved     bin: { errno: './cli.js' },
+210 silly resolved     devDependencies:
+210 silly resolved      { 'error-stack-parser': '^2.0.1',
+210 silly resolved        inherits: '^2.0.3',
+210 silly resolved        tape: '~4.8.0' },
+210 silly resolved     repository:
+210 silly resolved      { type: 'git',
+210 silly resolved        url: 'git+https://github.com/rvagg/node-errno.git' },
+210 silly resolved     license: 'MIT',
+210 silly resolved     scripts: { test: 'node --use_strict test.js' },
+210 silly resolved     gitHead: 'ffb10fcb9459bcef9dcf5cb5f4fa6c68bbab8f4e',
+210 silly resolved     bugs: { url: 'https://github.com/rvagg/node-errno/issues' },
+210 silly resolved     homepage: 'https://github.com/rvagg/node-errno#readme',
+210 silly resolved     _id: 'errno@0.1.7',
+210 silly resolved     _npmVersion: '5.6.0',
+210 silly resolved     _nodeVersion: '9.4.0',
+210 silly resolved     _npmUser: { name: 'ralphtheninja', email: 'ralphtheninja@riseup.net' },
+210 silly resolved     dist:
+210 silly resolved      { integrity: 'sha512-MfrRBDWzIWifgq6tJj60gkAwtLNb6sQPlcFrSOflcP1aFmmruKQ2wRnze/8V6kgyz7H3FF8Npzv78mZ7XLLflg==',
+210 silly resolved        shasum: '4684d71779ad39af177e3f007996f7c67c852618',
+210 silly resolved        tarball: 'https://registry.npmjs.org/errno/-/errno-0.1.7.tgz',
+210 silly resolved        fileCount: 9,
+210 silly resolved        unpackedSize: 18048 },
+210 silly resolved     maintainers: [ [Object], [Object] ],
+210 silly resolved     directories: {},
+210 silly resolved     _npmOperationalInternal:
+210 silly resolved      { host: 's3://npm-registry-packages',
+210 silly resolved        tmp: 'tmp/errno_0.1.7_1518663517573_0.2402603718742864' },
+210 silly resolved     _shasum: '4684d71779ad39af177e3f007996f7c67c852618',
+210 silly resolved     _from: 'errno@^0.1.5',
+210 silly resolved     _resolved: 'https://registry.npmjs.org/errno/-/errno-0.1.7.tgz' },
+210 silly resolved   { name: 'nan',
+210 silly resolved     version: '2.13.2',
+210 silly resolved     description: 'Native Abstractions for Node.js: C++ header for Node 0.8 -> 11 compatibility',
+210 silly resolved     main: 'include_dirs.js',
+210 silly resolved     repository: { type: 'git', url: 'git://github.com/nodejs/nan.git' },
+210 silly resolved     scripts:
+210 silly resolved      { test: 'tap --gc --stderr test/js/*-test.js',
+210 silly resolved        'test:worker': 'node --experimental-worker test/tap-as-worker.js --gc --stderr test/js/*-test.js',
+210 silly resolved        'rebuild-tests': 'node-gyp rebuild --msvs_version=2015 --directory test',
+210 silly resolved        docs: 'doc/.build.sh' },
+210 silly resolved     contributors:
+210 silly resolved      [ [Object],
+210 silly resolved        [Object],
+210 silly resolved        [Object],
+210 silly resolved        [Object],
+210 silly resolved        [Object],
+210 silly resolved        [Object],
+210 silly resolved        [Object],
+210 silly resolved        [Object] ],
+210 silly resolved     devDependencies:
+210 silly resolved      { bindings: '~1.2.1',
+210 silly resolved        commander: '^2.8.1',
+210 silly resolved        glob: '^5.0.14',
+210 silly resolved        request: '=2.81.0',
+210 silly resolved        'node-gyp': '~3.6.2',
+210 silly resolved        'readable-stream': '^2.1.4',
+210 silly resolved        tap: '~0.7.1',
+210 silly resolved        xtend: '~4.0.0' },
+210 silly resolved     license: 'MIT',
+210 silly resolved     gitHead: 'c428b85786c41e4d55c11c02fe04ef1adba80934',
+210 silly resolved     bugs: { url: 'https://github.com/nodejs/nan/issues' },
+210 silly resolved     homepage: 'https://github.com/nodejs/nan#readme',
+210 silly resolved     _id: 'nan@2.13.2',
+210 silly resolved     _npmVersion: '5.6.0',
+210 silly resolved     _nodeVersion: '9.6.0',
+210 silly resolved     _npmUser: { name: 'kkoopa', email: 'bbyholm@abo.fi' },
+210 silly resolved     dist:
+210 silly resolved      { integrity: 'sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==',
+210 silly resolved        shasum: 'f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7',
+210 silly resolved        tarball: 'https://registry.npmjs.org/nan/-/nan-2.13.2.tgz',
+210 silly resolved        fileCount: 46,
+210 silly resolved        unpackedSize: 416510,
+210 silly resolved        'npm-signature': '-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJcl5T0CRA9TVsSAnZWagAAiQ4QAKLRrhcLF7X35CmFE7Q1\n9kSj7Madc0MFOwpqAMjTALGe/zlu5sjAFu6aRRDLhLKOVel7PsX+FuNENv4A\nCTz5VQu8Q7Gx3uCq+1R5RReogxyQzhQR0gpJS2b3tm/nza8cBSLBS5G7F5HN\n5bD0V0b2lTDAaqsfUVRq0ocuXRY5uu79JfCnF4w0I+W4AfUKVIMI1xXjSiJo\n3kTXdMbjDXkCzy6picwLGte0EYMy005XcB4o0U9l1xkvQ/ebn9lsQHD+MGOX\nz0zLyMT+ZwnUD7XMdHmdLYQBRC4pkekHzGhB6lzNietmaIXgQboTkd86AjqQ\niYifuF7yNL3CipBgcdBE5B1gPIx22TfGjSnIFXuYjbtYWIbxkOWU42c5E2hy\nDS3WOkcHNu75ygW4gNcH4QPcHD3foFS3nPl5pShW9u1PpKKSuQiezPk0VMxP\n0hNmP5s3pp82I8cLPhs/qc55NCecGJnu82PM/osXOV9Tn7VBGstIXOKElyV0\nPevcUfnviqUyHwn6itFajsvoTUFLTQSz/YYCeOI1nXgoca/5cwOy2Ta2bYxT\nlEDSWve7kONxW0WRUcYQlz6iz7vrwu+xADX0wEwPImttEUuJ7h7zhU4scGAT\n7x4jTEYIQy5OZOjWrMZPlRyD/PBYq8UCQ3nic21IRc1B81/OVxrJ3Dcw3Pgd\n49k2\r\n=DnIP\r\n-----END PGP SIGNATURE-----\r\n' },
+210 silly resolved     maintainers: [ [Object], [Object] ],
+210 silly resolved     directories: {},
+210 silly resolved     _npmOperationalInternal:
+210 silly resolved      { host: 's3://npm-registry-packages',
+210 silly resolved        tmp: 'tmp/nan_2.13.2_1553437939841_0.6110006893669775' },
+210 silly resolved     _hasShrinkwrap: false,
+210 silly resolved     _shasum: 'f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7',
+210 silly resolved     _from: 'nan@^2.1.0',
+210 silly resolved     _resolved: 'https://registry.npmjs.org/nan/-/nan-2.13.2.tgz' },
+210 silly resolved   { name: 'dbus',
+210 silly resolved     version: '1.0.3',
+210 silly resolved     description: 'A D-Bus binding for Node',
+210 silly resolved     author: { name: 'Shouqun Liu', email: 'liushouqun@gmail.com' },
+210 silly resolved     contributors: [ [Object], [Object] ],
+210 silly resolved     license: 'MIT',
+210 silly resolved     repository: { type: 'git', url: 'git://github.com/Shouqun/node-dbus.git' },
+210 silly resolved     engines: { node: '>= 0.12.0' },
+210 silly resolved     main: './lib/dbus',
+210 silly resolved     scripts:
+210 silly resolved      { install: 'node-gyp configure build',
+210 silly resolved        test: 'tap test/**/*.test.js' },
+210 silly resolved     dependencies: { nan: '^2.1.0' },
+210 silly resolved     os: [ '!win32' ],
+210 silly resolved     devDependencies: { tap: '^10.0.2' },
+210 silly resolved     gitHead: 'fe72fbb3b75d9439540ce7e0bd19c6e120c4da48',
+210 silly resolved     bugs: { url: 'https://github.com/Shouqun/node-dbus/issues' },
+210 silly resolved     homepage: 'https://github.com/Shouqun/node-dbus#readme',
+210 silly resolved     _id: 'dbus@1.0.3',
+210 silly resolved     _shasum: 'bceda148673bc2fcca2042ba06a95965762689bc',
+210 silly resolved     _from: 'dbus@^1.0.3',
+210 silly resolved     _npmVersion: '2.14.2',
+210 silly resolved     _nodeVersion: '4.0.0',
+210 silly resolved     _npmUser: { name: 'shouqun', email: 'liushouqun@gmail.com' },
+210 silly resolved     dist:
+210 silly resolved      { shasum: 'bceda148673bc2fcca2042ba06a95965762689bc',
+210 silly resolved        tarball: 'https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz',
+210 silly resolved        fileCount: 203,
+210 silly resolved        unpackedSize: 2885923 },
+210 silly resolved     maintainers: [ [Object], [Object] ],
+210 silly resolved     directories: {},
+210 silly resolved     _npmOperationalInternal:
+210 silly resolved      { host: 's3://npm-registry-packages',
+210 silly resolved        tmp: 'tmp/dbus_1.0.3_1518497309198_0.7092730328926005' },
+210 silly resolved     _resolved: 'https://registry.npmjs.org/dbus/-/dbus-1.0.3.tgz' } ]
+211 info install errno@0.1.7 into /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+212 info install nan@2.13.2 into /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+213 info install dbus@1.0.3 into /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+214 info installOne errno@0.1.7
+215 info installOne nan@2.13.2
+216 info installOne dbus@1.0.3
+217 verbose node_modules/bluez/node_modules/errno unbuild
+218 verbose node_modules/bluez/node_modules/nan unbuild
+219 verbose node_modules/bluez/node_modules/dbus unbuild
+220 verbose tar unpack /root/.npm/errno/0.1.7/package.tgz
+221 silly lockFile 2880880a-modules-bluez-node-modules-errno tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno
+222 verbose lock tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno /root/.npm/2880880a-modules-bluez-node-modules-errno.lock
+223 silly lockFile a5bcc79a-root-npm-errno-0-1-7-package-tgz tar:///root/.npm/errno/0.1.7/package.tgz
+224 verbose lock tar:///root/.npm/errno/0.1.7/package.tgz /root/.npm/a5bcc79a-root-npm-errno-0-1-7-package-tgz.lock
+225 verbose tar unpack /root/.npm/nan/2.13.2/package.tgz
+226 silly lockFile 36cb44e9-e-modules-bluez-node-modules-nan tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/nan
+227 verbose lock tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/nan /root/.npm/36cb44e9-e-modules-bluez-node-modules-nan.lock
+228 silly lockFile 261dbdf3--root-npm-nan-2-13-2-package-tgz tar:///root/.npm/nan/2.13.2/package.tgz
+229 verbose lock tar:///root/.npm/nan/2.13.2/package.tgz /root/.npm/261dbdf3--root-npm-nan-2-13-2-package-tgz.lock
+230 verbose tar unpack /root/.npm/dbus/1.0.3/package.tgz
+231 silly lockFile 148e205e--modules-bluez-node-modules-dbus tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/dbus
+232 verbose lock tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/dbus /root/.npm/148e205e--modules-bluez-node-modules-dbus.lock
+233 silly lockFile cd8a04f1--root-npm-dbus-1-0-3-package-tgz tar:///root/.npm/dbus/1.0.3/package.tgz
+234 verbose lock tar:///root/.npm/dbus/1.0.3/package.tgz /root/.npm/cd8a04f1--root-npm-dbus-1-0-3-package-tgz.lock
+235 silly gunzTarPerm modes [ '755', '644' ]
+236 silly gunzTarPerm modes [ '755', '644' ]
+237 silly gunzTarPerm modes [ '755', '644' ]
+238 silly gunzTarPerm extractEntry package.json
+239 silly gunzTarPerm extractEntry package.json
+240 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+241 silly gunzTarPerm extractEntry package.json
+242 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+243 silly gunzTarPerm extractEntry .jshintrc
+244 silly gunzTarPerm extractEntry .travis.yml
+245 silly gunzTarPerm extractEntry CHANGELOG.md
+246 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 436, 420 ]
+247 silly gunzTarPerm extractEntry .npmignore
+248 silly gunzTarPerm modified mode [ '.npmignore', 436, 420 ]
+249 silly gunzTarPerm extractEntry README.md
+250 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+251 silly gunzTarPerm extractEntry include_dirs.js
+252 silly gunzTarPerm modified mode [ 'include_dirs.js', 436, 420 ]
+253 silly gunzTarPerm extractEntry build.js
+254 silly gunzTarPerm extractEntry cli.js
+255 silly gunzTarPerm extractEntry LICENSE.md
+256 silly gunzTarPerm modified mode [ 'LICENSE.md', 436, 420 ]
+257 silly gunzTarPerm extractEntry nan_callbacks_12_inl.h
+258 silly gunzTarPerm modified mode [ 'nan_callbacks_12_inl.h', 436, 420 ]
+259 silly gunzTarPerm extractEntry nan_callbacks_pre_12_inl.h
+260 silly gunzTarPerm modified mode [ 'nan_callbacks_pre_12_inl.h', 436, 420 ]
+261 silly gunzTarPerm extractEntry LICENSE
+262 silly gunzTarPerm modified mode [ 'LICENSE', 436, 420 ]
+263 silly gunzTarPerm extractEntry deps/libexpat/README
+264 silly gunzTarPerm modified mode [ 'deps/libexpat/README', 436, 420 ]
+265 silly gunzTarPerm extractEntry nan_callbacks.h
+266 silly gunzTarPerm modified mode [ 'nan_callbacks.h', 436, 420 ]
+267 silly gunzTarPerm extractEntry custom.js
+268 silly gunzTarPerm extractEntry errno.js
+269 silly gunzTarPerm extractEntry deps/libexpat/doc/expat.png
+270 silly gunzTarPerm modified mode [ 'deps/libexpat/doc/expat.png', 436, 420 ]
+271 silly gunzTarPerm extractEntry deps/libexpat/doc/reference.html
+272 silly gunzTarPerm modified mode [ 'deps/libexpat/doc/reference.html', 436, 420 ]
+273 silly gunzTarPerm extractEntry nan_converters_43_inl.h
+274 silly gunzTarPerm modified mode [ 'nan_converters_43_inl.h', 436, 420 ]
+275 silly gunzTarPerm extractEntry nan_converters_pre_43_inl.h
+276 silly gunzTarPerm modified mode [ 'nan_converters_pre_43_inl.h', 436, 420 ]
+277 silly gunzTarPerm extractEntry README.md
+278 silly gunzTarPerm extractEntry deps/libexpat/doc/style.css
+279 silly gunzTarPerm modified mode [ 'deps/libexpat/doc/style.css', 436, 420 ]
+280 silly gunzTarPerm extractEntry deps/libexpat/doc/valid-xhtml10.png
+281 silly gunzTarPerm modified mode [ 'deps/libexpat/doc/valid-xhtml10.png', 436, 420 ]
+282 silly gunzTarPerm extractEntry nan_converters.h
+283 silly gunzTarPerm modified mode [ 'nan_converters.h', 436, 420 ]
+284 silly gunzTarPerm extractEntry nan_define_own_property_helper.h
+285 silly gunzTarPerm modified mode [ 'nan_define_own_property_helper.h', 436, 420 ]
+286 silly gunzTarPerm extractEntry test.js
+287 silly gunzTarPerm extractEntry deps/libexpat/doc/xmlwf.1
+288 silly gunzTarPerm modified mode [ 'deps/libexpat/doc/xmlwf.1', 436, 420 ]
+289 silly gunzTarPerm extractEntry deps/libexpat/doc/xmlwf.sgml
+290 silly gunzTarPerm modified mode [ 'deps/libexpat/doc/xmlwf.sgml', 436, 420 ]
+291 silly gunzTarPerm extractEntry nan_implementation_12_inl.h
+292 silly gunzTarPerm modified mode [ 'nan_implementation_12_inl.h', 436, 420 ]
+293 silly gunzTarPerm extractEntry nan_implementation_pre_12_inl.h
+294 silly gunzTarPerm modified mode [ 'nan_implementation_pre_12_inl.h', 436, 420 ]
+295 silly gunzTarPerm extractEntry nan_json.h
+296 silly gunzTarPerm modified mode [ 'nan_json.h', 436, 420 ]
+297 silly gunzTarPerm extractEntry nan_maybe_43_inl.h
+298 silly gunzTarPerm modified mode [ 'nan_maybe_43_inl.h', 436, 420 ]
+299 silly gunzTarPerm extractEntry nan_maybe_pre_43_inl.h
+300 silly gunzTarPerm modified mode [ 'nan_maybe_pre_43_inl.h', 436, 420 ]
+301 silly gunzTarPerm extractEntry nan_new.h
+302 silly gunzTarPerm modified mode [ 'nan_new.h', 436, 420 ]
+303 silly gunzTarPerm extractEntry nan_object_wrap.h
+304 silly gunzTarPerm modified mode [ 'nan_object_wrap.h', 436, 420 ]
+305 silly gunzTarPerm extractEntry deps/libexpat/COPYING
+306 silly gunzTarPerm modified mode [ 'deps/libexpat/COPYING', 436, 420 ]
+307 silly gunzTarPerm extractEntry deps/libexpat/Changes
+308 silly gunzTarPerm modified mode [ 'deps/libexpat/Changes', 436, 420 ]
+309 silly gunzTarPerm extractEntry deps/libexpat/ConfigureChecks.cmake
+310 silly gunzTarPerm modified mode [ 'deps/libexpat/ConfigureChecks.cmake', 509, 493 ]
+311 silly gunzTarPerm extractEntry deps/libexpat/MANIFEST
+312 silly gunzTarPerm modified mode [ 'deps/libexpat/MANIFEST', 436, 420 ]
+313 silly gunzTarPerm extractEntry deps/libexpat/Makefile.in
+314 silly gunzTarPerm modified mode [ 'deps/libexpat/Makefile.in', 436, 420 ]
+315 silly gunzTarPerm extractEntry deps/libexpat/CMake.README
+316 silly gunzTarPerm modified mode [ 'deps/libexpat/CMake.README', 509, 493 ]
+317 silly gunzTarPerm extractEntry deps/libexpat/aclocal.m4
+318 silly gunzTarPerm modified mode [ 'deps/libexpat/aclocal.m4', 436, 420 ]
+319 silly gunzTarPerm extractEntry nan_persistent_12_inl.h
+320 silly gunzTarPerm modified mode [ 'nan_persistent_12_inl.h', 436, 420 ]
+321 silly gunzTarPerm extractEntry nan_persistent_pre_12_inl.h
+322 silly gunzTarPerm modified mode [ 'nan_persistent_pre_12_inl.h', 436, 420 ]
+323 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat_68k_handler_stubs.c
+324 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat_68k_handler_stubs.c', 509, 493 ]
+325 silly gunzTarPerm extractEntry deps/libexpat/amiga/Makefile
+326 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/Makefile', 436, 420 ]
+327 silly gunzTarPerm extractEntry nan_private.h
+328 silly gunzTarPerm modified mode [ 'nan_private.h', 436, 420 ]
+329 silly gunzTarPerm extractEntry nan_string_bytes.h
+330 silly gunzTarPerm modified mode [ 'nan_string_bytes.h', 436, 420 ]
+331 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat.xml
+332 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat.xml', 436, 420 ]
+333 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat_68k.c
+334 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat_68k.c', 436, 420 ]
+335 silly gunzTarPerm extractEntry nan_typedarray_contents.h
+336 silly gunzTarPerm modified mode [ 'nan_typedarray_contents.h', 436, 420 ]
+337 silly gunzTarPerm extractEntry nan_weak.h
+338 silly gunzTarPerm modified mode [ 'nan_weak.h', 436, 420 ]
+339 silly lockFile 2880880a-modules-bluez-node-modules-errno tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno
+340 silly lockFile 2880880a-modules-bluez-node-modules-errno tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno
+341 silly lockFile a5bcc79a-root-npm-errno-0-1-7-package-tgz tar:///root/.npm/errno/0.1.7/package.tgz
+342 silly lockFile a5bcc79a-root-npm-errno-0-1-7-package-tgz tar:///root/.npm/errno/0.1.7/package.tgz
+343 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat_68k.h
+344 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat_68k.h', 509, 493 ]
+345 silly gunzTarPerm extractEntry deps/libexpat/amiga/README.txt
+346 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/README.txt', 436, 420 ]
+347 silly gunzTarPerm extractEntry nan.h
+348 silly gunzTarPerm modified mode [ 'nan.h', 436, 420 ]
+349 silly gunzTarPerm extractEntry README.md
+350 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+351 info preinstall errno@0.1.7
+352 verbose readDependencies using package.json deps
+353 verbose readDependencies using package.json deps
+354 verbose cache add [ 'prr@~1.0.1', null ]
+355 verbose cache add name=undefined spec="prr@~1.0.1" args=["prr@~1.0.1",null]
+356 verbose parsed url Url {
+356 verbose parsed url   protocol: null,
+356 verbose parsed url   slashes: null,
+356 verbose parsed url   auth: null,
+356 verbose parsed url   host: null,
+356 verbose parsed url   port: null,
+356 verbose parsed url   hostname: null,
+356 verbose parsed url   hash: null,
+356 verbose parsed url   search: null,
+356 verbose parsed url   query: null,
+356 verbose parsed url   pathname: 'prr@~1.0.1',
+356 verbose parsed url   path: 'prr@~1.0.1',
+356 verbose parsed url   href: 'prr@~1.0.1' }
+357 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat_base.h
+358 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat_base.h', 436, 420 ]
+359 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat_lib.c
+360 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat_lib.c', 509, 493 ]
+361 verbose cache add name="prr" spec="~1.0.1" args=["prr","~1.0.1"]
+362 verbose parsed url Url {
+362 verbose parsed url   protocol: null,
+362 verbose parsed url   slashes: null,
+362 verbose parsed url   auth: null,
+362 verbose parsed url   host: null,
+362 verbose parsed url   port: null,
+362 verbose parsed url   hostname: null,
+362 verbose parsed url   hash: null,
+362 verbose parsed url   search: null,
+362 verbose parsed url   query: null,
+362 verbose parsed url   pathname: '~1.0.1',
+362 verbose parsed url   path: '~1.0.1',
+362 verbose parsed url   href: '~1.0.1' }
+363 verbose addNamed [ 'prr', '~1.0.1' ]
+364 verbose addNamed [ null, '>=1.0.1 <1.1.0' ]
+365 silly lockFile 50348a80-prr-1-0-1 prr@~1.0.1
+366 verbose lock prr@~1.0.1 /root/.npm/50348a80-prr-1-0-1.lock
+367 silly addNameRange { name: 'prr', range: '>=1.0.1 <1.1.0', hasData: false }
+368 silly gunzTarPerm extractEntry doc/asyncworker.md
+369 silly gunzTarPerm modified mode [ 'doc/asyncworker.md', 436, 420 ]
+370 silly gunzTarPerm extractEntry doc/buffers.md
+371 silly gunzTarPerm modified mode [ 'doc/buffers.md', 436, 420 ]
+372 verbose request where is /prr
+373 verbose request registry https://registry.npmjs.org/
+374 verbose url raw /prr
+375 verbose url resolving [ 'https://registry.npmjs.org/', './prr' ]
+376 verbose url resolved https://registry.npmjs.org/prr
+377 verbose request where is https://registry.npmjs.org/prr
+378 info trying registry request attempt 1 at 10:49:28
+379 http GET https://registry.npmjs.org/prr
+380 silly gunzTarPerm extractEntry deps/libexpat/amiga/expat_vectors.c
+381 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/expat_vectors.c', 436, 420 ]
+382 silly gunzTarPerm extractEntry doc/callback.md
+383 silly gunzTarPerm modified mode [ 'doc/callback.md', 436, 420 ]
+384 silly gunzTarPerm extractEntry doc/converters.md
+385 silly gunzTarPerm modified mode [ 'doc/converters.md', 436, 420 ]
+386 silly gunzTarPerm extractEntry deps/libexpat/amiga/include/inline4/expat.h
+387 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/include/inline4/expat.h', 436, 420 ]
+388 silly gunzTarPerm extractEntry deps/libexpat/amiga/include/interfaces/expat.h
+389 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/include/interfaces/expat.h', 436, 420 ]
+390 silly gunzTarPerm extractEntry doc/errors.md
+391 silly gunzTarPerm modified mode [ 'doc/errors.md', 436, 420 ]
+392 silly gunzTarPerm extractEntry doc/json.md
+393 silly gunzTarPerm modified mode [ 'doc/json.md', 436, 420 ]
+394 silly gunzTarPerm extractEntry deps/libexpat/amiga/include/libraries/expat.h
+395 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/include/libraries/expat.h', 436, 420 ]
+396 silly gunzTarPerm extractEntry deps/libexpat/amiga/include/proto/expat.h
+397 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/include/proto/expat.h', 436, 420 ]
+398 silly gunzTarPerm extractEntry doc/maybe_types.md
+399 silly gunzTarPerm modified mode [ 'doc/maybe_types.md', 436, 420 ]
+400 silly gunzTarPerm extractEntry doc/methods.md
+401 silly gunzTarPerm modified mode [ 'doc/methods.md', 436, 420 ]
+402 silly gunzTarPerm extractEntry deps/libexpat/amiga/launch.c
+403 silly gunzTarPerm modified mode [ 'deps/libexpat/amiga/launch.c', 509, 493 ]
+404 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expatw.mak
+405 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expatw.mak', 436, 420 ]
+406 silly gunzTarPerm extractEntry doc/new.md
+407 silly gunzTarPerm modified mode [ 'doc/new.md', 436, 420 ]
+408 silly gunzTarPerm extractEntry doc/node_misc.md
+409 silly gunzTarPerm modified mode [ 'doc/node_misc.md', 436, 420 ]
+410 silly gunzTarPerm extractEntry deps/libexpat/bcb5/README.txt
+411 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/README.txt', 436, 420 ]
+412 silly gunzTarPerm extractEntry deps/libexpat/bcb5/elements.bpf
+413 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/elements.bpf', 436, 420 ]
+414 silly gunzTarPerm extractEntry doc/object_wrappers.md
+415 silly gunzTarPerm modified mode [ 'doc/object_wrappers.md', 436, 420 ]
+416 silly gunzTarPerm extractEntry doc/persistent.md
+417 silly gunzTarPerm modified mode [ 'doc/persistent.md', 436, 420 ]
+418 silly gunzTarPerm extractEntry deps/libexpat/bcb5/elements.bpr
+419 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/elements.bpr', 436, 420 ]
+420 silly gunzTarPerm extractEntry deps/libexpat/bcb5/elements.mak
+421 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/elements.mak', 436, 420 ]
+422 silly gunzTarPerm extractEntry doc/scopes.md
+423 silly gunzTarPerm modified mode [ 'doc/scopes.md', 436, 420 ]
+424 silly gunzTarPerm extractEntry doc/script.md
+425 silly gunzTarPerm modified mode [ 'doc/script.md', 436, 420 ]
+426 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expat.bpf
+427 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expat.bpf', 436, 420 ]
+428 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expat.bpr
+429 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expat.bpr', 436, 420 ]
+430 silly gunzTarPerm extractEntry doc/string_bytes.md
+431 silly gunzTarPerm modified mode [ 'doc/string_bytes.md', 436, 420 ]
+432 silly gunzTarPerm extractEntry doc/v8_internals.md
+433 silly gunzTarPerm modified mode [ 'doc/v8_internals.md', 436, 420 ]
+434 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expat.mak
+435 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expat.mak', 436, 420 ]
+436 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expat_static.bpf
+437 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expat_static.bpf', 436, 420 ]
+438 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expat_static.bpr
+439 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expat_static.bpr', 436, 420 ]
+440 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expat_static.mak
+441 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expat_static.mak', 436, 420 ]
+442 silly gunzTarPerm extractEntry doc/v8_misc.md
+443 silly gunzTarPerm modified mode [ 'doc/v8_misc.md', 436, 420 ]
+444 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expatw.bpf
+445 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expatw.bpf', 436, 420 ]
+446 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expatw.bpr
+447 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expatw.bpr', 436, 420 ]
+448 silly gunzTarPerm extractEntry deps/libexpat/bcb5/all_projects.bpg
+449 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/all_projects.bpg', 436, 420 ]
+450 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expatw_static.bpf
+451 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expatw_static.bpf', 436, 420 ]
+452 silly gunzTarPerm extractEntry tools/1to2.js
+453 silly gunzTarPerm modified mode [ 'tools/1to2.js', 509, 493 ]
+454 silly gunzTarPerm extractEntry tools/package.json
+455 silly gunzTarPerm modified mode [ 'tools/package.json', 436, 420 ]
+456 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expatw_static.bpr
+457 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expatw_static.bpr', 436, 420 ]
+458 silly gunzTarPerm extractEntry deps/libexpat/bcb5/expatw_static.mak
+459 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/expatw_static.mak', 436, 420 ]
+460 silly gunzTarPerm extractEntry deps/libexpat/bcb5/libexpat_mtd.def
+461 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/libexpat_mtd.def', 436, 420 ]
+462 silly gunzTarPerm extractEntry deps/libexpat/bcb5/libexpatw_mtd.def
+463 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/libexpatw_mtd.def', 436, 420 ]
+464 silly gunzTarPerm extractEntry tools/README.md
+465 silly gunzTarPerm modified mode [ 'tools/README.md', 436, 420 ]
+466 silly gunzTarPerm extractEntry deps/libexpat/bcb5/makefile.mak
+467 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/makefile.mak', 436, 420 ]
+468 silly gunzTarPerm extractEntry deps/libexpat/bcb5/outline.bpf
+469 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/outline.bpf', 436, 420 ]
+470 silly gunzTarPerm extractEntry deps/libexpat/bcb5/outline.bpr
+471 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/outline.bpr', 436, 420 ]
+472 silly gunzTarPerm extractEntry deps/libexpat/bcb5/outline.mak
+473 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/outline.mak', 436, 420 ]
+474 silly gunzTarPerm extractEntry deps/libexpat/bcb5/setup.bat
+475 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/setup.bat', 436, 420 ]
+476 silly gunzTarPerm extractEntry deps/libexpat/bcb5/xmlwf.bpf
+477 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/xmlwf.bpf', 436, 420 ]
+478 silly gunzTarPerm extractEntry deps/libexpat/bcb5/xmlwf.bpr
+479 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/xmlwf.bpr', 436, 420 ]
+480 silly gunzTarPerm extractEntry deps/libexpat/bcb5/xmlwf.mak
+481 silly gunzTarPerm modified mode [ 'deps/libexpat/bcb5/xmlwf.mak', 436, 420 ]
+482 silly gunzTarPerm extractEntry deps/libexpat/configure
+483 silly gunzTarPerm modified mode [ 'deps/libexpat/configure', 509, 493 ]
+484 silly gunzTarPerm extractEntry deps/libexpat/configure.in
+485 silly gunzTarPerm modified mode [ 'deps/libexpat/configure.in', 436, 420 ]
+486 silly gunzTarPerm extractEntry deps/libexpat/conftools/PrintPath
+487 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/PrintPath', 509, 493 ]
+488 silly gunzTarPerm extractEntry deps/libexpat/conftools/ac_c_bigendian_cross.m4
+489 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/ac_c_bigendian_cross.m4', 436, 420 ]
+490 silly gunzTarPerm extractEntry deps/libexpat/conftools/config.guess
+491 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/config.guess', 509, 493 ]
+492 silly gunzTarPerm extractEntry deps/libexpat/conftools/config.sub
+493 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/config.sub', 509, 493 ]
+494 silly gunzTarPerm extractEntry deps/libexpat/conftools/expat.m4
+495 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/expat.m4', 436, 420 ]
+496 silly gunzTarPerm extractEntry deps/libexpat/conftools/get-version.sh
+497 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/get-version.sh', 509, 493 ]
+498 silly gunzTarPerm extractEntry deps/libexpat/conftools/install-sh
+499 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/install-sh', 509, 493 ]
+500 silly gunzTarPerm extractEntry deps/libexpat/conftools/ltmain.sh
+501 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/ltmain.sh', 509, 493 ]
+502 silly gunzTarPerm extractEntry deps/libexpat/conftools/mkinstalldirs
+503 silly gunzTarPerm modified mode [ 'deps/libexpat/conftools/mkinstalldirs', 509, 493 ]
+504 silly gunzTarPerm extractEntry deps/libexpat/CMakeLists.txt
+505 silly gunzTarPerm modified mode [ 'deps/libexpat/CMakeLists.txt', 509, 493 ]
+506 silly gunzTarPerm extractEntry deps/libexpat/examples/elements.c
+507 silly gunzTarPerm modified mode [ 'deps/libexpat/examples/elements.c', 436, 420 ]
+508 silly gunzTarPerm extractEntry deps/libexpat/examples/elements.dsp
+509 silly gunzTarPerm modified mode [ 'deps/libexpat/examples/elements.dsp', 436, 420 ]
+510 silly gunzTarPerm extractEntry deps/libexpat/examples/outline.c
+511 silly gunzTarPerm modified mode [ 'deps/libexpat/examples/outline.c', 436, 420 ]
+512 silly gunzTarPerm extractEntry deps/libexpat/examples/outline.dsp
+513 silly gunzTarPerm modified mode [ 'deps/libexpat/examples/outline.dsp', 436, 420 ]
+514 silly gunzTarPerm extractEntry deps/libexpat/expat.dsw
+515 silly gunzTarPerm modified mode [ 'deps/libexpat/expat.dsw', 509, 493 ]
+516 silly gunzTarPerm extractEntry deps/libexpat/expat.pc.in
+517 silly gunzTarPerm modified mode [ 'deps/libexpat/expat.pc.in', 436, 420 ]
+518 silly gunzTarPerm extractEntry deps/libexpat/expat_config.h
+519 silly gunzTarPerm modified mode [ 'deps/libexpat/expat_config.h', 436, 420 ]
+520 silly gunzTarPerm extractEntry deps/libexpat/expat_config.h.cmake
+521 silly gunzTarPerm modified mode [ 'deps/libexpat/expat_config.h.cmake', 509, 493 ]
+522 silly gunzTarPerm extractEntry deps/libexpat/expat_config.h.in
+523 silly gunzTarPerm modified mode [ 'deps/libexpat/expat_config.h.in', 436, 420 ]
+524 silly gunzTarPerm extractEntry deps/libexpat/lib/libexpat.def
+525 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/libexpat.def', 436, 420 ]
+526 silly gunzTarPerm extractEntry deps/libexpat/lib/Makefile.MPW
+527 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/Makefile.MPW', 436, 420 ]
+528 silly gunzTarPerm extractEntry deps/libexpat/lib/ascii.h
+529 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/ascii.h', 436, 420 ]
+530 silly gunzTarPerm extractEntry deps/libexpat/lib/asciitab.h
+531 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/asciitab.h', 436, 420 ]
+532 silly gunzTarPerm extractEntry deps/libexpat/lib/expat.dsp
+533 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/expat.dsp', 436, 420 ]
+534 silly gunzTarPerm extractEntry deps/libexpat/lib/expat.h
+535 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/expat.h', 436, 420 ]
+536 silly gunzTarPerm extractEntry deps/libexpat/lib/expat_external.h
+537 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/expat_external.h', 436, 420 ]
+538 silly gunzTarPerm extractEntry deps/libexpat/lib/expat_static.dsp
+539 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/expat_static.dsp', 436, 420 ]
+540 silly gunzTarPerm extractEntry deps/libexpat/lib/expatw.dsp
+541 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/expatw.dsp', 436, 420 ]
+542 silly gunzTarPerm extractEntry deps/libexpat/lib/expatw_static.dsp
+543 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/expatw_static.dsp', 436, 420 ]
+544 silly gunzTarPerm extractEntry deps/libexpat/lib/iasciitab.h
+545 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/iasciitab.h', 436, 420 ]
+546 silly gunzTarPerm extractEntry deps/libexpat/lib/internal.h
+547 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/internal.h', 436, 420 ]
+548 silly gunzTarPerm extractEntry deps/libexpat/lib/latin1tab.h
+549 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/latin1tab.h', 436, 420 ]
+550 silly gunzTarPerm extractEntry deps/libexpat/lib/amigaconfig.h
+551 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/amigaconfig.h', 436, 420 ]
+552 silly gunzTarPerm extractEntry deps/libexpat/lib/libexpatw.def
+553 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/libexpatw.def', 436, 420 ]
+554 silly gunzTarPerm extractEntry deps/libexpat/lib/macconfig.h
+555 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/macconfig.h', 436, 420 ]
+556 silly gunzTarPerm extractEntry deps/libexpat/lib/nametab.h
+557 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/nametab.h', 436, 420 ]
+558 silly gunzTarPerm extractEntry deps/libexpat/lib/utf8tab.h
+559 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/utf8tab.h', 436, 420 ]
+560 silly gunzTarPerm extractEntry deps/libexpat/lib/winconfig.h
+561 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/winconfig.h', 436, 420 ]
+562 silly gunzTarPerm extractEntry deps/libexpat/lib/xmlparse.c
+563 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmlparse.c', 436, 420 ]
+564 silly gunzTarPerm extractEntry deps/libexpat/lib/xmlrole.c
+565 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmlrole.c', 436, 420 ]
+566 silly gunzTarPerm extractEntry deps/libexpat/lib/xmlrole.h
+567 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmlrole.h', 436, 420 ]
+568 silly gunzTarPerm extractEntry deps/libexpat/lib/xmltok.c
+569 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmltok.c', 436, 420 ]
+570 silly gunzTarPerm extractEntry deps/libexpat/lib/xmltok.h
+571 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmltok.h', 436, 420 ]
+572 silly gunzTarPerm extractEntry deps/libexpat/lib/xmltok_impl.c
+573 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmltok_impl.c', 436, 420 ]
+574 silly gunzTarPerm extractEntry deps/libexpat/lib/xmltok_impl.h
+575 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmltok_impl.h', 436, 420 ]
+576 silly gunzTarPerm extractEntry deps/libexpat/lib/xmltok_ns.c
+577 silly gunzTarPerm modified mode [ 'deps/libexpat/lib/xmltok_ns.c', 436, 420 ]
+578 silly gunzTarPerm extractEntry deps/libexpat/libexpat.gyp
+579 silly gunzTarPerm modified mode [ 'deps/libexpat/libexpat.gyp', 436, 420 ]
+580 silly gunzTarPerm extractEntry deps/libexpat/m4/libtool.m4
+581 silly gunzTarPerm modified mode [ 'deps/libexpat/m4/libtool.m4', 436, 420 ]
+582 silly gunzTarPerm extractEntry deps/libexpat/m4/ltoptions.m4
+583 silly gunzTarPerm modified mode [ 'deps/libexpat/m4/ltoptions.m4', 436, 420 ]
+584 silly gunzTarPerm extractEntry deps/libexpat/m4/ltsugar.m4
+585 silly gunzTarPerm modified mode [ 'deps/libexpat/m4/ltsugar.m4', 436, 420 ]
+586 silly lockFile 36cb44e9-e-modules-bluez-node-modules-nan tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/nan
+587 silly lockFile 36cb44e9-e-modules-bluez-node-modules-nan tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/nan
+588 silly lockFile 261dbdf3--root-npm-nan-2-13-2-package-tgz tar:///root/.npm/nan/2.13.2/package.tgz
+589 silly lockFile 261dbdf3--root-npm-nan-2-13-2-package-tgz tar:///root/.npm/nan/2.13.2/package.tgz
+590 info preinstall nan@2.13.2
+591 verbose readDependencies using package.json deps
+592 silly gunzTarPerm extractEntry deps/libexpat/m4/ltversion.m4
+593 silly gunzTarPerm modified mode [ 'deps/libexpat/m4/ltversion.m4', 436, 420 ]
+594 silly gunzTarPerm extractEntry deps/libexpat/m4/lt~obsolete.m4
+595 silly gunzTarPerm modified mode [ 'deps/libexpat/m4/lt~obsolete.m4', 436, 420 ]
+596 verbose readDependencies using package.json deps
+597 silly resolved []
+598 verbose about to build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/nan
+599 info build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/nan
+600 verbose linkStuff [ false,
+600 verbose linkStuff   false,
+600 verbose linkStuff   false,
+600 verbose linkStuff   '/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules' ]
+601 info linkStuff nan@2.13.2
+602 verbose linkBins nan@2.13.2
+603 verbose linkMans nan@2.13.2
+604 verbose rebuildBundles nan@2.13.2
+605 info install nan@2.13.2
+606 silly gunzTarPerm extractEntry deps/libexpat/tests/README.txt
+607 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/README.txt', 436, 420 ]
+608 silly gunzTarPerm extractEntry deps/libexpat/tests/benchmark/README.txt
+609 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/benchmark/README.txt', 436, 420 ]
+610 info postinstall nan@2.13.2
+611 silly gunzTarPerm extractEntry deps/libexpat/tests/benchmark/benchmark.c
+612 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/benchmark/benchmark.c', 436, 420 ]
+613 silly gunzTarPerm extractEntry deps/libexpat/tests/benchmark/benchmark.dsp
+614 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/benchmark/benchmark.dsp', 436, 420 ]
+615 silly gunzTarPerm extractEntry deps/libexpat/tests/benchmark/benchmark.dsw
+616 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/benchmark/benchmark.dsw', 436, 420 ]
+617 silly gunzTarPerm extractEntry deps/libexpat/tests/chardata.c
+618 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/chardata.c', 436, 420 ]
+619 silly gunzTarPerm extractEntry deps/libexpat/tests/chardata.h
+620 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/chardata.h', 436, 420 ]
+621 silly gunzTarPerm extractEntry deps/libexpat/tests/minicheck.c
+622 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/minicheck.c', 436, 420 ]
+623 silly gunzTarPerm extractEntry deps/libexpat/tests/minicheck.h
+624 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/minicheck.h', 436, 420 ]
+625 silly gunzTarPerm extractEntry deps/libexpat/tests/runtests.c
+626 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/runtests.c', 436, 420 ]
+627 silly gunzTarPerm extractEntry deps/libexpat/tests/runtestspp.cpp
+628 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/runtestspp.cpp', 436, 420 ]
+629 silly gunzTarPerm extractEntry deps/libexpat/tests/xmltest.sh
+630 silly gunzTarPerm modified mode [ 'deps/libexpat/tests/xmltest.sh', 509, 493 ]
+631 silly gunzTarPerm extractEntry deps/libexpat/version.c
+632 silly gunzTarPerm modified mode [ 'deps/libexpat/version.c', 436, 420 ]
+633 silly gunzTarPerm extractEntry deps/libexpat/vms/README.vms
+634 silly gunzTarPerm modified mode [ 'deps/libexpat/vms/README.vms', 436, 420 ]
+635 silly gunzTarPerm extractEntry deps/libexpat/vms/descrip.mms
+636 silly gunzTarPerm modified mode [ 'deps/libexpat/vms/descrip.mms', 436, 420 ]
+637 silly gunzTarPerm extractEntry deps/libexpat/vms/expat_config.h
+638 silly gunzTarPerm modified mode [ 'deps/libexpat/vms/expat_config.h', 436, 420 ]
+639 silly gunzTarPerm extractEntry deps/libexpat/win32/MANIFEST.txt
+640 silly gunzTarPerm modified mode [ 'deps/libexpat/win32/MANIFEST.txt', 436, 420 ]
+641 silly gunzTarPerm extractEntry deps/libexpat/win32/README.txt
+642 silly gunzTarPerm modified mode [ 'deps/libexpat/win32/README.txt', 436, 420 ]
+643 silly gunzTarPerm extractEntry deps/libexpat/win32/expat.iss
+644 silly gunzTarPerm modified mode [ 'deps/libexpat/win32/expat.iss', 436, 420 ]
+645 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlfile.h
+646 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlfile.h', 509, 493 ]
+647 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/codepage.c
+648 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/codepage.c', 509, 493 ]
+649 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/ct.c
+650 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/ct.c', 509, 493 ]
+651 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/filemap.h
+652 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/filemap.h', 509, 493 ]
+653 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/readfilemap.c
+654 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/readfilemap.c', 509, 493 ]
+655 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/unixfilemap.c
+656 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/unixfilemap.c', 509, 493 ]
+657 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/win32filemap.c
+658 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/win32filemap.c', 509, 493 ]
+659 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlfile.c
+660 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlfile.c', 509, 493 ]
+661 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/codepage.h
+662 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/codepage.h', 509, 493 ]
+663 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlmime.c
+664 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlmime.c', 509, 493 ]
+665 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlmime.h
+666 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlmime.h', 509, 493 ]
+667 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmltchar.h
+668 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmltchar.h', 509, 493 ]
+669 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlurl.h
+670 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlurl.h', 509, 493 ]
+671 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlwf.c
+672 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlwf.c', 509, 493 ]
+673 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlwf.dsp
+674 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlwf.dsp', 509, 493 ]
+675 silly gunzTarPerm extractEntry deps/libexpat/xmlwf/xmlwin32url.cxx
+676 silly gunzTarPerm modified mode [ 'deps/libexpat/xmlwf/xmlwin32url.cxx', 509, 493 ]
+677 silly gunzTarPerm extractEntry .travis.yml
+678 silly gunzTarPerm modified mode [ '.travis.yml', 436, 420 ]
+679 silly gunzTarPerm extractEntry binding.gyp
+680 silly gunzTarPerm modified mode [ 'binding.gyp', 436, 420 ]
+681 silly gunzTarPerm extractEntry examples/error_handling.js
+682 silly gunzTarPerm modified mode [ 'examples/error_handling.js', 436, 420 ]
+683 silly gunzTarPerm extractEntry examples/get_property.js
+684 silly gunzTarPerm modified mode [ 'examples/get_property.js', 436, 420 ]
+685 silly gunzTarPerm extractEntry examples/hello.js
+686 silly gunzTarPerm modified mode [ 'examples/hello.js', 436, 420 ]
+687 silly gunzTarPerm extractEntry examples/invalid_args.js
+688 silly gunzTarPerm modified mode [ 'examples/invalid_args.js', 436, 420 ]
+689 silly gunzTarPerm extractEntry examples/method.js
+690 silly gunzTarPerm modified mode [ 'examples/method.js', 436, 420 ]
+691 silly gunzTarPerm extractEntry examples/multi_connection.js
+692 silly gunzTarPerm modified mode [ 'examples/multi_connection.js', 436, 420 ]
+693 silly gunzTarPerm extractEntry examples/service.js
+694 silly gunzTarPerm modified mode [ 'examples/service.js', 436, 420 ]
+695 silly gunzTarPerm extractEntry examples/set_max_received_size.js
+696 silly gunzTarPerm modified mode [ 'examples/set_max_received_size.js', 436, 420 ]
+697 silly gunzTarPerm extractEntry examples/signal.js
+698 silly gunzTarPerm modified mode [ 'examples/signal.js', 436, 420 ]
+699 silly gunzTarPerm extractEntry index.html
+700 silly gunzTarPerm modified mode [ 'index.html', 436, 420 ]
+701 silly gunzTarPerm extractEntry lib/bus.js
+702 silly gunzTarPerm modified mode [ 'lib/bus.js', 436, 420 ]
+703 http 200 https://registry.npmjs.org/prr
+704 silly registry.get cb [ 200,
+704 silly registry.get   { date: 'Mon, 01 Apr 2019 09:49:28 GMT',
+704 silly registry.get     'content-type': 'application/json; charset=UTF-8',
+704 silly registry.get     'transfer-encoding': 'chunked',
+704 silly registry.get     connection: 'close',
+704 silly registry.get     'set-cookie':
+704 silly registry.get      [ '__cfduid=de91ecc1d9ffafb790cda0bee070190f81554112168; expires=Tue, 31-Mar-20 09:49:28 GMT; path=/; domain=.registry.npmjs.org; HttpOnly' ],
+704 silly registry.get     'cf-cache-status': 'HIT',
+704 silly registry.get     'cache-control': 'max-age=300',
+704 silly registry.get     'cf-ray': '4c09a73daae78a67-BOM',
+704 silly registry.get     etag: 'W/"07ebb6c11e7a8b0a67aabb93f8b3aa09"',
+704 silly registry.get     'expect-ct': 'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"',
+704 silly registry.get     'last-modified': 'Sun, 27 May 2018 13:04:47 GMT',
+704 silly registry.get     vary: 'accept-encoding, accept',
+704 silly registry.get     server: 'cloudflare',
+704 silly registry.get     'content-encoding': 'gzip' } ]
+705 silly gunzTarPerm extractEntry lib/dbus.js
+706 silly gunzTarPerm modified mode [ 'lib/dbus.js', 436, 420 ]
+707 silly gunzTarPerm extractEntry lib/error.js
+708 silly gunzTarPerm modified mode [ 'lib/error.js', 436, 420 ]
+709 silly gunzTarPerm extractEntry lib/interface.js
+710 silly gunzTarPerm modified mode [ 'lib/interface.js', 436, 420 ]
+711 silly addNameRange number 2 { name: 'prr', range: '>=1.0.1 <1.1.0', hasData: true }
+712 silly addNameRange versions [ 'prr', [ '0.0.0', '1.0.0', '1.0.1' ] ]
+713 verbose addNamed [ 'prr', '1.0.1' ]
+714 verbose addNamed [ '1.0.1', '1.0.1' ]
+715 silly lockFile 4c8dddbd-prr-1-0-1 prr@1.0.1
+716 verbose lock prr@1.0.1 /root/.npm/4c8dddbd-prr-1-0-1.lock
+717 silly gunzTarPerm extractEntry lib/service.js
+718 silly gunzTarPerm modified mode [ 'lib/service.js', 436, 420 ]
+719 silly gunzTarPerm extractEntry lib/service_interface.js
+720 silly gunzTarPerm modified mode [ 'lib/service_interface.js', 436, 420 ]
+721 silly lockFile e732746e-stry-npmjs-org-prr-prr-1-0-1-tgz https://registry.npmjs.org/prr/-/prr-1.0.1.tgz
+722 verbose lock https://registry.npmjs.org/prr/-/prr-1.0.1.tgz /root/.npm/e732746e-stry-npmjs-org-prr-prr-1-0-1-tgz.lock
+723 verbose addRemoteTarball [ 'https://registry.npmjs.org/prr/-/prr-1.0.1.tgz',
+723 verbose addRemoteTarball   'd3fc114ba06995a45ec6893f484ceb1d78f5f476' ]
+724 silly gunzTarPerm extractEntry lib/service_object.js
+725 silly gunzTarPerm modified mode [ 'lib/service_object.js', 436, 420 ]
+726 silly gunzTarPerm extractEntry lib/utils.js
+727 silly gunzTarPerm modified mode [ 'lib/utils.js', 436, 420 ]
+728 info retry fetch attempt 1 at 10:49:28
+729 verbose fetch to= /tmp/npm-1603-rqq1QOqQ/registry.npmjs.org/prr/-/prr-1.0.1.tgz
+730 silly gunzTarPerm extractEntry src/encoder.h
+731 silly gunzTarPerm modified mode [ 'src/encoder.h', 436, 420 ]
+732 http GET https://registry.npmjs.org/prr/-/prr-1.0.1.tgz
+733 silly gunzTarPerm extractEntry src/connection.cc
+734 silly gunzTarPerm modified mode [ 'src/connection.cc', 436, 420 ]
+735 silly gunzTarPerm extractEntry src/dbus.cc
+736 silly gunzTarPerm modified mode [ 'src/dbus.cc', 436, 420 ]
+737 silly gunzTarPerm extractEntry src/dbus.h
+738 silly gunzTarPerm modified mode [ 'src/dbus.h', 436, 420 ]
+739 silly gunzTarPerm extractEntry src/decoder.cc
+740 silly gunzTarPerm modified mode [ 'src/decoder.cc', 436, 420 ]
+741 silly gunzTarPerm extractEntry src/decoder.h
+742 silly gunzTarPerm modified mode [ 'src/decoder.h', 436, 420 ]
+743 silly gunzTarPerm extractEntry src/encoder.cc
+744 silly gunzTarPerm modified mode [ 'src/encoder.cc', 436, 420 ]
+745 silly gunzTarPerm extractEntry src/connection.h
+746 silly gunzTarPerm modified mode [ 'src/connection.h', 436, 420 ]
+747 silly gunzTarPerm extractEntry src/introspect.cc
+748 silly gunzTarPerm modified mode [ 'src/introspect.cc', 436, 420 ]
+749 silly gunzTarPerm extractEntry src/introspect.h
+750 silly gunzTarPerm modified mode [ 'src/introspect.h', 436, 420 ]
+751 silly gunzTarPerm extractEntry src/object_handler.cc
+752 silly gunzTarPerm modified mode [ 'src/object_handler.cc', 436, 420 ]
+753 silly gunzTarPerm extractEntry src/object_handler.h
+754 silly gunzTarPerm modified mode [ 'src/object_handler.h', 436, 420 ]
+755 silly gunzTarPerm extractEntry src/signal.cc
+756 silly gunzTarPerm modified mode [ 'src/signal.cc', 436, 420 ]
+757 silly gunzTarPerm extractEntry src/signal.h
+758 silly gunzTarPerm modified mode [ 'src/signal.h', 436, 420 ]
+759 silly gunzTarPerm extractEntry MIGRATING.md
+760 silly gunzTarPerm modified mode [ 'MIGRATING.md', 436, 420 ]
+761 silly gunzTarPerm extractEntry test/client-call-add.test.js
+762 silly gunzTarPerm modified mode [ 'test/client-call-add.test.js', 436, 420 ]
+763 silly gunzTarPerm extractEntry test/client-disconnect.test.js
+764 silly gunzTarPerm modified mode [ 'test/client-disconnect.test.js', 436, 420 ]
+765 silly gunzTarPerm extractEntry test/client-property-error.test.js
+766 silly gunzTarPerm modified mode [ 'test/client-property-error.test.js', 436, 420 ]
+767 silly gunzTarPerm extractEntry test/client-property.test.js
+768 silly gunzTarPerm modified mode [ 'test/client-property.test.js', 436, 420 ]
+769 silly gunzTarPerm extractEntry test/client-signal.test.js
+770 silly gunzTarPerm modified mode [ 'test/client-signal.test.js', 436, 420 ]
+771 silly gunzTarPerm extractEntry test/client-call-timeout.test.js
+772 silly gunzTarPerm modified mode [ 'test/client-call-timeout.test.js', 436, 420 ]
+773 silly gunzTarPerm extractEntry test/error.test.js
+774 silly gunzTarPerm modified mode [ 'test/error.test.js', 436, 420 ]
+775 silly gunzTarPerm extractEntry test/service-client-disconnect.test.js
+776 silly gunzTarPerm modified mode [ 'test/service-client-disconnect.test.js', 436, 420 ]
+777 silly gunzTarPerm extractEntry test/service-create-remove-object.test.js
+778 silly gunzTarPerm modified mode [ 'test/service-create-remove-object.test.js', 436, 420 ]
+779 silly gunzTarPerm extractEntry test/service-disconnect.test.js
+780 silly gunzTarPerm modified mode [ 'test/service-disconnect.test.js', 436, 420 ]
+781 silly gunzTarPerm extractEntry test/service-duplicate-error.test.js
+782 silly gunzTarPerm modified mode [ 'test/service-duplicate-error.test.js', 436, 420 ]
+783 silly gunzTarPerm extractEntry test/client-call-object.test.js
+784 silly gunzTarPerm modified mode [ 'test/client-call-object.test.js', 436, 420 ]
+785 silly gunzTarPerm extractEntry test/service-dynamic.js
+786 silly gunzTarPerm modified mode [ 'test/service-dynamic.js', 436, 420 ]
+787 silly gunzTarPerm extractEntry test/client-call-noargs.test.js
+788 silly gunzTarPerm modified mode [ 'test/client-call-noargs.test.js', 436, 420 ]
+789 silly gunzTarPerm extractEntry test/service-emit-after-disconnect.test.js
+790 silly gunzTarPerm modified mode [ 'test/service-emit-after-disconnect.test.js', 436, 420 ]
+791 silly gunzTarPerm extractEntry test/client-call-intdict.test.js
+792 silly gunzTarPerm modified mode [ 'test/client-call-intdict.test.js', 436, 420 ]
+793 silly gunzTarPerm extractEntry test/service.js
+794 silly gunzTarPerm modified mode [ 'test/service.js', 436, 420 ]
+795 silly gunzTarPerm extractEntry test/client-call-error.test.js
+796 silly gunzTarPerm modified mode [ 'test/client-call-error.test.js', 436, 420 ]
+797 silly gunzTarPerm extractEntry test/with-service.js
+798 silly gunzTarPerm modified mode [ 'test/with-service.js', 436, 420 ]
+799 silly gunzTarPerm extractEntry test/client-use-after-disconnect.test.js
+800 silly gunzTarPerm modified mode [ 'test/client-use-after-disconnect.test.js', 436, 420 ]
+801 silly lockFile 148e205e--modules-bluez-node-modules-dbus tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/dbus
+802 silly lockFile 148e205e--modules-bluez-node-modules-dbus tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/dbus
+803 silly lockFile cd8a04f1--root-npm-dbus-1-0-3-package-tgz tar:///root/.npm/dbus/1.0.3/package.tgz
+804 silly lockFile cd8a04f1--root-npm-dbus-1-0-3-package-tgz tar:///root/.npm/dbus/1.0.3/package.tgz
+805 info preinstall dbus@1.0.3
+806 verbose readDependencies using package.json deps
+807 verbose readDependencies using package.json deps
+808 silly resolved []
+809 verbose about to build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/dbus
+810 info build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/dbus
+811 verbose linkStuff [ false,
+811 verbose linkStuff   false,
+811 verbose linkStuff   false,
+811 verbose linkStuff   '/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules' ]
+812 info linkStuff dbus@1.0.3
+813 verbose linkBins dbus@1.0.3
+814 verbose linkMans dbus@1.0.3
+815 verbose rebuildBundles dbus@1.0.3
+816 info install dbus@1.0.3
+817 verbose unsafe-perm in lifecycle false
+818 http 200 https://registry.npmjs.org/prr/-/prr-1.0.1.tgz
+819 silly lockFile e732746e-stry-npmjs-org-prr-prr-1-0-1-tgz https://registry.npmjs.org/prr/-/prr-1.0.1.tgz
+820 silly lockFile e732746e-stry-npmjs-org-prr-prr-1-0-1-tgz https://registry.npmjs.org/prr/-/prr-1.0.1.tgz
+821 silly lockFile 4c8dddbd-prr-1-0-1 prr@1.0.1
+822 silly lockFile 4c8dddbd-prr-1-0-1 prr@1.0.1
+823 silly lockFile 50348a80-prr-1-0-1 prr@~1.0.1
+824 silly lockFile 50348a80-prr-1-0-1 prr@~1.0.1
+825 silly resolved [ { name: 'prr',
+825 silly resolved     description: 'A better Object.defineProperty()',
+825 silly resolved     version: '1.0.1',
+825 silly resolved     homepage: 'https://github.com/rvagg/prr',
+825 silly resolved     author:
+825 silly resolved      { name: 'Rod Vagg',
+825 silly resolved        email: 'rod@vagg.org',
+825 silly resolved        url: 'https://github.com/rvagg' },
+825 silly resolved     keywords: [ 'property', 'properties', 'defineProperty', 'ender' ],
+825 silly resolved     main: './prr.js',
+825 silly resolved     repository: { type: 'git', url: 'https://github.com/rvagg/prr.git' },
+825 silly resolved     dependencies: {},
+825 silly resolved     devDependencies: { tap: '*' },
+825 silly resolved     scripts: { test: 'node ./test.js' },
+825 silly resolved     license: 'MIT',
+825 silly resolved     gitHead: 'b69ba0edc7aacbda0c98d550579e452b8597c126',
+825 silly resolved     bugs: { url: 'https://github.com/rvagg/prr/issues' },
+825 silly resolved     _id: 'prr@1.0.1',
+825 silly resolved     _shasum: 'd3fc114ba06995a45ec6893f484ceb1d78f5f476',
+825 silly resolved     _from: 'prr@~1.0.1',
+825 silly resolved     _npmVersion: '1.4.14',
+825 silly resolved     _npmUser: { name: 'rvagg', email: 'rod@vagg.org' },
+825 silly resolved     maintainers: [ [Object] ],
+825 silly resolved     dist:
+825 silly resolved      { shasum: 'd3fc114ba06995a45ec6893f484ceb1d78f5f476',
+825 silly resolved        tarball: 'https://registry.npmjs.org/prr/-/prr-1.0.1.tgz' },
+825 silly resolved     directories: {},
+825 silly resolved     _resolved: 'https://registry.npmjs.org/prr/-/prr-1.0.1.tgz' } ]
+826 info install prr@1.0.1 into /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno
+827 info installOne prr@1.0.1
+828 verbose node_modules/bluez/node_modules/errno/node_modules/prr unbuild
+829 verbose tar unpack /root/.npm/prr/1.0.1/package.tgz
+830 silly lockFile f8d3957d-e-modules-errno-node-modules-prr tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules/prr
+831 verbose lock tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules/prr /root/.npm/f8d3957d-e-modules-errno-node-modules-prr.lock
+832 silly lockFile 74f5d704-r-root-npm-prr-1-0-1-package-tgz tar:///root/.npm/prr/1.0.1/package.tgz
+833 verbose lock tar:///root/.npm/prr/1.0.1/package.tgz /root/.npm/74f5d704-r-root-npm-prr-1-0-1-package-tgz.lock
+834 silly gunzTarPerm modes [ '755', '644' ]
+835 silly gunzTarPerm extractEntry package.json
+836 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+837 silly gunzTarPerm extractEntry .npmignore
+838 silly gunzTarPerm modified mode [ '.npmignore', 436, 420 ]
+839 silly gunzTarPerm extractEntry README.md
+840 silly gunzTarPerm modified mode [ 'README.md', 436, 420 ]
+841 silly gunzTarPerm extractEntry prr.js
+842 silly gunzTarPerm modified mode [ 'prr.js', 436, 420 ]
+843 silly gunzTarPerm extractEntry test.js
+844 silly gunzTarPerm modified mode [ 'test.js', 436, 420 ]
+845 silly gunzTarPerm extractEntry .jshintrc
+846 silly gunzTarPerm modified mode [ '.jshintrc', 436, 420 ]
+847 silly gunzTarPerm extractEntry .travis.yml
+848 silly gunzTarPerm modified mode [ '.travis.yml', 436, 420 ]
+849 silly gunzTarPerm extractEntry LICENSE.md
+850 silly gunzTarPerm modified mode [ 'LICENSE.md', 436, 420 ]
+851 silly lockFile f8d3957d-e-modules-errno-node-modules-prr tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules/prr
+852 silly lockFile f8d3957d-e-modules-errno-node-modules-prr tar:///home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules/prr
+853 silly lockFile 74f5d704-r-root-npm-prr-1-0-1-package-tgz tar:///root/.npm/prr/1.0.1/package.tgz
+854 silly lockFile 74f5d704-r-root-npm-prr-1-0-1-package-tgz tar:///root/.npm/prr/1.0.1/package.tgz
+855 info preinstall prr@1.0.1
+856 verbose readDependencies using package.json deps
+857 verbose readDependencies using package.json deps
+858 silly resolved []
+859 verbose about to build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules/prr
+860 info build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules/prr
+861 verbose linkStuff [ false,
+861 verbose linkStuff   false,
+861 verbose linkStuff   false,
+861 verbose linkStuff   '/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno/node_modules' ]
+862 info linkStuff prr@1.0.1
+863 verbose linkBins prr@1.0.1
+864 verbose linkMans prr@1.0.1
+865 verbose rebuildBundles prr@1.0.1
+866 info install prr@1.0.1
+867 info postinstall prr@1.0.1
+868 verbose about to build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno
+869 info build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/errno
+870 verbose linkStuff [ false,
+870 verbose linkStuff   false,
+870 verbose linkStuff   false,
+870 verbose linkStuff   '/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules' ]
+871 info linkStuff errno@0.1.7
+872 verbose linkBins errno@0.1.7
+873 verbose link bins [ { errno: './cli.js' },
+873 verbose link bins   '/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules/.bin',
+873 verbose link bins   false ]
+874 verbose linkMans errno@0.1.7
+875 verbose rebuildBundles errno@0.1.7
+876 verbose rebuildBundles [ 'prr' ]
+877 info install errno@0.1.7
+878 info postinstall errno@0.1.7
+879 info dbus@1.0.3 Failed to exec install script
+880 verbose node_modules/bluez/node_modules/dbus unbuild
+881 warn This failure might be due to the use of legacy binary "node"
+882 warn For further explanations, please read
+/usr/share/doc/nodejs/README.Debian
+883 info preuninstall dbus@1.0.3
+884 info uninstall dbus@1.0.3
+885 verbose false,/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules,/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez/node_modules unbuild dbus@1.0.3
+886 info postuninstall dbus@1.0.3
+887 verbose about to build /home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules/bluez
+888 verbose node_modules/bluez unbuild
+889 info preuninstall bluez@0.2.2
+890 info uninstall bluez@0.2.2
+891 verbose true,/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules,/home/pi/Documents/RaspberryPi_Project/Buerer GL 50/node_modules unbuild bluez@0.2.2
+892 info postuninstall bluez@0.2.2
+893 error dbus@1.0.3 install: `node-gyp configure build`
+893 error Exit status 1
+894 error Failed at the dbus@1.0.3 install script.
+894 error This is most likely a problem with the dbus package,
+894 error not with npm itself.
+894 error Tell the author that this fails on your system:
+894 error     node-gyp configure build
+894 error You can get their info via:
+894 error     npm owner ls dbus
+894 error There is likely additional logging output above.
+895 error System Linux 4.14.50-v7+
+896 error command "/usr/bin/node" "/usr/bin/npm" "install" "bluez"
+897 error cwd /home/pi/Documents/RaspberryPi_Project/Buerer GL 50
+898 error node -v v8.11.1
+899 error npm -v 1.4.21
+900 error code ELIFECYCLE
+901 verbose exit [ 1, true ]

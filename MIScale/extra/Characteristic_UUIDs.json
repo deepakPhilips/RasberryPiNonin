@@ -1,0 +1,27 @@
+{"BatteryLevel":{"uuid":"00002A19-0000-1000-8000-00805f9b34fb"},
+
+"Manu":{"uuid":"00002A29-0000-1000-8000-00805f9b34fb"},
+
+"Model":{"uuid":"00002A24-0000-1000-8000-00805f9b34fb"},
+
+"Serial":{"uuid":"00002A25-0000-1000-8000-00805f9b34fb"},
+
+"WeightScale":{"uuid":"00002A9D-0000-1000-8000-00805f9b34fb"},
+
+"BloodPressure":{"uuid":"00002A35-0000-1000-8000-00805f9b34fb"},
+
+"BodyComposition":{"uuid":"00002A9C-0000-1000-8000-00805f9b34fb"},
+
+"CurrentTime":{"uuid":"00002A2B-0000-1000-8000-00805f9b34fb" },
+
+"GlucoseMeasurement":{"uuid":"00002A18-0000-1000-8000-00805f9b34fb" },
+
+"HealthThermometer":{"uuid":"00002A1C-0000-1000-8000-00805f9b34fb"},
+
+"HeartRate":{"uuid":"00002A37-0000-1000-8000-00805f9b34fb" },
+
+"PLXSpotCheck":{"uuid":"00002A5E-0000-1000-8000-00805f9b34fb"},
+
+"PLXContinuous":{"uuid":"00002A5F-0000-1000-8000-00805f9b34fb"}
+
+}

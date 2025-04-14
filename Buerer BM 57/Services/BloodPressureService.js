@@ -1,0 +1,24 @@
+var bleno=require('bleno');                  
+var util=require('util');
+
+var BloodPressureCharacteristic=require('./characteristics/BloodPressure/BloodPressureCharacteristic');
+
+
+let rawdata4=require('/home/pi/Documents/RaspberryPi_Project/Buerer BM 57/extra/Service_UUIDs.json');
+var data4=JSON.stringify(rawdata4);
+let test4=JSON.parse(data4);
+
+
+function  BloodPressureService(){
+
+
+	bleno.PrimaryService.call(this,{
+		uuid:test4["BloodPressure"].uuid,
+		characteristics:[ new BloodPressureCharacteristic()
+
+		         ]
+	  } );
+
+};
+util.inherits(BloodPressureService,bleno.PrimaryService);
+module.exports=BloodPressureService;

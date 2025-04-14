@@ -1,0 +1,7 @@
+{
+
+"1":{"flag":"0x1E","systolic":"67","diastolic":"70","mean":"68","year":"0x07E2","month":"0x0C","day":"0x1F","hours":"0x17","minutes":"0x3B","seconds":"0x2F","pulseRate":"0x0023","userID ":"0x01","measurementStatus":"0x0020"} 
+
+,"2":{"flag":"0x1E","systolic":"80","diastolic":"86","mean":"83","year":"0x07E2","month":"0x0C","day":"0x1F","hours":"0x17","minutes":"0x3B","seconds":"0x2F","pulseRate":"0x0023","userID ":"0x02","measurementStatus":"0x0020"} 
+
+}
