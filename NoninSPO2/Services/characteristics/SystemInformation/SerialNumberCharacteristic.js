@@ -23,14 +23,16 @@ let rawdata3=require('../../../extra/Characteristic_UUIDs.json');
 var data3=JSON.stringify(rawdata3);
 let test3=JSON.parse(data3);
 
-var SerialNumberCharacteristic = function() {
-  SerialNumberCharacteristic.super_.call(this, {
-     uuid:test3["Serial"].uuid,
-    properties: ['read'],
-  });
+class SerialNumberCharacteristic extends BlenoCharacteristic {
+  constructor() {
+    super({
+      uuid: test3["Serial"].uuid,
+      properties: ['read'],
+    });
 
- this._value = new Buffer(0);
-};
+    this._value = Buffer.alloc(0);
+  }
+}
 
 SerialNumberCharacteristic.prototype.onReadRequest = function(offset, callback) {
 
@@ -45,7 +47,7 @@ SerialNumberCharacteristic.prototype.onReadRequest = function(offset, callback) 
     );
 
   callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
-};
-
+// Removed util.inherits as we are using ES6 class syntax
+  }
 util.inherits(SerialNumberCharacteristic, BlenoCharacteristic);
 module.exports = SerialNumberCharacteristic;
