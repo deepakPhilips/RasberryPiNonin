@@ -13,11 +13,11 @@ var BatteryService=require('./Services/BatteryService');
 
 var batteryService=new BatteryService();
 
-var Logger=require('/home/pi/Documents/RaspberryPi_Project/Logger.js');
+var Logger=require('./Logger.js');
  
 var logger=new Logger();
 
-let rawdata1=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/ConsoleLogComments.json');
+let rawdata1=require('./extra/ConsoleLogComments.json');
 var data1=JSON.stringify(rawdata1);
 let test1=JSON.parse(data1);
 

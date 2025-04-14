@@ -6,22 +6,22 @@ var util = require('util');
 
 var BlenoCharacteristic = bleno.Characteristic;
 
-var Logger=require('/home/pi/Documents/RaspberryPi_Project/Logger.js');
+var Logger=require('../../../Logger.js');
 var logger=new Logger();
 
 let rawdata=require('./SystemInfoTestData/SystemInfoTest.json');
 var data=JSON.stringify(rawdata);
 let test=JSON.parse(data);
 
-let rawdata1=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/ConsoleLogComments.json');
+let rawdata1=require('../../../extra/ConsoleLogComments.json');
 var data1=JSON.stringify(rawdata1);
 let test1=JSON.parse(data1);
 
-let rawdata2=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/Properties.json');
+let rawdata2=require('../../../extra/Properties.json');
 var data2=JSON.stringify(rawdata2);
 let test2=JSON.parse(data2);
 
-let rawdata3=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/Characteristic_UUIDs.json');
+let rawdata3=require('../../../extra/Characteristic_UUIDs.json');
 var data3=JSON.stringify(rawdata3);
 let test3=JSON.parse(data3);
 

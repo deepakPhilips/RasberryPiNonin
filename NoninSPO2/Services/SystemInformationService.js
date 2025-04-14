@@ -5,7 +5,9 @@ var ManufacturerNameCharacteristic = require('./characteristics/SystemInformatio
 var ModelNumberCharacteristic = require('./characteristics/SystemInformation/ModelNumberCharacteristic');
 var SerialNumberCharacteristic = require('./characteristics/SystemInformation/SerialNumberCharacteristic');
 
-let rawdata4=require('/home/pi/Documents/RaspberryPi_Project/MIScale/extra/Service_UUIDs.json');
+/home/pi/Documents/RaspberryPi_Project/MIScale/extra/Service_UUIDs.json
+
+let rawdata4=require('../../MIScale/extra/Service_UUIDs.json');
 var data4=JSON.stringify(rawdata4);
 let test4=JSON.parse(data4);
 

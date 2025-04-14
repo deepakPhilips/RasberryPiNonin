@@ -4,7 +4,7 @@ var util=require('util');
 var BatteryCharacteristic=require('./characteristics/BatteryLevel/BatteryLevelCharacteristic');
 
 
-let rawdata4=require('/home/pi/Documents/RaspberryPi_Project/MIScale/extra/Service_UUIDs.json');
+let rawdata4=require('../../../extra/Service_UUIDs.json');
 var data4=JSON.stringify(rawdata4);
 let test4=JSON.parse(data4);
 
