@@ -3,7 +3,7 @@ var util=require('util');
 
 var NoninSPO2_NotifyCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_NotifyCharacteristic');
 
-var NoninSPO2_WriteCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_WriteCharacteristic');
+// var NoninSPO2_WriteCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_WriteCharacteristic');
 
 
 let rawdata4=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/Service_UUIDs.json');
