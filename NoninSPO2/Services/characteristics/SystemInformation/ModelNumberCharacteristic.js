@@ -25,15 +25,16 @@ let rawdata3=require('../../../extra/Characteristic_UUIDs.json');
 var data3=JSON.stringify(rawdata3);
 let test3=JSON.parse(data3);
 
-var ModelNumberCharacteristic = function() {
+class ModelNumberCharacteristic extends BlenoCharacteristic {
+  constructor() {
+    super({
+      uuid: test3["Model"].uuid,
+      properties: ['read'],
+    });
 
- BlenoCharacteristic.call(this, {
-     uuid: test3["Model"].uuid,
-     properties: ['read'],
-  });
-
- this._value = new Buffer(0);
-};
+    this._value = Buffer.alloc(0);
+  }
+}
 
 ModelNumberCharacteristic.prototype.onReadRequest = function(offset, callback) {
 
@@ -47,6 +48,6 @@ ModelNumberCharacteristic.prototype.onReadRequest = function(offset, callback) {
 
   callback(this.RESULT_SUCCESS, this._value.slice(offset, this._value.length));
 };
-
+// Removed util.inherits as it is no longer needed with class syntax
 util.inherits(ModelNumberCharacteristic, BlenoCharacteristic);
 module.exports = ModelNumberCharacteristic;
