@@ -1,118 +1,48 @@
-const bleno = require('@abandonware/bleno');
-const util = require('util');
-const program = require('commander').program;
+var bleno = require('@abandonware/bleno');
+var fs = require('fs');
+var program = require('commander').program;
+
+var PrimaryService = bleno.PrimaryService;
+var Characteristic = bleno.Characteristic;
+var Descriptor = bleno.Descriptor;
+
+var control, writeflag, syncflag = false, intervalId, timeoutId, timeout = 1, counter = 0;
 
 program
-  .requiredOption('-s, --saturation <n>', 'Saturation level', parseInt)
-  .requiredOption('-p, --pulse <n>', 'Pulse rate', parseInt)
-  .parse(process.argv);
+	.requiredOption('-s, --saturation <n>', 'saturation', parseInt)
+	.requiredOption('-p, --pulse <n>', 'pulse', parseInt)
+	.parse(process.argv);
 
-const BlenoPrimaryService = bleno.PrimaryService;
-const BlenoCharacteristic = bleno.Characteristic;
+const options = program.opts();
 
-// UUIDs for the characteristics
-const CHARACTERISTIC_UUID_NOTIFY = '1447af800d6011e288b60002a5d5c51b';
-const CHARACTERISTIC_UUID_WRITE = '1447af810d6011e288b60002a5d5c51b';
+bleno.on('stateChange', handleStateChange);
+bleno.on('accept', handleAccept);
+bleno.on('disconnect', handleDisconnect);
+bleno.on('advertisingStart', handleAdvertisingStart);
 
-// Define the Notify Characteristic
-const OximeterNotifyCharacteristic = new BlenoCharacteristic({
-  uuid: CHARACTERISTIC_UUID_NOTIFY,
-  properties: ['indicate'],
-  secure: ['indicate'],
-});
-
-let notifyInterval = null;
-
-// Add the onSubscribe handler for the Notify Characteristic
-OximeterNotifyCharacteristic.onSubscribe = function (maxValueSize, updateValueCallback) {
-  console.log("Device subscribed to notify characteristic");
-
-  // Start sending measurement data periodically
-  notifyInterval = setInterval(() => {
-    const measBuffer = process_meas(); // Generate measurement buffer
-    console.log('Sending measurement:', measBuffer);
-    updateValueCallback(Buffer.from(measBuffer)); // Send data to the subscribed device
-  }, 1000); // Send data every 1 second
-};
-
-// Add the onUnsubscribe handler for the Notify Characteristic
-OximeterNotifyCharacteristic.onUnsubscribe = function () {
-  console.log("Device unsubscribed from notify characteristic");
-
-  // Stop sending data when the device unsubscribes
-  if (notifyInterval) {
-    clearInterval(notifyInterval);
-    notifyInterval = null;
-  }
-};
-
-// Define the Write Characteristic
-const OximeterWriteCharacteristic = new BlenoCharacteristic({
-  uuid: CHARACTERISTIC_UUID_WRITE,
-  properties: ['write'],
-  secure: ['write'],
-});
-
-// Add the onWriteRequest handler for the Write Characteristic
-OximeterWriteCharacteristic.onWriteRequest = function (data, offset, withoutResponse, callback) {
-  console.log('Write request received:', data.toString('hex'));
-
-  // Example: Process the received data
-  const receivedValue = data.toString('hex');
-  console.log('Processing received value:', receivedValue);
-
-  // Example: Respond to the write request
-  callback(this.RESULT_SUCCESS);
-};
-
-// Define the Primary Service
-const exampleService = new BlenoPrimaryService({
-  uuid: '46a970e00d5f11e28b5e0002a5d5c51b',
-  characteristics: [OximeterNotifyCharacteristic, OximeterWriteCharacteristic],
-});
-
-// Handle Bluetooth state changes
-bleno.on('stateChange', (state) => {
-  console.log(`Bluetooth state changed to: ${state}`);
-  if (state === 'poweredOn') {
-    bleno.startAdvertising('NoninService', ['180A', '46a970e00d5f11e28b5e0002a5d5c51b']);
-  } else {
-    bleno.stopAdvertising();
-  }
-});
-
-// // Handle advertising start
-// bleno.on('advertisingStart', (error) => {
-//   if (!error) {
-//     console.log('Started advertising...');
-//     bleno.setServices([exampleService]);
-//   } else {
-//     console.error('Failed to start advertising:', error);
-//   }
-// });
-
-// Function to generate the measurement array
-function process_meas() {
-  const pai = Math.floor(Math.random() * 6 + 1); // Random pulse amplitude index
-  const pai2 = Math.floor(Math.random() * 100 + 1); // Random decimal places
-  const counter = Math.floor(Math.random() * 256); // Random counter value
-
-  let measurement;
-  if (program.pulse > 256) {
-    const pulse = '0' + program.pulse.toString(16);
-    const pulse1 = parseInt(pulse.slice(0, 2), 16);
-    const pulse2 = parseInt(pulse.slice(2, 4), 16); // Convert to two hex bytes
-    measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, program.saturation, pulse1, pulse2];
-  } else {
-    measurement = [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, program.saturation, 0x00, program.pulse];
-  }
-
-  return measurement;
+function handleStateChange(state) {
+	console.log('GATT oximeter server running');
+	console.log('saturation value: %j, pulse value: %j', options.saturation, options.pulse);
+	if (state === 'poweredOn') {
+		bleno.startAdvertising('Nonin3230_501599389', ['180A', '46a970e00d5f11e28b5e0002a5d5c51b']);
+		startTimeout();
+	} else {
+		bleno.stopAdvertising();
+	}
 }
 
+function handleAccept(clientAddress) {
+	timeout = 0;
+	console.log('connected to: ' + clientAddress);
+}
 
+function handleDisconnect() {
+	console.log("Disconnected");
+	clearInterval(intervalId);
+	process.exit(0);
+}
 
-bleno.on('advertisingStart', function(error) {
+function handleAdvertisingStart(error) {
 	if (error) {
 		console.error('Error starting advertising:', error);
 		return;
@@ -120,76 +50,59 @@ bleno.on('advertisingStart', function(error) {
 
 	console.log('Started advertising');
 	bleno.setServices([
-		new bleno.PrimaryService({
-			uuid: '180A',
-			characteristics: [
-				createCharacteristic('2A29', ['read'], 'Nonin_Medical_Inc', 'Manufacturer Name'),
-				createCharacteristic('2A24', ['read'], 'Model3230', 'Model'),
-				createCharacteristic('2A25', ['read'], 'nonin_sim', 'Serial'),
-				createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
-				createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
-			],
-		}),
-		new bleno.PrimaryService({
-			uuid: '46a970e00d5f11e28b5e0002a5d5c51b',
-			characteristics: [
-				createNotifyCharacteristic(
-					'0aad7ea00d6011e28e3c0002a5d5c51b',
-					'Measurement',
-					handleMeasurementSubscribe,
-					handleMeasurementUnsubscribe
-				),
-				createWriteNotifyCharacteristic(
-					'1447af800d6011e288b60002a5d5c51b',
-					'Control Point',
-					handleControlWrite,
-					handleControlSubscribe,
-					handleControlUnsubscribe
-				),
-			],
-		}),
+		createPrimaryService('180A', [
+			createCharacteristic('2A29', ['read'], 'Nonin_Medical_Inc', 'Manufacturer Name'),
+			createCharacteristic('2A24', ['read'], 'Model3230', 'Model'),
+			createCharacteristic('2A25', ['read'], 'nonin_sim', 'Serial'),
+			createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
+			createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
+		]),
+		createPrimaryService('46a970e00d5f11e28b5e0002a5d5c51b', [
+			createNotifyCharacteristic(
+				'0aad7ea00d6011e28e3c0002a5d5c51b',
+				'Measurement',
+				handleMeasurementSubscribe,
+				handleMeasurementUnsubscribe
+			),
+			createWriteNotifyCharacteristic(
+				'1447af800d6011e288b60002a5d5c51b',
+				'Control Point',
+				handleControlWrite,
+				handleControlSubscribe,
+				handleControlUnsubscribe
+			),
+		]),
 	]);
-});
+}
+
+function createPrimaryService(uuid, characteristics) {
+	return new PrimaryService({ uuid, characteristics });
+}
 
 function createCharacteristic(uuid, properties, value, descriptorValue) {
-	return new bleno.Characteristic({
+	return new Characteristic({
 		uuid,
 		properties,
 		value: Buffer.from(value),
-		descriptors: [
-			new bleno.Descriptor({
-				uuid: '2901',
-				value: descriptorValue,
-			}),
-		],
+		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
 	});
 }
 
 function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
-	return new bleno.Characteristic({
+	return new Characteristic({
 		uuid,
 		properties: ['notify'],
-		descriptors: [
-			new bleno.Descriptor({
-				uuid: '2901',
-				value: descriptorValue,
-			}),
-		],
+		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
 		onSubscribe,
 		onUnsubscribe,
 	});
 }
 
 function createWriteNotifyCharacteristic(uuid, descriptorValue, onWriteRequest, onSubscribe, onUnsubscribe) {
-	return new bleno.Characteristic({
+	return new Characteristic({
 		uuid,
 		properties: ['write', 'notify'],
-		descriptors: [
-			new bleno.Descriptor({
-				uuid: '2901',
-				value: descriptorValue,
-			}),
-		],
+		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
 		onWriteRequest,
 		onSubscribe,
 		onUnsubscribe,
@@ -200,11 +113,11 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 	counter = 0;
 	timeout = 1;
 	console.log('Device subscribed, sending measurement');
-	if (options.saturation <= 100 && options.saturation > 0 && options.pulse > 0 && options.pulse < 322) {
-		const measBuffer = process_meas();
+	if (isValidMeasurement(options.saturation, options.pulse)) {
+		const measBuffer = processMeasurement();
 		console.log(measBuffer);
 		updateValueCallback(measBuffer);
-		write_ox();
+		writeOutput('outputOX.txt', '200');
 	} else {
 		process.exit(2);
 	}
@@ -217,11 +130,9 @@ function handleMeasurementUnsubscribe() {
 }
 
 function handleControlWrite(data, offset, withoutResponse, callback) {
-	this.value = data;
-	const len = data.length;
-	control = Array.from(data.slice(0, len));
+	control = Array.from(data);
 	writeflag = true;
-	console.log('Write request: value =', control, ', length =', len);
+	console.log('Write request: value =', control, ', length =', data.length);
 	callback(this.RESULT_SUCCESS);
 }
 
@@ -229,20 +140,7 @@ function handleControlSubscribe(maxValueSize, updateValueCallback) {
 	console.log('Device subscribed to control');
 	intervalId = setTimeout(() => {
 		if (writeflag) {
-			if (control[0] === 97) {
-				const time = control[1];
-				if (syncflag) {
-					updateValueCallback([0xE1, 0x02]);
-					console.log('E102, still syncing');
-				} else if (time <= 25 && time >= 5) {
-					updateValueCallback([0xE1, 0x00]);
-					console.log('E100, sync initialized');
-					syncflag = true;
-				} else {
-					updateValueCallback([0xE1, 0x01]);
-					console.log('E101, out of range value');
-				}
-			}
+			handleControlSync(updateValueCallback);
 		}
 	}, 1000);
 }
@@ -250,4 +148,52 @@ function handleControlSubscribe(maxValueSize, updateValueCallback) {
 function handleControlUnsubscribe() {
 	console.log('Control unsubscribed');
 	clearInterval(intervalId);
+}
+
+function handleControlSync(updateValueCallback) {
+	if (control[0] === 97) {
+		const time = control[1];
+		if (syncflag) {
+			updateValueCallback([0xE1, 0x02]);
+			console.log('E102, still syncing');
+		} else if (time <= 25 && time >= 5) {
+			updateValueCallback([0xE1, 0x00]);
+			console.log('E100, sync initialized');
+			syncflag = true;
+		} else {
+			updateValueCallback([0xE1, 0x01]);
+			console.log('E101, out of range value');
+		}
+	}
+}
+
+function isValidMeasurement(saturation, pulse) {
+	return saturation > 0 && saturation <= 100 && pulse > 0 && pulse < 322;
+}
+
+function processMeasurement() {
+	const pai = Math.floor((Math.random() * 6) + 1);
+	const pai2 = Math.floor((Math.random() * 100) + 1);
+	counter++;
+	if (options.pulse > 256) {
+		const pulseHex = '0' + options.pulse.toString(16);
+		const pulse1 = parseInt(pulseHex.slice(0, 2), 16);
+		const pulse2 = parseInt(pulseHex.slice(2, 4), 16);
+		return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, pulse1, pulse2];
+	}
+	return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, 0x00, options.pulse];
+}
+
+function writeOutput(filename, content) {
+	fs.writeFileSync(filename, content);
+}
+
+function startTimeout() {
+	time_counter = 1;
+	timeoutId = setInterval(() => {
+		time_counter++;
+		if (timeout === 1 && time_counter === 60) {
+			process.exit(1);
+		}
+	}, 1000);
 }
