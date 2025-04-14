@@ -16,8 +16,8 @@ var timeoutId;
 var timeout = 1;
 
 program
-	.requiredOption('-s, --saturation <n>', 'saturation', parseInt) 
-	.requiredOption('-p, --pulse <n>', 'pulse', parseInt)
+	.requiredOption('-s, --write-saturation <n>', 'saturation', parseInt) 
+	.requiredOption('-p, --write-pulse <n>', 'pulse', parseInt)
 	.parse(process.argv);
 
 var BlenoCharacteristic=bleno.Characteristic;
