@@ -1,0 +1,143 @@
+[2025-04-14T09:33:33.532Z] on -> stateChange: poweredOn
+[2025-04-14T09:33:33.554Z] on -> advertisingStart: success
+[2025-04-14T09:33:56.427Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:34:21.295Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:22.254Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:23.275Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:24.264Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:25.285Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:26.275Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:27.265Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:28.285Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:29.275Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:34:29.996Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:35:44.661Z] on -> stateChange: poweredOn
+[2025-04-14T09:35:44.682Z] on -> advertisingStart: success
+[2025-04-14T09:37:55.678Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:37:55.777Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:37:55.847Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:37:57.422Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:37:57.426Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:38:32.618Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:38:32.640Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:38:32.686Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:38:33.928Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:38:33.930Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:38:51.223Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:38:51.306Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:38:51.412Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:38:52.566Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:38:52.568Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:39:30.872Z] on -> stateChange: poweredOn
+[2025-04-14T09:39:30.893Z] on -> advertisingStart: success
+[2025-04-14T09:39:49.448Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:39:50.407Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:39:51.427Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:39:52.418Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:39:53.408Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:39:54.248Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:41:30.916Z] on -> stateChange: poweredOn
+[2025-04-14T09:41:30.939Z] on -> advertisingStart: success
+[2025-04-14T09:41:32.657Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:41:32.714Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:41:32.819Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:41:34.009Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:41:34.011Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:41:50.036Z] on -> stateChange: poweredOn
+[2025-04-14T09:41:50.057Z] on -> advertisingStart: success
+[2025-04-14T09:42:09.687Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:42:09.780Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:42:09.850Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:42:11.110Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:42:11.114Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:42:28.470Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:42:28.540Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:42:28.610Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:42:29.730Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:42:29.733Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:47:23.417Z] on -> stateChange: poweredOn
+[2025-04-14T09:47:23.438Z] on -> advertisingStart: success
+[2025-04-14T09:47:26.317Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:47:26.363Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:47:26.433Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:47:27.623Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:47:27.626Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:47:46.313Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:47:46.343Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:47:46.365Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:47:47.468Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:47:47.470Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:48:02.892Z] on -> stateChange: poweredOn
+[2025-04-14T09:48:02.914Z] on -> advertisingStart: success
+[2025-04-14T09:48:06.167Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:48:06.229Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:48:06.299Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:48:07.454Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:48:07.457Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:48:25.359Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:48:25.396Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:48:25.426Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:48:26.546Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:48:26.617Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:48:42.774Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:48:42.804Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:48:42.857Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:48:43.976Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:48:43.978Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:49:05.124Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:49:05.155Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:49:05.187Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:49:06.343Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:49:06.346Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:49:58.000Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:49:58.030Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:49:58.090Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:49:59.210Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:49:59.212Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:50:21.411Z] on -> stateChange: poweredOn
+[2025-04-14T09:50:21.440Z] on -> advertisingStart: success
+[2025-04-14T09:50:22.972Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:50:23.003Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:50:23.026Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:50:24.166Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:50:24.169Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:50:41.186Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:50:41.223Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:50:41.333Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:50:42.454Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:50:42.456Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:51:01.449Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:51:01.487Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:51:01.510Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:51:02.614Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:51:02.616Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:51:19.639Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:51:19.669Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:51:19.747Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:51:20.902Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:51:20.904Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:51:57.100Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:51:57.132Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:51:57.180Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:51:58.336Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:51:58.338Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:52:14.953Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:52:14.982Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:52:15.030Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:52:16.185Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:52:16.220Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:52:33.096Z] SerialNumberCharacteristic - onReadRequest: value = nonin_sim
+[2025-04-14T09:52:33.118Z] ManufacturerNameCharacteristic - onReadRequest: value = Nonin_Medical_Inc
+[2025-04-14T09:52:33.178Z] ModelNumberCharacteristic - onReadRequest: value = Model3230
+[2025-04-14T09:52:34.333Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:52:34.335Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:54:22.927Z] on -> stateChange: poweredOn
+[2025-04-14T09:54:22.948Z] on -> advertisingStart: success
+[2025-04-14T09:55:00.356Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:55:00.358Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T09:55:41.779Z] IndicateOnlyCharacteristic on Indicate
+[2025-04-14T09:55:41.783Z] IndicateOnlyCharacteristic unsubscribe
+[2025-04-14T16:34:45.074Z] on -> stateChange: poweredOn
+[2025-04-14T16:34:45.095Z] on -> advertisingStart: success
+[2025-04-14T16:40:41.034Z] on -> stateChange: poweredOn
+[2025-04-14T16:40:41.053Z] on -> advertisingStart: success
