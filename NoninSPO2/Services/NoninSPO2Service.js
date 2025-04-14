@@ -14,7 +14,7 @@ function  NoninSPO2Service(){
 
 
 	bleno.PrimaryService.call(this,{
-		uuid:test4["NoninSPO2"].uuid,
+		uuid:"46a970e00d5f11e28b5e0002a5d5c51b",
 		characteristics:[ new NoninSPO2_NotifyCharacteristic()]
 	  } );
 
