@@ -1,0 +1,11 @@
+{
+    "name": "NoninProj",
+    "version": "1.0.0",
+    "description": "Node.js BLE GATT server for Raspberry Pi CPU temperature",
+    "dependencies": {
+        "@abandonware/bleno": "^0.6.2",
+        "commander": "^13.1.0"
+    },
+    "author": "Deepak ",
+    "license": "MIT"
+}

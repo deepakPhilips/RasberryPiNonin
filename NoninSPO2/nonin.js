@@ -1,11 +1,12 @@
-var bleno = require('bleno');
+var bleno = require('@abandonware/bleno');
+var NoninSPO2Service = require('./Services/NoninSPO2Service')
 bleno.on('stateChange', function(state) {
- logger.log('on -> stateChange: ' + state);
+
 
 
   if (state === 'poweredOn') {
       
-  bleno.startAdvertising(test1[34].string, [NoninSPO2Service.uuid]);
+  bleno.startAdvertising("Nonin", [NoninSPO2Service.uuid]);
    
   }
   else {

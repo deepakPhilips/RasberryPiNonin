@@ -1,4 +1,4 @@
-var bleno=require('bleno');                  
+const bleno = require('@abandonware/bleno');                  
 var util=require('util');
 
 var NoninSPO2_NotifyCharacteristic=require('./characteristics/NoninSPO2/NoninSPO2_NotifyCharacteristic');

@@ -1,9 +1,9 @@
-var bleno=require('bleno')
+const bleno = require('@abandonware/bleno');
 var os=require('os')
 var util=require('util')
 
 var fs = require('fs');
-var program = require('commander');
+var program = require('commander').program;
 
 var PrimaryService = bleno.PrimaryService;
 var Characteristic = bleno.Characteristic;
@@ -16,24 +16,22 @@ var timeoutId;
 var timeout = 1;
 
 program
-	.option('-s, --saturation <n>', 'saturation', parseInt) 
-	.option('-p, --pulse <n>', 'pulse', parseInt)
+	.requiredOption('-s, --saturation <n>', 'saturation', parseInt) 
+	.requiredOption('-p, --pulse <n>', 'pulse', parseInt)
 	.parse(process.argv);
 
 var BlenoCharacteristic=bleno.Characteristic;
-var Logger=require('/home/pi/Documents/RaspberryPi_Project/Logger.js');
-var logger=new Logger();
 
 
-let rawdata1=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/ConsoleLogComments.json');
+let rawdata1=require('/home/deepak/Desktop/NoninDevice/RasberryPiNonin/NoninSPO2/extra/ConsoleLogComments.json');
 var data1=JSON.stringify(rawdata1);
 let test1=JSON.parse(data1);
 
-let rawdata2=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/Properties.json');
+let rawdata2=require('/home/deepak/Desktop/NoninDevice/RasberryPiNonin/NoninSPO2/extra/Properties.json');
 var data2=JSON.stringify(rawdata2);
 let test2=JSON.parse(data2);
 
-let rawdata3=require('/home/pi/Documents/RaspberryPi_Project/NoninSPO2/extra/Characteristic_UUIDs.json');
+let rawdata3=require('/home/deepak/Desktop/NoninDevice/RasberryPiNonin/NoninSPO2/extra/Characteristic_UUIDs.json');
 var data3=JSON.stringify(rawdata3);
 let test3=JSON.parse(data3);
 
