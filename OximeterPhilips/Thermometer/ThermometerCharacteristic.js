@@ -6,7 +6,7 @@ function createCharacteristic(uuid, properties, value, descriptorValue) {
     return new Characteristic({
         uuid,
         properties,
-        value: Buffer.from(value),
+        value: Buffer.from(String(value), 'utf-8'),
         descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
     });
 }
