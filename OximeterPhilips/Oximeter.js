@@ -1,5 +1,9 @@
 var bleno = require('@abandonware/bleno');
 var program = require('commander').program;
+var fs = require('fs');
+
+// Load device configuration
+var deviceConfig = require('./deviceConfig.json');
 
 var { createPrimaryService } = require('./OximeterService');
 var {
@@ -26,7 +30,10 @@ function handleStateChange(state) {
     console.log('GATT oximeter server running');
     console.log('saturation value: %j, pulse value: %j', options.saturation, options.pulse);
     if (state === 'poweredOn') {
-        bleno.startAdvertising('Nonin3230_501599389', ['180A', '46a970e00d5f11e28b5e0002a5d5c51b']);
+        bleno.startAdvertising(deviceConfig.broadcastingName, [
+            '180A',
+            deviceConfig.broadcastingServiceID.replace(/-/g, '').toLowerCase(),
+        ]);
         startTimeout();
     } else {
         bleno.stopAdvertising();
@@ -53,15 +60,15 @@ function handleAdvertisingStart(error) {
     console.log('Started advertising');
     bleno.setServices([
         createPrimaryService('180A', [
-            createCharacteristic('2A29', ['read'], 'Nonin_Medical_Inc', 'Manufacturer Name'),
-            createCharacteristic('2A24', ['read'], 'Model3230', 'Model'),
+            createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
+            createCharacteristic('2A24', ['read'], deviceConfig.model, 'Model'),
             createCharacteristic('2A25', ['read'], 'nonin_sim', 'Serial'),
             createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
             createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
         ]),
-        createPrimaryService('46a970e00d5f11e28b5e0002a5d5c51b', [
+        createPrimaryService(deviceConfig.readingServiceID.replace(/-/g, '').toLowerCase(), [
             createNotifyCharacteristic(
-                '0aad7ea00d6011e28e3c0002a5d5c51b',
+                deviceConfig.characteristicID.replace(/-/g, '').toLowerCase(),
                 'Measurement',
                 handleMeasurementSubscribe,
                 handleMeasurementUnsubscribe
@@ -76,7 +83,6 @@ function handleAdvertisingStart(error) {
         ]),
     ]);
 }
-
 
 function createPrimaryService(uuid, characteristics) {
 	return new PrimaryService({ uuid, characteristics });
