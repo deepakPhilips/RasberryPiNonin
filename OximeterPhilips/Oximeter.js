@@ -28,7 +28,6 @@ function handleStateChange(state) {
     console.log('saturation value: %j, pulse value: %j', options.saturation, options.pulse);
     if (state === 'poweredOn') {
         bleno.startAdvertising('Nonin3230_501599389', ['180A', '46a970e00d5f11e28b5e0002a5d5c51b']);
-        startTimeout();
     } else {
         bleno.stopAdvertising();
     }
