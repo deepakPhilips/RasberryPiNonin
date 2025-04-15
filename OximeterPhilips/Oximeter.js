@@ -3,7 +3,7 @@ var program = require('commander').program;
 var fs = require('fs');
 
 // Load device configuration
-var deviceConfig = require('./deviceConfig.json');
+var deviceConfig = require('./OximeterDeviceConfig.json');
 
 var { createPrimaryService } = require('./OximeterService');
 var {
