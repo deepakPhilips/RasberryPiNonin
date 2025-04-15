@@ -1,5 +1,4 @@
 var bleno = require('@abandonware/bleno');
-var fs = require('fs');
 var program = require('commander').program;
 
 var { createPrimaryService } = require('./OximeterService');
@@ -121,7 +120,6 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 		const measBuffer = processMeasurement();
 		console.log(measBuffer);
 		updateValueCallback(measBuffer);
-		writeOutput('outputOX.txt', '200');
 	} else {
 		process.exit(2);
 	}
@@ -188,9 +186,6 @@ function processMeasurement() {
 	return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, 0x00, options.pulse];
 }
 
-function writeOutput(filename, content) {
-	fs.writeFileSync(filename, content);
-}
 
 function startTimeout() {
 	time_counter = 1;
