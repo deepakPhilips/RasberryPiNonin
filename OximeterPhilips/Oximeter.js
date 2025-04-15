@@ -9,10 +9,9 @@ var { createPrimaryService } = require('./OximeterService');
 var {
     createCharacteristic,
     createNotifyCharacteristic,
-    createWriteNotifyCharacteristic,
 } = require('./OxiMeterCharacteristic');
 
-var control, writeflag, syncflag = false, intervalId, timeoutId, timeout = 1, counter = 0;
+var intervalId,  timeout = 1, counter = 0;
 
 program
     .requiredOption('-s, --saturation <n>', 'saturation', parseInt)
@@ -100,17 +99,6 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
 	});
 }
 
-function createWriteNotifyCharacteristic(uuid, descriptorValue, onWriteRequest, onSubscribe, onUnsubscribe) {
-	return new Characteristic({
-		uuid,
-		properties: ['write', 'notify'],
-		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
-		onWriteRequest,
-		onSubscribe,
-		onUnsubscribe,
-	});
-}
-
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 	counter = 0;
 	timeout = 1;
@@ -130,43 +118,6 @@ function handleMeasurementUnsubscribe() {
 	process.exit(3);
 }
 
-function handleControlWrite(data, offset, withoutResponse, callback) {
-	control = Array.from(data);
-	writeflag = true;
-	console.log('Write request: value =', control, ', length =', data.length);
-	callback(this.RESULT_SUCCESS);
-}
-
-function handleControlSubscribe(maxValueSize, updateValueCallback) {
-	console.log('Device subscribed to control');
-	intervalId = setTimeout(() => {
-		if (writeflag) {
-			handleControlSync(updateValueCallback);
-		}
-	}, 1000);
-}
-
-function handleControlUnsubscribe() {
-	console.log('Control unsubscribed');
-	clearInterval(intervalId);
-}
-
-function handleControlSync(updateValueCallback) {
-	if (control[0] === 97) {
-		const time = control[1];
-		if (syncflag) {
-			updateValueCallback([0xE1, 0x02]);
-			console.log('E102, still syncing');
-		} else if (time <= 25 && time >= 5) {
-			updateValueCallback([0xE1, 0x00]);
-			console.log('E100, sync initialized');
-			syncflag = true;
-		} else {
-			updateValueCallback([0xE1, 0x01]);
-			console.log('E101, out of range value');
-		}
-	}
-}
 
 function isValidMeasurement(saturation, pulse) {
 	return saturation > 0 && saturation <= 100 && pulse > 0 && pulse < 322;
