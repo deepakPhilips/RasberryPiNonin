@@ -6,7 +6,7 @@
     "broadcastingServiceID": "FFF0",
     "model": "PHTM20BT",
     "readingTimeout": 30,
-    "broadcastingName": "Tem BH",
+    "broadcastingName": "Tem BH 0x1",
     "disabled": false,
     "id": 1,
     "connectionTimeout": 30,
