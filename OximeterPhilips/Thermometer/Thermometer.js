@@ -43,7 +43,7 @@ function handleAccept(clientAddress) {
 
 function handleDisconnect() {
     console.log('Disconnected');
-    process.exit(0);
+    // process.exit(0);
 }
 
 function handleAdvertisingStart(error) {
@@ -73,12 +73,16 @@ function handleAdvertisingStart(error) {
 }
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
-    counter = 0;
-    console.log('Device subscribed, sending temperature measurement');
+    console.log('Device subscribed, sending temperature measurements');
     if (isValidMeasurement(options.temperature)) {
-        const measBuffer = processMeasurement();
-        console.log(measBuffer);
-        updateValueCallback(measBuffer);
+        const intervalId = setInterval(() => {
+            const measBuffer = processMeasurement();
+            console.log('Sending measurement:', measBuffer);
+            updateValueCallback(measBuffer);
+        }, 1000); // Send data every 1 second
+
+        // Store the interval ID to clear it later
+        this.intervalId = intervalId;
     } else {
         process.exit(2);
     }
@@ -86,7 +90,8 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 
 function handleMeasurementUnsubscribe() {
     console.log('Measurement unsubscribed');
-    process.exit(3);
+    // Clear the interval to stop sending data
+    clearInterval(this.intervalId);
 }
 
 function isValidMeasurement(temperature) {
