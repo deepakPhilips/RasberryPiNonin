@@ -33,7 +33,6 @@ function handleStateChange(state) {
             '180A',
             deviceConfig.broadcastingServiceID.replace(/-/g, '').toLowerCase(),
         ]);
-        startTimeout();
     } else {
         bleno.stopAdvertising();
     }
