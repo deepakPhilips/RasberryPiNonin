@@ -64,7 +64,8 @@ function handleAdvertisingStart(error) {
                 deviceConfig.characteristicID,
                 'Temperature Measurement',
                 handleMeasurementSubscribe,
-                handleMeasurementUnsubscribe
+                handleMeasurementUnsubscribe,
+                () => options.temperature  // getter callback
             ),
         ]),
     ]);
