@@ -9,10 +9,9 @@ var { createPrimaryService } = require('./ThermometerService');
 var {
     createCharacteristic,
     createNotifyCharacteristic,
-    createWriteNotifyCharacteristic,
 } = require('./ThermometerCharacteristic');
 
-var control, writeflag, syncflag = false, intervalId, timeoutId, timeout = 1, counter = 0;
+var counter = 0;
 
 program
     .requiredOption('-t, --temperature <n>', 'temperature', parseFloat)
@@ -27,26 +26,23 @@ bleno.on('advertisingStart', handleAdvertisingStart);
 
 function handleStateChange(state) {
     console.log('GATT thermometer server running');
-    console.log('temperature value: %j', options.temperature);
+    console.log('Temperature value: %j', options.temperature);
     if (state === 'poweredOn') {
         bleno.startAdvertising(deviceConfig.broadcastingName, [
-            '1809',
-            deviceConfig.broadcastingServiceID.replace(/-/g, '').toLowerCase(),
+            deviceConfig.readingServiceID,
+            deviceConfig.broadcastingServiceID,
         ]);
-        startTimeout();
     } else {
         bleno.stopAdvertising();
     }
 }
 
 function handleAccept(clientAddress) {
-    timeout = 0;
-    console.log('connected to: ' + clientAddress);
+    console.log('Connected to: ' + clientAddress);
 }
 
 function handleDisconnect() {
-    console.log("Disconnected");
-    clearInterval(intervalId);
+    console.log('Disconnected');
     process.exit(0);
 }
 
@@ -58,27 +54,26 @@ function handleAdvertisingStart(error) {
 
     console.log('Started advertising');
     bleno.setServices([
-        createPrimaryService('1809', [
-            createCharacteristic('2A1C', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
-            createCharacteristic('2A1D', ['read'], deviceConfig.model, 'Model'),
-            createCharacteristic('2A1E', ['read'], 'thermo_sim', 'Serial'),
-            createCharacteristic('2A1F', ['read'], 'v1.0', 'Software Revision'),
-            createCharacteristic('2A20', ['read'], 'Firmware v1.0', 'Firmware Revision'),
+        createPrimaryService(deviceConfig.readingServiceID, [
+            createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
+            createCharacteristic('2A24', ['read'], deviceConfig.model, 'Model'),
+            createCharacteristic('2A25', ['read'], 'thermo_sim', 'Serial'),
+            createCharacteristic('2A28', ['read'], 'v1.0', 'Software Revision'),
+            createCharacteristic('2A26', ['read'], 'Firmware v1.0', 'Firmware Revision'),
         ]),
-        createPrimaryService(deviceConfig.readingServiceID.replace(/-/g, '').toLowerCase(), [
+        createPrimaryService(deviceConfig.broadcastingServiceID, [
             createNotifyCharacteristic(
-                deviceConfig.characteristicID.replace(/-/g, '').toLowerCase(),
+                deviceConfig.characteristicID,
                 'Temperature Measurement',
                 handleMeasurementSubscribe,
                 handleMeasurementUnsubscribe
-            )
+            ),
         ]),
     ]);
 }
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
     counter = 0;
-    timeout = 1;
     console.log('Device subscribed, sending temperature measurement');
     if (isValidMeasurement(options.temperature)) {
         const measBuffer = processMeasurement();
@@ -91,7 +86,6 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 
 function handleMeasurementUnsubscribe() {
     console.log('Measurement unsubscribed');
-    clearInterval(intervalId);
     process.exit(3);
 }
 
@@ -105,14 +99,4 @@ function processMeasurement() {
     const temp1 = parseInt(tempHex.slice(0, 2), 16);
     const temp2 = parseInt(tempHex.slice(2, 4), 16);
     return [0x0a, 0x15, 0x1e, 0x00, counter, temp1, temp2];
-}
-
-function startTimeout() {
-    time_counter = 1;
-    timeoutId = setInterval(() => {
-        time_counter++;
-        if (timeout === 1 && time_counter === deviceConfig.connectionTimeout) {
-            process.exit(1);
-        }
-    }, 1000);
 }
