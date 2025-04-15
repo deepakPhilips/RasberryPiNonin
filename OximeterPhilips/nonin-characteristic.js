@@ -1,6 +1,6 @@
 const bleno = require('@abandonware/bleno');
 
-const CHARACTERISTIC_UUID = '0aad7ea00d6011e28e3c0002a5d5c51b';
+const CHARACTERISTIC_UUID = '0AAD7EA0-0D60-11E2-8E3C-0002A5D5C51B';
 
 class NoninCharacteristic extends bleno.Characteristic {
   constructor() {

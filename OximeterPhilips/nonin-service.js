@@ -1,7 +1,7 @@
 const bleno = require('@abandonware/bleno');
 const NoninCharacteristic = require('./nonin-characteristic');
 
-const SERVICE_UUID = '46a970e00d5f11e28b5e0002a5d5c51b';
+const SERVICE_UUID = '46A970E0-0D5F-11E2-8B5E-0002A5D5C51B';
 
 class NoninService extends bleno.PrimaryService {
   constructor() {
