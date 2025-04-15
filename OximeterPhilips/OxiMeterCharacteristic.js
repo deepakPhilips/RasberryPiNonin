@@ -21,19 +21,8 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
     });
 }
 
-function createWriteNotifyCharacteristic(uuid, descriptorValue, onWriteRequest, onSubscribe, onUnsubscribe) {
-    return new Characteristic({
-        uuid,
-        properties: ['write', 'notify'],
-        descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
-        onWriteRequest,
-        onSubscribe,
-        onUnsubscribe,
-    });
-}
 
 module.exports = {
     createCharacteristic,
     createNotifyCharacteristic,
-    createWriteNotifyCharacteristic,
 };
