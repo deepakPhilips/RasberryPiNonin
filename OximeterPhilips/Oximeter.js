@@ -72,14 +72,7 @@ function handleAdvertisingStart(error) {
                 'Measurement',
                 handleMeasurementSubscribe,
                 handleMeasurementUnsubscribe
-            ),
-            createWriteNotifyCharacteristic(
-                '1447af800d6011e288b60002a5d5c51b',
-                'Control Point',
-                handleControlWrite,
-                handleControlSubscribe,
-                handleControlUnsubscribe
-            ),
+            )
         ]),
     ]);
 }
