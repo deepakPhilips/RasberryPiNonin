@@ -1,43 +1,52 @@
 const bleno = require('@abandonware/bleno');
 
-const CHARACTERISTIC_UUID = '0AAD7EA0-0D60-11E2-8E3C-0002A5D5C51B'; 
+const CHARACTERISTIC_UUID = '0aad7ea00d6011e28e3c0002a5d5c51b';
 
 class NoninCharacteristic extends bleno.Characteristic {
   constructor() {
     super({
       uuid: CHARACTERISTIC_UUID,
-      properties: ['notify'],
+      properties: ['read', 'notify'],
       value: null
     });
 
     this._updateValueCallback = null;
-    this._interval = null;
+  }
+
+  onReadRequest(offset, callback) {
+    console.log('[BLE] Read request received');
+
+    const spo2 = 98;
+    const pulse = 72;
+
+    // Simulate a data frame — simplified
+    const data = Buffer.from([
+      0x01,   // Flags
+      spo2,   // SpO2
+      pulse   // Pulse Rate
+    ]);
+
+    callback(this.RESULT_SUCCESS, data);
   }
 
   onSubscribe(maxValueSize, updateValueCallback) {
-    console.log('[BLE] Client subscribed for PulseOx updates');
+    console.log('[BLE] Client subscribed for notifications');
     this._updateValueCallback = updateValueCallback;
 
     this._interval = setInterval(() => {
-      const spo2 = 97 + Math.floor(Math.random() * 3);  // 97–99%
-      const pulse = 60 + Math.floor(Math.random() * 20); // 60–79 bpm
+      const spo2 = 97 + Math.floor(Math.random() * 3);
+      const pulse = 60 + Math.floor(Math.random() * 20);
 
-      // Simulated Nonin 3230 frame (very simplified example)
-      const data = Buffer.from([
-        0x01,       // flags
-        spo2,       // SpO2
-        pulse       // Pulse rate
-      ]);
-
-      console.log(`[BLE] Sending PulseOx: SpO2=${spo2}, Pulse=${pulse}`);
+      const data = Buffer.from([0x01, spo2, pulse]);
+      console.log(`[BLE] Notify: SpO2=${spo2}, Pulse=${pulse}`);
       if (this._updateValueCallback) {
         this._updateValueCallback(data);
       }
-    }, 1000); // Update every 1s
+    }, 1000);
   }
 
   onUnsubscribe() {
-    console.log('[BLE] Client unsubscribed from PulseOx');
+    console.log('[BLE] Client unsubscribed');
     clearInterval(this._interval);
     this._interval = null;
     this._updateValueCallback = null;
