@@ -1,0 +1,20 @@
+{
+    "readingInstructions": "Please place the thermometer under your tongue and wait for the beep.",
+    "libVersion": 1,
+    "options": 0,
+    "broadcastingServiceID": "12345678-1234-5678-1234-56789ABCDEF0",
+    "model": "ThermoX",
+    "readingTimeout": 20,
+    "broadcastingName": "ThermoX100",
+    "disabled": false,
+    "id": 14,
+    "connectionTimeout": 60,
+    "type": "Thermometer",
+    "pairingInstructions": "Place the thermometer under your tongue.",
+    "manufacturer": "ThermoCorp",
+    "characteristicID": "87654321-4321-8765-4321-98765FEDCBA0",
+    "readingServiceID": "12345678-1234-5678-1234-56789ABCDEF0",
+    "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/thermometer.jpg",
+    "requiresPairing": false,
+    "instructions": "Place the thermometer under your tongue."
+  }
