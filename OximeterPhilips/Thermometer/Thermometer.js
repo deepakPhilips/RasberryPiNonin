@@ -1,10 +1,12 @@
 var bleno = require('@abandonware/bleno');
 var program = require('commander').program;
+var fs = require('fs');
+
 var deviceConfig = require('./thermometerConfig.json');
 var { createPrimaryService } = require('./ThermometerService');
 var {
     createCharacteristic,
-    createNotifyCharacteristicWithRead,
+    createNotifyCharacteristic,
 } = require('./ThermometerCharacteristic');
 
 var counter = 0;
@@ -21,6 +23,7 @@ bleno.on('stateChange', (state) => {
     console.log('Temperature value: %j', options.temperature);
 
     if (state === 'poweredOn') {
+        // Set services BEFORE advertising
         bleno.setServices([
             createPrimaryService('180A', [
                 createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
@@ -30,12 +33,11 @@ bleno.on('stateChange', (state) => {
                 createCharacteristic('2A26', ['read'], 'Firmware v1.0', 'Firmware Revision'),
             ]),
             createPrimaryService(deviceConfig.broadcastingServiceID, [
-                createNotifyCharacteristicWithRead(
+                createNotifyCharacteristic(
                     deviceConfig.characteristicID,
                     'Temperature Measurement',
                     handleMeasurementSubscribe,
-                    handleMeasurementUnsubscribe,
-                    options.temperature
+                    handleMeasurementUnsubscribe
                 ),
             ]),
         ], (err) => {
@@ -44,8 +46,9 @@ bleno.on('stateChange', (state) => {
                 return;
             }
 
-            bleno.startAdvertising("Tem BH 0x1", [
-                deviceConfig.readingServiceID // advertise only 1809
+            bleno.startAdvertising(deviceConfig.broadcastingName, [
+                deviceConfig.readingServiceID,
+                deviceConfig.broadcastingServiceID,
             ]);
         });
     } else {
@@ -82,17 +85,20 @@ function handleMeasurementUnsubscribe() {
     measurementIntervalId = null;
 }
 
-function isValidMeasurement(temp) {
-    return temp > 35 && temp < 42;
+function isValidMeasurement(temperature) {
+    return temperature > 35 && temperature < 42;
 }
 
+// Encode temperature in IEEE-11073 32-bit float (SFLOAT not supported in JS)
 function ieee11073Float(tempCelsius) {
-    const flags = 0x00;
-    const exponent = 0xFE; // -2
-    const mantissa = Math.round(tempCelsius * 100); // e.g., 37.5°C -> 3750
+    const flags = 0x00; // Celsius, no timestamp, no temp type
+    const exponent = 0xFE; // -2 exponent in 2’s complement = divide mantissa by 100
+    const mantissa = Math.round(tempCelsius * 100); // 37.5°C = 3750
+
     const ieee = (exponent << 24) | (mantissa & 0x00FFFFFF);
     const buffer = Buffer.alloc(5);
     buffer.writeUInt8(flags, 0);
     buffer.writeInt32LE(ieee, 1);
+
     return buffer;
 }
