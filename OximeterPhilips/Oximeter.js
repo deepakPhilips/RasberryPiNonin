@@ -11,7 +11,7 @@ var {
     createNotifyCharacteristic,
 } = require('./OxiMeterCharacteristic');
 
-var intervalId,  timeout = 1, counter = 0;
+var  counter = 0;
 
 program
     .requiredOption('-s, --saturation <n>', 'saturation', parseInt)
@@ -39,13 +39,11 @@ function handleStateChange(state) {
 }
 
 function handleAccept(clientAddress) {
-    timeout = 0;
     console.log('connected to: ' + clientAddress);
 }
 
 function handleDisconnect() {
     console.log("Disconnected");
-    clearInterval(intervalId);
     process.exit(0);
 }
 
@@ -100,7 +98,6 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 	counter = 0;
-	timeout = 1;
 	console.log('Device subscribed, sending measurement');
 	if (isValidMeasurement(options.saturation, options.pulse)) {
 		const measBuffer = processMeasurement();
@@ -113,7 +110,6 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 
 function handleMeasurementUnsubscribe() {
 	console.log('Measurement unsubscribed');
-	clearInterval(intervalId);
 	process.exit(3);
 }
 
@@ -135,13 +131,3 @@ function processMeasurement() {
 	return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, 0x00, options.pulse];
 }
 
-
-function startTimeout() {
-	time_counter = 1;
-	timeoutId = setInterval(() => {
-		time_counter++;
-		if (timeout === 1 && time_counter === 60) {
-			process.exit(1);
-		}
-	}, 1000);
-}
