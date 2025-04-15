@@ -54,7 +54,7 @@ function handleAdvertisingStart(error) {
 
     console.log('Started advertising');
     bleno.setServices([
-        createPrimaryService(deviceConfig.readingServiceID, [
+        createPrimaryService('180A', [
             createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
             createCharacteristic('2A24', ['read'], deviceConfig.model, 'Model'),
             createCharacteristic('2A25', ['read'], 'thermo_sim', 'Serial'),
