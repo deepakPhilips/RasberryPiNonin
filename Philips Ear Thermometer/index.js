@@ -1,13 +1,7 @@
 var bleno = require('@abandonware/bleno');
 
-var SystemInformationService = require('./Services/SystemInformationService');
-
-var systemInformationService = new SystemInformationService();
 
  
-var BatteryService=require('./Services/BatteryService');
-
-var batteryService=new BatteryService();
  
 
 var HealthThermometerService=require('./Services/HealthThermometerService');
@@ -52,7 +46,7 @@ bleno.on('advertisingStart', function(error) {
   if (!error) {
 
     bleno.setServices([
-      systemInformationService,healthThermometerService,batteryService
+      systemInformationService,healthThermometerService,
     ]);
   }
 });

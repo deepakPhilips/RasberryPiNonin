@@ -1,4 +1,4 @@
-var bleno = require('bleno');
+var bleno = require('@abandonware/bleno');
 var util = require('util');
 
 var ManufacturerNameCharacteristic = require('./characteristics/SystemInformation/ManufacturerNameCharacteristic');
