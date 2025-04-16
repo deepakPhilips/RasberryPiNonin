@@ -31,11 +31,34 @@ function handleStateChange(state) {
     console.log('GATT Thermometer server running');
     console.log('Termperature value: %j,', options.temperature,);
     if (state === 'poweredOn') {
-        bleno.startAdvertising(deviceConfig.broadcastingName, [
-            '180A',
-            deviceConfig.readingServiceID,
-            deviceConfig.broadcastingServiceID,
-        ]);
+
+        const advertisementData = Buffer.concat([
+            // Flags
+            Buffer.from([0x02, 0x01, 0x06]),
+          
+            // Complete Local Name: "FORA IR20"
+            (() => {
+              const name = deviceConfig.broadcastingName;
+              const nameBuf = Buffer.from(name, 'utf-8');
+              return Buffer.concat([
+                Buffer.from([nameBuf.length + 1, 0x09]), // Length + type (0x09 = Complete Local Name)
+                nameBuf
+              ]);
+            })()
+          ]);
+
+            const serviceUuids = [
+                deviceConfig.readingServiceID,
+                deviceConfig.broadcastingServiceID
+            ];
+
+            bleno.startAdvertisingWithEIRData(advertisementData, Buffer.alloc(0), (err) => {
+                if (err) {
+                console.error('Error in startAdvertisingWithEIRData:', err);
+                } else {
+                console.log(`Advertising as "${deviceConfig.broadcastingName}" with service UUIDs:`, serviceUuids);
+                }
+            });
     } else {
         bleno.stopAdvertising();
     }
