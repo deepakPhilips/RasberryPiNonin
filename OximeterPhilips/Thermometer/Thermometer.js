@@ -192,7 +192,7 @@ const ieee11073Float = (tempCelsius) => {
 
 
 
-  ar timeChange=function(year,month,day,hours,minutes, seconds){
+  var timeChange=function(year,month,day,hours,minutes, seconds){
     
   if(seconds>0x3B){                //seconds>59    
    minutes++; 
@@ -288,98 +288,3 @@ return [year,month,day,hours,minutes, seconds];
            
 };
 
-var timeChange=function(year,month,day,hours,minutes, seconds){
-    
-    if(seconds>0x3B){                //seconds>59    
-     minutes++; 
-     seconds=0x00;
-    }
-    if(minutes>0x3B){                //minutes>59                            // TIME CHANGE LOGIC
-     hours++;
-     minutes=0x00;
-    }
-    if(hours>0x17) {                  // hours>23
-     hours=0x00;
-     minutes=0x00;
-     seconds=0x00;
-    }
-     seconds++;
-    
-    if (hours==0x00) {
-    if (month%2!=0 && month<=0x07)
-      {
-          if (day==0x1F)
-          {
-              day=0x01;
-              month=month+1;
-              
-          }
-      }
-      else if (month%2==0x00 && 0x08<=month<=0x0C)
-      {
-          if (day==0x1F)
-          {
-              day=0x01;
-              month=month+1;
-             
-              
-          }
-      }
-      else if (month%2==0 && 0x04<=month<=0x06)                           //DATE CHANGE   LOGIC 
-      {
-          if (day==0x1E)
-          {
-              day=1;
-              month=1;
-              
-          }
-      }
-      else if (month%2!=0 && 0x09<=month<=0x0B)
-      {
-          if (day==0x1E)
-          {
-              day=1;
-              month=month+1;
-              
-            
-          }
-      }
-      else if (month==2 && year%4==0)
-      {
-          if (day==0x1D)
-          {
-              day=1;
-              month=month+1;
-              
-              
-          }
-      }
-      else if (month==2 && year%4!=0)
-      {
-          if (day==0x01C)
-          {
-              day=1;
-              month=month+1;
-             
-             
-          }
-      }
-      else if (month==0x0C && day==0X1F)
-      {
-          day=1;
-          month=1;
-          year=year+1;
-         
-      }
-      else
-      {
-          day=day+1;
-          month=month;
-         
-          
-      }
-    }
-  
-  return [year,month,day,hours,minutes, seconds];
-             
-  };
