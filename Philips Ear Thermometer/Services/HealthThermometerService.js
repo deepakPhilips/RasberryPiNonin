@@ -3,7 +3,7 @@ var util=require('util');
 
 var HealthThermometerCharacteristic=require('./characteristics/HealthThermometer/HealthThermometerCharacteristic');
 
-let rawdata4=require('/home/pi/Documents/RaspberryPi_Project/Philips Ear Thermometer/extra/Service_UUIDs.json');
+let rawdata4=require('../extra/Service_UUIDs.json');
 var data4=JSON.stringify(rawdata4);
 let test4=JSON.parse(data4);
 

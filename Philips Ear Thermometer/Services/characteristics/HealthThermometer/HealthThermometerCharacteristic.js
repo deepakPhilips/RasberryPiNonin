@@ -6,18 +6,17 @@ let rawdata=require('./TestData/HealthThermometerTest.json');
 var data=JSON.stringify(rawdata);
 let test=JSON.parse(data);
 
-var Logger=require('/home/pi/Documents/RaspberryPi_Project/Logger.js');
-var logger=new Logger();
 
-let rawdata1=require('/home/pi/Documents/RaspberryPi_Project/Philips Ear Thermometer/extra/ConsoleLogComments.json');
+
+let rawdata1=require('../../../extra/ConsoleLogComments.json ');
 var data1=JSON.stringify(rawdata1);
 let test1=JSON.parse(data1);
 
-let rawdata2=require('/home/pi/Documents/RaspberryPi_Project/Philips Ear Thermometer/extra/Properties.json');
+let rawdata2=require('../../../extra/Properties.json');
 var data2=JSON.stringify(rawdata2);
 let test2=JSON.parse(data2);
 
-let rawdata3=require('/home/pi/Documents/RaspberryPi_Project/Philips Ear Thermometer/extra/Characteristic_UUIDs.json');
+let rawdata3=require('../../../extra/Characteristic_UUIDs.json');
 var data3=JSON.stringify(rawdata3);
 let test3=JSON.parse(data3);
 
@@ -37,7 +36,7 @@ HealthThermometerCharacteristic.super_.call(this,{
 
 
 HealthThermometerCharacteristic.prototype.onSubscribe = function(maxValueSize, updateValueCallback) {
-   logger.log(test1[1].string);
+   console.log(test1[1].string);
 
   this.counter = 1;
   this.index=1;
@@ -85,7 +84,7 @@ HealthThermometerCharacteristic.prototype.onSubscribe = function(maxValueSize, u
 
   updateValueCallback(buff);
   
-    logger.log(test1[10].string+ buff+test1[7].string+ this.counter+ '\n');
+    console.log(test1[10].string+ buff+test1[7].string+ this.counter+ '\n');
       
    
     
@@ -96,7 +95,7 @@ HealthThermometerCharacteristic.prototype.onSubscribe = function(maxValueSize, u
 };
 
 HealthThermometerCharacteristic.prototype.onUnsubscribe = function() {
-    logger.log(test1[2].string);
+    console.log(test1[2].string);
 
   if (this.changeInterval) {
     clearInterval(this.changeInterval);
@@ -105,7 +104,7 @@ HealthThermometerCharacteristic.prototype.onUnsubscribe = function() {
 };
 
 HealthThermometerCharacteristic.prototype.onIndicate= function() {
-    logger.log(test1[3].string);
+    console.log(test1[3].string);
 };
 
 
