@@ -29,8 +29,9 @@ function handleStateChange(state) {
     console.log('Termperature value: %j,', options.temperature,);
     if (state === 'poweredOn') {
         bleno.startAdvertising(deviceConfig.broadcastingName, [
-            deviceConfig.broadcastingServiceID,
+            '180A',
             deviceConfig.readingServiceID,
+            deviceConfig.broadcastingServiceID,
         ]);
     } else {
         bleno.stopAdvertising();
