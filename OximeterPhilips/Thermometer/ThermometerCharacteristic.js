@@ -11,30 +11,14 @@ function createCharacteristic(uuid, properties, value, descriptorValue) {
     });
 }
 
-function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe, getTempCallback) {
+function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
     return new Characteristic({
         uuid,
-        properties: ['read', 'notify'],
+        properties: ['notify'],
         descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
         onSubscribe,
         onUnsubscribe,
-        onReadRequest: (offset, callback) => {
-            const buffer = ieee11073Float(getTempCallback());
-            console.log('Read request: sending', buffer);
-            callback(Characteristic.RESULT_SUCCESS, buffer);
-        },
     });
-}
-
-function ieee11073Float(tempCelsius) {
-    const flags = 0x00;
-    const exponent = 0xFE; // -2 (divide by 100)
-    const mantissa = Math.round(tempCelsius * 100);
-    const ieee = (exponent << 24) | (mantissa & 0x00FFFFFF);
-    const buffer = Buffer.alloc(5);
-    buffer.writeUInt8(flags, 0);
-    buffer.writeInt32LE(ieee, 1);
-    return buffer;
 }
 
 

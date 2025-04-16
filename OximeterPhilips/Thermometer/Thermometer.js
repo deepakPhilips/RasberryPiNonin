@@ -1,16 +1,17 @@
 var bleno = require('@abandonware/bleno');
 var program = require('commander').program;
+var fs = require('fs');
 
 // Load device configuration
-var deviceConfig = require('./thermometerConfig.json');
+var deviceConfig = require('./thermometerDeviceConfig.json');
 
 var { createPrimaryService } = require('./ThermometerService');
 var {
     createCharacteristic,
     createNotifyCharacteristic,
-} = require('./ThermometerCharacteristic');
+} = require('./OxiMeterCharacteristic');
 
-var counter = 0;
+var  counter = 0;
 
 program
     .requiredOption('-t, --temperature <n>', 'temperature', parseFloat)
@@ -24,11 +25,11 @@ bleno.on('disconnect', handleDisconnect);
 bleno.on('advertisingStart', handleAdvertisingStart);
 
 function handleStateChange(state) {
-    console.log('GATT thermometer server running');
-    console.log('Temperature value: %j', options.temperature);
+    console.log('GATT oximeter server running');
+    console.log('saturation value: %j, pulse value: %j', options.saturation, options.pulse);
     if (state === 'poweredOn') {
         bleno.startAdvertising(deviceConfig.broadcastingName, [
-            deviceConfig.readingServiceID,
+            '180A',
             deviceConfig.broadcastingServiceID,
         ]);
     } else {
@@ -37,11 +38,12 @@ function handleStateChange(state) {
 }
 
 function handleAccept(clientAddress) {
-    console.log('Connected to: ' + clientAddress);
+    console.log('connected to: ' + clientAddress);
 }
 
 function handleDisconnect() {
-    console.log('Disconnected');
+    console.log("Disconnected");
+    process.exit(0);
 }
 
 function handleAdvertisingStart(error) {
@@ -65,23 +67,44 @@ function handleAdvertisingStart(error) {
                 'Temperature Measurement',
                 handleMeasurementSubscribe,
                 handleMeasurementUnsubscribe,
-                () => options.temperature  // getter callback
+                () => options.temperature // 💡 callback that provides the temp
             ),
         ]),
     ]);
 }
 
+function createPrimaryService(uuid, characteristics) {
+    return new PrimaryService({ uuid, characteristics });
+}
+
+function createCharacteristic(uuid, properties, value, descriptorValue) {
+    return new Characteristic({
+        uuid,
+        properties,
+        value: Buffer.from(value),
+        descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
+    });
+}
+
+function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
+    return new Characteristic({
+        uuid,
+        properties: ['notify'],
+        descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
+        onSubscribe,
+        onUnsubscribe,
+    });
+}
+
+
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
     console.log('Device subscribed, sending temperature measurements');
     if (isValidMeasurement(options.temperature)) {
-        const intervalId = setInterval(() => {
-            const measBuffer = processMeasurement();
+        const measBuffer = processMeasurement();
             console.log('Sending measurement:', measBuffer);
             updateValueCallback(measBuffer);
-        }, 1000); // Send data every 1 second
-
         // Store the interval ID to clear it later
-        this.intervalId = intervalId;
+        // this.intervalId = intervalId;
     } else {
         console.error('Invalid measurement');
     }
@@ -89,13 +112,14 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
 
 function handleMeasurementUnsubscribe() {
     console.log('Measurement unsubscribed');
-    // Clear the interval to stop sending data
-    clearInterval(this.intervalId);
+    process.exit(3);
 }
+
 
 function isValidMeasurement(temperature) {
     return temperature > 35 && temperature < 42; // Valid human body temperature range
 }
+
 
 function processMeasurement() {
     counter++;
