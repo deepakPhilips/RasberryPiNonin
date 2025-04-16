@@ -12,6 +12,9 @@ var {
 } = require('./ThermometerCharacteristic');
 
 var  counter = 0;
+let rawdata=require('../../Philips Ear Thermometer/Services/characteristics/HealthThermometer/TestData/HealthThermometerTest.json');
+var data=JSON.stringify(rawdata);
+let test=JSON.parse(data);
 
 program
     .requiredOption('-t, --temperature <n>', 'temperature', parseFloat)
