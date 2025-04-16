@@ -8,7 +8,7 @@ let test=JSON.parse(data);
 
 
 
-let rawdata1=require('../../../extra/ConsoleLogComments.json ');
+let rawdata1=require('./../../../extra/ConsoleLogComments.json');
 var data1=JSON.stringify(rawdata1);
 let test1=JSON.parse(data1);
 
