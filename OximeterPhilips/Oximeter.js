@@ -114,7 +114,7 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
             console.log('Sending measurement:', measBuffer);
             updateValueCallback(measBuffer);
         // Store the interval ID to clear it later
-        this.intervalId = intervalId;
+        // this.intervalId = intervalId;
     } else {
         console.error('Invalid measurement');
     }
