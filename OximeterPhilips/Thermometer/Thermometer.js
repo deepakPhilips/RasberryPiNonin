@@ -30,8 +30,7 @@ function handleStateChange(state) {
     if (state === 'poweredOn') {
         bleno.startAdvertising(deviceConfig.broadcastingName, [
             '180A',
-            deviceConfig.readingServiceID,
-            deviceConfig.broadcastingServiceID,
+            "FFF0",
         ]);
     } else {
         bleno.stopAdvertising();
