@@ -29,7 +29,8 @@ function handleStateChange(state) {
     console.log('Termperature value: %j,', options.temperature,);
     if (state === 'poweredOn') {
         bleno.startAdvertising(deviceConfig.broadcastingName, [
-            deviceConfig.readingServiceID  // ONLY advertise 1809
+            deviceConfig.readingServiceID,
+            deviceConfig.broadcastingServiceID,
         ]);
     } else {
         bleno.stopAdvertising();
@@ -66,8 +67,8 @@ function handleAdvertisingStart(error) {
                 'Temperature Measurement',
                 handleMeasurementSubscribe,
                 handleMeasurementUnsubscribe,
-                () => options.temperature
-            )
+                () => options.temperature // 💡 callback that provides the temp
+            ),
         ]),
     ]);
 }
