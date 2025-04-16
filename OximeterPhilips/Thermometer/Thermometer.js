@@ -9,7 +9,7 @@ var { createPrimaryService } = require('./ThermometerService');
 var {
     createCharacteristic,
     createNotifyCharacteristic,
-} = require('./OxiMeterCharacteristic');
+} = require('./ThermometerCharacteristic');
 
 var  counter = 0;
 
@@ -25,8 +25,8 @@ bleno.on('disconnect', handleDisconnect);
 bleno.on('advertisingStart', handleAdvertisingStart);
 
 function handleStateChange(state) {
-    console.log('GATT oximeter server running');
-    console.log('saturation value: %j, pulse value: %j', options.saturation, options.pulse);
+    console.log('GATT Thermometer server running');
+    console.log('Termperature value: %j,', options.temperature,);
     if (state === 'poweredOn') {
         bleno.startAdvertising(deviceConfig.broadcastingName, [
             '180A',
@@ -103,8 +103,6 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
         const measBuffer = processMeasurement();
             console.log('Sending measurement:', measBuffer);
             updateValueCallback(measBuffer);
-        // Store the interval ID to clear it later
-        // this.intervalId = intervalId;
     } else {
         console.error('Invalid measurement');
     }
