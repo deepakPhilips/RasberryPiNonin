@@ -126,8 +126,12 @@ function handleMeasurementUnsubscribe() {
 }
 
 
-function isValidMeasurement(saturation, pulse) {
-	return saturation > 0 && saturation <= 100 && pulse > 0 && pulse < 322;
+// function isValidMeasurement(saturation, pulse) {
+// 	return saturation > 0 && saturation <= 100 && pulse > 0 && pulse < 322;
+// }
+
+function isValidMeasurement(temperature) {
+    return temperature > 35 && temperature < 42; // Valid human body temperature range
 }
 
 // function processMeasurement() {
