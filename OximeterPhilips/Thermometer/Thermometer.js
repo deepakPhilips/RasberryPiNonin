@@ -47,7 +47,7 @@ function handleAccept(clientAddress) {
 
 function handleDisconnect() {
     console.log("Disconnected");
-    process.exit(0);
+    // process.exit(0);
 }
 
 function handleAdvertisingStart(error) {
@@ -154,7 +154,7 @@ console.log("🚀 ~ handleMeasurementSubscribe ~ updateValueCallback:")
 
 function handleMeasurementUnsubscribe() {
     console.log('Measurement unsubscribed');
-    process.exit(3);
+    // process.exit(3);
 }
 
 
