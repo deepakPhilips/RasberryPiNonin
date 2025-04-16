@@ -99,14 +99,62 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
 
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
-    console.log('Device subscribed, sending temperature measurements');
-    if (isValidMeasurement(options.temperature)) {
-        const measBuffer = processMeasurement();
-            console.log('Sending measurement:', measBuffer);
-            updateValueCallback(measBuffer);
-    } else {
-        console.error('Invalid measurement');
-    }
+
+
+
+    this.counter = 1;
+    this.index = 1;
+    let year = 0x07E2;
+    let month = test[this.index].month;
+    let day = test[this.index].day;
+    let hours = test[this.index].hours;
+    let minutes = test[this.index].minutes;
+    let seconds = test[this.index].seconds;
+  
+    this.changeInterval = setInterval(() => {
+      const buff = Buffer.alloc(13); // 1 (flags) + 4 (temp) + 7 (timestamp) + 1 (type)
+  
+      // Get and update time
+      const Time = timeChange(year, month, day, hours, minutes, seconds);
+      [year, month, day, hours, minutes, seconds] = Time;
+  
+      // Reset index if at end
+      if (this.index >= test.length) {
+        this.index = 1;
+      }
+  
+      const entry = test[this.index];
+      
+      // 1. Write Flags
+      buff.writeUInt8(entry.flag, 0); // 1 byte
+  
+      // 2. Write IEEE-11073 Float (4 bytes)
+      const tempFloat = ieee11073Float(entry.tempValue);
+      tempFloat.copy(buff, 1);
+  
+      // 3. Timestamp (7 bytes)
+      buff.writeUInt16LE(year, 5);     // Year (2 bytes)
+      buff.writeUInt8(month, 7);       // Month (1 byte)
+      buff.writeUInt8(day, 8);         // Day (1 byte)
+      buff.writeUInt8(hours, 9);       // Hours (1 byte)
+      buff.writeUInt8(minutes, 10);    // Minutes (1 byte)
+      buff.writeUInt8(seconds, 11);    // Seconds (1 byte)
+  
+      // 4. Temp Type (1 byte)
+      buff.writeUInt8(entry.tempType, 12); // Temperature type (1 byte)
+  
+      // Send value
+      updateValueCallback(buff);
+    
+    // console.log('Device subscribed, sending temperature measurements');
+    // if (isValidMeasurement(options.temperature)) {
+    //     const measBuffer = processMeasurement();
+    //         console.log('Sending measurement:', measBuffer);
+    //         updateValueCallback(measBuffer);
+    // } else {
+    //     console.error('Invalid measurement');
+    // }
+    }, 1000); // Send every second
 }
 
 function handleMeasurementUnsubscribe() {
@@ -127,3 +175,14 @@ function processMeasurement() {
     const temp2 = parseInt(tempHex.slice(2, 4), 16);
     return [0x0a, 0x15, 0x1e, 0x00, counter, temp1, temp2];
 }
+
+
+const ieee11073Float = (tempCelsius) => {
+    const flags = 0x00; // Not used here, handled separately
+    const exponent = -2; // Means divide by 100
+    const mantissa = Math.round(tempCelsius * 100);
+  
+    const buffer = Buffer.alloc(4);
+    buffer.writeIntLE(mantissa + (exponent << 24), 0, 4); // Combine mantissa and exponent
+    return buffer;
+  };
