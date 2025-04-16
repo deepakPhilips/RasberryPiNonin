@@ -58,16 +58,17 @@ function handleAdvertisingStart(error) {
             createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
             createCharacteristic('2A24', ['read'], deviceConfig.model, 'Model'),
             createCharacteristic('2A25', ['read'], 'thermo_sim', 'Serial'),
-            createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
-            createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
+            createCharacteristic('2A28', ['read'], 'v1.0', 'Software Revision'),
+            createCharacteristic('2A26', ['read'], 'Firmware v1.0', 'Firmware Revision'),
         ]),
-        createPrimaryService(deviceConfig.readingServiceID.replace(/-/g, '').toLowerCase(), [
+        createPrimaryService(deviceConfig.readingServiceID, [
             createNotifyCharacteristic(
-                deviceConfig.characteristicID.replace(/-/g, '').toLowerCase(),
-                'Measurement',
+                deviceConfig.characteristicID,
+                'Temperature Measurement',
                 handleMeasurementSubscribe,
-                handleMeasurementUnsubscribe
-            )
+                handleMeasurementUnsubscribe,
+                () => options.temperature // 💡 callback that provides the temp
+            ),
         ]),
     ]);
 }
