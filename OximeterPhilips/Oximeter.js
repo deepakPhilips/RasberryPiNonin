@@ -14,8 +14,7 @@ var {
 var  counter = 0;
 
 program
-    .requiredOption('-s, --saturation <n>', 'saturation', parseInt)
-    .requiredOption('-p, --pulse <n>', 'pulse', parseInt)
+    .requiredOption('-t, --temperature <n>', 'temperature', parseFloat)
     .parse(process.argv);
 
 const options = program.opts();
@@ -58,7 +57,7 @@ function handleAdvertisingStart(error) {
         createPrimaryService('180A', [
             createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
             createCharacteristic('2A24', ['read'], deviceConfig.model, 'Model'),
-            createCharacteristic('2A25', ['read'], 'nonin_sim', 'Serial'),
+            createCharacteristic('2A25', ['read'], 'thermo_sim', 'Serial'),
             createCharacteristic('2A28', ['read'], 'r1.2 1.3', 'Software Revision'),
             createCharacteristic('2A26', ['read'], 'Software Revisions', 'Firmware Revision'),
         ]),
@@ -96,16 +95,29 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
 	});
 }
 
+// function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
+// 	counter = 0;
+// 	console.log('Device subscribed, sending measurement');
+// 	if (isValidMeasurement(options.saturation, options.pulse)) {
+// 		const measBuffer = processMeasurement();
+// 		console.log(measBuffer);
+// 		updateValueCallback(measBuffer);
+// 	} else {
+// 		process.exit(2);
+// 	}
+// }
+
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
-	counter = 0;
-	console.log('Device subscribed, sending measurement');
-	if (isValidMeasurement(options.saturation, options.pulse)) {
-		const measBuffer = processMeasurement();
-		console.log(measBuffer);
-		updateValueCallback(measBuffer);
-	} else {
-		process.exit(2);
-	}
+    console.log('Device subscribed, sending temperature measurements');
+    if (isValidMeasurement(options.temperature)) {
+        const measBuffer = processMeasurement();
+            console.log('Sending measurement:', measBuffer);
+            updateValueCallback(measBuffer);
+        // Store the interval ID to clear it later
+        this.intervalId = intervalId;
+    } else {
+        console.error('Invalid measurement');
+    }
 }
 
 function handleMeasurementUnsubscribe() {
@@ -118,16 +130,24 @@ function isValidMeasurement(saturation, pulse) {
 	return saturation > 0 && saturation <= 100 && pulse > 0 && pulse < 322;
 }
 
-function processMeasurement() {
-	const pai = Math.floor((Math.random() * 6) + 1);
-	const pai2 = Math.floor((Math.random() * 100) + 1);
-	counter++;
-	if (options.pulse > 256) {
-		const pulseHex = '0' + options.pulse.toString(16);
-		const pulse1 = parseInt(pulseHex.slice(0, 2), 16);
-		const pulse2 = parseInt(pulseHex.slice(2, 4), 16);
-		return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, pulse1, pulse2];
-	}
-	return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, 0x00, options.pulse];
-}
+// function processMeasurement() {
+// 	const pai = Math.floor((Math.random() * 6) + 1);
+// 	const pai2 = Math.floor((Math.random() * 100) + 1);
+// 	counter++;
+// 	if (options.pulse > 256) {
+// 		const pulseHex = '0' + options.pulse.toString(16);
+// 		const pulse1 = parseInt(pulseHex.slice(0, 2), 16);
+// 		const pulse2 = parseInt(pulseHex.slice(2, 4), 16);
+// 		return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, pulse1, pulse2];
+// 	}
+// 	return [0x0a, 0x15, 0x1e, pai, pai2, 0x00, counter, options.saturation, 0x00, options.pulse];
+// }
 
+
+function processMeasurement() {
+    counter++;
+    const tempHex = Math.round(options.temperature * 100).toString(16).padStart(4, '0');
+    const temp1 = parseInt(tempHex.slice(0, 2), 16);
+    const temp2 = parseInt(tempHex.slice(2, 4), 16);
+    return [0x0a, 0x15, 0x1e, 0x00, counter, temp1, temp2];
+}
