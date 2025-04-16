@@ -27,16 +27,21 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
 }
 
 function ieee11073Float(tempCelsius) {
-    const flags = 0x00; // Celsius, no timestamp
-    const exponent = 0xFE; // -2 (means divide by 100)
-    const mantissa = Math.round(tempCelsius * 100);
-    const ieee = (exponent << 24) | (mantissa & 0x00FFFFFF);
+    const flags = 0x00; // Celsius, no timestamp, etc.
+    const exponent = -2; // i.e., 0xFE (because we're scaling by 100)
+    const mantissa = Math.round(tempCelsius * 100); // scale temp
 
+    // Create the 32-bit value: combine signed mantissa and exponent
     const buffer = Buffer.alloc(5);
     buffer.writeUInt8(flags, 0);
-    buffer.writeInt32LE(ieee, 1);
+
+    // Write mantissa and exponent as per IEEE-11073 FLOAT format (little endian)
+    // Mantissa = 3 bytes signed, exponent = 1 byte signed
+    buffer.writeIntLE(mantissa + (exponent << 24), 1, 4);
+
     return buffer;
 }
+
 
 module.exports = {
     createCharacteristic,
