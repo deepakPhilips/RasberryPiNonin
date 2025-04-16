@@ -3,7 +3,7 @@ var program = require('commander').program;
 var fs = require('fs');
 
 // Load device configuration
-var deviceConfig = require('./thermometerDeviceConfig.json');
+var deviceConfig = require('./thermometerConfig.json');
 
 var { createPrimaryService } = require('./ThermometerService');
 var {
