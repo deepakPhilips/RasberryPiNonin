@@ -77,32 +77,32 @@ function handleAdvertisingStart(error) {
     ]);
 }
 
-function createPrimaryService(uuid, characteristics) {
-    return new PrimaryService({ uuid, characteristics });
-}
+// function createPrimaryService(uuid, characteristics) {
+//     return new PrimaryService({ uuid, characteristics });
+// }
 
-function createCharacteristic(uuid, properties, value, descriptorValue) {
-    return new Characteristic({
-        uuid,
-        properties,
-        value: Buffer.from(value),
-        descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
-    });
-}
+// function createCharacteristic(uuid, properties, value, descriptorValue) {
+//     return new Characteristic({
+//         uuid,
+//         properties,
+//         value: Buffer.from(value),
+//         descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
+//     });
+// }
 
-function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
-    return new Characteristic({
-        uuid,
-        properties: ['notify'],
-        descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
-        onSubscribe,
-        onUnsubscribe,
-    });
-}
+// function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
+//     return new Characteristic({
+//         uuid,
+//         properties: ['notify'],
+//         descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
+//         onSubscribe,
+//         onUnsubscribe,
+//     });
+// }
 
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
-
+console.log("🚀 ~ handleMeasurementSubscribe ~ updateValueCallback:")
 
 
     this.counter = 1;
@@ -149,14 +149,6 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
       // Send value
       updateValueCallback(buff);
     
-    // console.log('Device subscribed, sending temperature measurements');
-    // if (isValidMeasurement(options.temperature)) {
-    //     const measBuffer = processMeasurement();
-    //         console.log('Sending measurement:', measBuffer);
-    //         updateValueCallback(measBuffer);
-    // } else {
-    //     console.error('Invalid measurement');
-    // }
     }, 1000); // Send every second
 }
 
