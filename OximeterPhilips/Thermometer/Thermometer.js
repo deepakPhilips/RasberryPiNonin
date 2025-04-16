@@ -52,7 +52,7 @@ function handleStateChange(state) {
                 deviceConfig.broadcastingServiceID
             ];
 
-            bleno.startAdvertisingWithEIRData(advertisementData, Buffer.alloc(0), (err) => {
+            bleno.startAdvertisingWithEIRData(deviceConfig.broadcastingName, advertisementData, Buffer.alloc(0), (err) => {
                 if (err) {
                 console.error('Error in startAdvertisingWithEIRData:', err);
                 } else {
