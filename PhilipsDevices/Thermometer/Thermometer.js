@@ -86,11 +86,13 @@ function handleMeasurementUnsubscribe() {
 
 function encodeTemperature(tempCelsius) {
     const flags = 0x00; // Celsius
-    const exponent = 0xFE; // -2 for 10^-2 (0.01)
-    const mantissa = Math.round(tempCelsius * 100);
+    const exponent = -2; // 10^-2
+    const mantissa = Math.round(tempCelsius * 100); // scale the value
+
     const buffer = Buffer.alloc(5);
     buffer.writeUInt8(flags, 0);
     buffer.writeIntLE(mantissa, 1, 3);
-    buffer.writeInt8(exponent, 4);
+    buffer.writeInt8(exponent, 4); // now writes -2 properly
     return buffer;
 }
+
