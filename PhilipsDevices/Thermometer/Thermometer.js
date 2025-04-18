@@ -74,9 +74,19 @@ function handleAdvertisingStart(error) {
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
     console.log('Device subscribed, sending temperature...');
     const temp = options.temperature;
-    const buffer = encodeTemperature(temp);
-    console.log('Encoded temp buffer:', buffer.toString('hex'));
-    updateValueCallback(buffer);
+
+    let count = 0;
+    const interval = setInterval(() => {
+        if (count >= 2) {
+            clearInterval(interval);
+            console.log('All measurements sent.');
+            return;
+        }
+        const buffer = encodeTemperature(temp + count); // simulate temp change
+        console.log('Sending:', buffer.toString('hex'));
+        updateValueCallback(buffer);
+        count++;
+    }, 1500);
 }
 
 function handleMeasurementUnsubscribe() {
