@@ -4,6 +4,7 @@ import dbus
 import dbus.mainloop.glib
 from pydbus import SystemBus
 from blood_pressure_profile import BloodPressureService
+import time
 
 BLUEZ_SERVICE_NAME = 'org.bluez'
 ADAPTER_PATH = '/org/bluez/hci0'
@@ -66,6 +67,21 @@ def main():
     print("Peripheral running... Waiting for connections...")
     loop = GLib.MainLoop()
     loop.run()
+
+
+def register_gatt_application(service, gatt_manager):
+    try:
+        gatt_manager.RegisterApplication(service.get_path(), {})
+        print("✅ GATT application registered")
+    except Exception as e:
+        print(f"❌ Failed to register GATT app: {e}")
+        print("Retrying GATT registration...")
+        time.sleep(2)
+        try:
+            gatt_manager.RegisterApplication(service.get_path(), {})
+            print("✅ GATT application registered on retry")
+        except Exception as retry_e:
+            print(f"❌ Retry failed: {retry_e}")
 
 if __name__ == '__main__':
     main()
