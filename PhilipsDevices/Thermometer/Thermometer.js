@@ -94,7 +94,7 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
         if (count >= 2) {
             clearInterval(interval);
             console.log('All measurements sent.');
-            return;
+            process.exit(3);
         }
         const buffer = encodeTemperature(temp + count); // simulate temp change
         console.log('Sending:', buffer.toString('hex'));
