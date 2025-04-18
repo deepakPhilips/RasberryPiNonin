@@ -1,11 +1,11 @@
 {
-  "id": 1,
+  "id": 18,
   "type": "Thermometer",
-  "manufacturer": "Pyle Health",
-  "model": "PHTM20BT",
+  "manufacturer": "ForaCare",
+  "model": "IR20b",
   "disabled": false,
-  "broadcastingName": "Tem BH",
-  "broadcastingServiceID": "FFF0",
+  "broadcastingName": "FORA IR20",
+  "broadcastingServiceID": "1809",
   "readingServiceID": "1809",
   "characteristicID": "2A1C",
   "requiresPairing": false,
@@ -13,7 +13,7 @@
   "connectionTimeout": 30,
   "readingTimeout": 30,
   "libVersion": 1,
-  "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/ble-1.jpg",
-  "instructions": "Turn on your thermometer by pressing the power button.",
-  "readingInstructions": "Place the thermometer's probe in your ear and press the capture button."
+  "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/ble-21.jpg",
+  "instructions": "Turn on the thermometer and take your temperature.",
+  "readingInstructions": "Please wait while your temperature reading is being received."
 }
