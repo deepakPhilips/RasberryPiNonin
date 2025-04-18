@@ -30,6 +30,7 @@ const bloodPressureMeasurementCharacteristic = new blenoCharacteristic({
     setInterval(() => {
       // Send simulated blood pressure measurement data
       const data = Buffer.from([0x00, systolic, diastolic, map, pulse]);
+      console.log('Sending data:', data.toString('hex'));  // Print as hex
       updateValueCallback(data);
       console.log('Sending blood pressure measurement');
     }, 2000); // Send data every 2 seconds
