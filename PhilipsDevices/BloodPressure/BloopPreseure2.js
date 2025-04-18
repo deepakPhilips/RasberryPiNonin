@@ -17,7 +17,7 @@ let map = 95; // Mean Arterial Pressure
 // Blood Pressure Measurement Characteristic (Notify characteristic)
 const bloodPressureMeasurementCharacteristic = new blenoCharacteristic({
   uuid: bloodPressureMeasurementCharacteristicUUID,
-  properties: ['notify'],
+  properties: ['notify', 'read'],
   value: null,
   descriptors: [
     new blenoDescriptor({
@@ -92,6 +92,7 @@ const bloodPressureService = new blenoPrimaryService({
 
 // Start advertising the BP Monitor peripheral
 bleno.on('stateChange', (state) => {
+  console.log(`State change: ${state}`);
   if (state === 'poweredOn') {
     console.log('Starting advertising...');
     bleno.startAdvertising('A&D_UA-656BLE1234', [bloodPressureServiceUUID, deviceInformationServiceUUID]);
@@ -106,8 +107,8 @@ bleno.on('advertisingStart', (error) => {
     console.error('Advertising failed to start:', error);
     return;
   }
-  bleno.setServices([bloodPressureService, deviceInformationService]);
   console.log('Advertising started and services set');
+  bleno.setServices([bloodPressureService, deviceInformationService]);
 });
 
 // Start the Bleno event loop
