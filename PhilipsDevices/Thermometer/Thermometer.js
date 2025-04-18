@@ -4,11 +4,11 @@ var program = require('commander').program;
 
 var deviceConfig = require('./ThermometerDeviceConfig.json');
 
-var { createPrimaryService } = require('../OxiMeter/OximeterService');
+var { createPrimaryService } = require('./ThermometerService');
 var {
     createCharacteristic,
     createNotifyCharacteristic,
-} = require('../OxiMeter/OxiMeterCharacteristic');
+} = require('./ThermometerCharacteristic');
 
 var counter = 0;
 
