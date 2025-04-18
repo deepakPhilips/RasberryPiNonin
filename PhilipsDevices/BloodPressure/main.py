@@ -48,10 +48,16 @@ def main():
     try:
         service = BloodPressureService(bus, 0)
         gatt_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, ADAPTER_PATH), GATT_MANAGER_IFACE)
-        gatt_manager.RegisterApplication(service.get_path(), {})
-        print("✅ GATT application registered")
+
+        def register_app_cb():
+            print("✅ GATT application registered")
+
+        def register_app_error_cb(error):
+            print("❌ Failed to register GATT app:", error)
+
+        gatt_manager.RegisterApplication(service.get_path(), {}, register_app_cb, register_app_error_cb)
     except Exception as e:
-        print("❌ Failed to register GATT app:", e)
+        print("Exception during GATT registration:", e)
 
     # Register the pairing agent
     try:
