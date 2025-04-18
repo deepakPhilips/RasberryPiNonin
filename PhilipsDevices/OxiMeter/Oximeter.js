@@ -97,15 +97,19 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
 }
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
-	counter = 0;
-	console.log('Device subscribed, sending measurement');
-	if (isValidMeasurement(options.saturation, options.pulse)) {
-		const measBuffer = processMeasurement();
-		console.log(measBuffer);
-		updateValueCallback(measBuffer);
-	} else {
-		process.exit(2);
-	}
+    counter = 0;
+    console.log('Device subscribed, preparing to send measurement...');
+
+    if (isValidMeasurement(options.saturation, options.pulse)) {
+        const measBuffer = Buffer.from(processMeasurement());
+        console.log('Sending measurement buffer:', measBuffer);
+        console.log('Buffer as hex:', measBuffer.toString('hex'));
+        updateValueCallback(measBuffer);
+        console.log('Measurement sent via updateValueCallback');
+    } else {
+        console.error('Invalid measurement values. Exiting.');
+        process.exit(2);
+    }
 }
 
 function handleMeasurementUnsubscribe() {
