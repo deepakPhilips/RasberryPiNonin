@@ -44,16 +44,30 @@ def main():
     adapter.Set('org.bluez.Adapter1', 'Pairable', dbus.Boolean(1))
     adapter.Set('org.bluez.Adapter1', 'Alias', dbus.String('A&D_UA-656BLE1234'))
 
-    service = BloodPressureService(bus, 0)
+    # Register GATT application
+    try:
+        service = BloodPressureService(bus, 0)
+        gatt_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, ADAPTER_PATH), GATT_MANAGER_IFACE)
 
-    gatt_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, ADAPTER_PATH), GATT_MANAGER_IFACE)
-    gatt_manager.RegisterApplication(service.get_path(), {}, reply_handler=lambda: print("GATT app registered"), error_handler=print)
+        def register_app_cb():
+            print("✅ GATT application registered")
+
+        def register_app_error_cb(error):
+            print("❌ Failed to register GATT app:", error)
+
+        gatt_manager.RegisterApplication(service.get_path(), {}, register_app_cb, register_app_error_cb)
+    except Exception as e:
+        print("Exception during GATT registration:", e)
 
     # Register the pairing agent
-    agent = NoInputNoOutputAgent(bus, AGENT_PATH)
-    agent_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, "/org/bluez"), AGENT_MANAGER_IFACE)
-    agent_manager.RegisterAgent(AGENT_PATH, "NoInputNoOutput")
-    agent_manager.RequestDefaultAgent(AGENT_PATH)
+    try:
+        agent = NoInputNoOutputAgent(bus, AGENT_PATH)
+        agent_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, "/org/bluez"), AGENT_MANAGER_IFACE)
+        agent_manager.RegisterAgent(AGENT_PATH, "NoInputNoOutput")
+        agent_manager.RequestDefaultAgent(AGENT_PATH)
+        print("✅ Agent registered")
+    except Exception as e:
+        print("❌ Agent registration failed:", e)
 
     print("Peripheral running... Waiting for connections...")
     loop = GLib.MainLoop()
