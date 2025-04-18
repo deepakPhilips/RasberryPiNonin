@@ -68,6 +68,20 @@ function handleAdvertisingStart(error) {
                 handleMeasurementUnsubscribe
             )
         ]),
+        createPrimaryService('1523', [
+            new bleno.Characteristic({
+                uuid: '1524',
+                properties: ['write'],
+                descriptors: [new bleno.Descriptor({
+                    uuid: '2901',
+                    value: 'Foracare Serial Command'
+                })],
+                onWriteRequest: function(data, offset, withoutResponse, callback) {
+                    console.log('[Foracare Command] Received:', data.toString('hex'));
+                    callback(bleno.Characteristic.RESULT_SUCCESS);
+                }
+            })
+        ])
     ]);
 }
 
