@@ -1,120 +1,73 @@
 const bleno = require('@abandonware/bleno');
-const blenoPrimaryService = bleno.PrimaryService;
-const blenoCharacteristic = bleno.Characteristic;
-const blenoDescriptor = bleno.Descriptor;
+const BlenoPrimaryService = bleno.PrimaryService;
+const BlenoCharacteristic = bleno.Characteristic;
 
-// Define UUIDs for Blood Pressure service and characteristics
-const bloodPressureServiceUUID = '1810';  // Blood Pressure Service
-const bloodPressureMeasurementCharacteristicUUID = '2A35';  // Blood Pressure Measurement
-const bloodPressureFeatureUUID = '2A49';  // Blood Pressure Feature
+const DEVICE_NAME = "Samico BP";
+const SERVICE_UUID = "fff0";
+const CHARACTERISTIC_UUID = "fff4";
 
-// Blood Pressure measurement data (Systolic, Diastolic, MAP, Pulse)
 let systolic = 120;
 let diastolic = 80;
-let pulse = 72;
-let map = 95; // Mean Arterial Pressure
+let pulseRate = 72;
 
-// Blood Pressure Measurement Characteristic (Notify characteristic)
-const bloodPressureMeasurementCharacteristic = new blenoCharacteristic({
-  uuid: bloodPressureMeasurementCharacteristicUUID,
-  properties: ['notify', 'read'],
-  value: null,
-  descriptors: [
-    new blenoDescriptor({
-      uuid: '2901',
-      value: 'Blood Pressure Measurement'
-    })
-  ],
-  onSubscribe: (maxValueSize, updateValueCallback) => {
-    console.log('Client subscribed to Blood Pressure Measurement');
-    setInterval(() => {
-      // Send simulated blood pressure measurement data
-      const data = Buffer.from([0x00, systolic, diastolic, map, pulse]);
-      console.log('Sending data:', data.toString('hex'));  // Print as hex
-      updateValueCallback(data);
-      console.log('Sending blood pressure measurement');
-    }, 2000); // Send data every 2 seconds
-  },
+// Custom characteristic to simulate blood pressure measurement
+const BloodPressureCharacteristic = function () {
+  BloodPressureCharacteristic.super_.call(this, {
+    uuid: CHARACTERISTIC_UUID,
+    properties: ['indicate'],
+    value: null,
+    descriptors: [
+      new bleno.Descriptor({
+        uuid: '2901',
+        value: 'Blood Pressure Measurement'
+      })
+    ]
+  });
+};
 
-  onUnsubscribe: () => {
-    console.log('Client unsubscribed from Blood Pressure Measurement');
-  }
-});
+require('util').inherits(BloodPressureCharacteristic, BlenoCharacteristic);
 
-// Blood Pressure Feature Characteristic
-const bloodPressureFeatureCharacteristic = new blenoCharacteristic({
-  uuid: bloodPressureFeatureUUID,
-  properties: ['read'],
-  value: Buffer.from([0x01])  // This indicates that Blood Pressure Measurement is supported
-});
+BloodPressureCharacteristic.prototype.onSubscribe = function (maxValueSize, updateValueCallback) {
+  console.log('Central subscribed to blood pressure indication');
 
-// Device Information Service
-const deviceInformationServiceUUID = '180A';
-const systemIdCharacteristicUUID = '2A23';  // System ID
-const modelNumberCharacteristicUUID = '2A24';  // Model Number
-const manufacturerNameCharacteristicUUID = '2A29';  // Manufacturer Name
-const serialNumberCharacteristicUUID = '2A25';  // Serial Number
+  const buffer = Buffer.alloc(7);
+  buffer.writeUInt8(0x06, 0); // Flags (unit in mmHg, timestamp not present, pulse rate present)
+  buffer.writeUInt16LE(systolic * 10, 1); // Systolic
+  buffer.writeUInt16LE(diastolic * 10, 3); // Diastolic
+  buffer.writeUInt8(pulseRate, 5); // Pulse rate
+  buffer.writeUInt8(0, 6); // User ID / Reserved
 
-// Define the Device Information Service
-const deviceInformationService = new blenoPrimaryService({
-  uuid: deviceInformationServiceUUID,
+  console.log(`Sending BP reading: ${systolic}/${diastolic}, Pulse: ${pulseRate}`);
+  updateValueCallback(buffer);
+};
+
+const bpService = new BlenoPrimaryService({
+  uuid: SERVICE_UUID,
   characteristics: [
-    new blenoCharacteristic({
-      uuid: manufacturerNameCharacteristicUUID,
-      properties: ['read'],
-      value: Buffer.from('A&D')  // Example manufacturer
-    }),
-    new blenoCharacteristic({
-      uuid: modelNumberCharacteristicUUID,
-      properties: ['read'],
-      value: Buffer.from('UA-656BLE')  // Example model
-    }),
-    new blenoCharacteristic({
-      uuid: systemIdCharacteristicUUID,
-      properties: ['read'],
-      value: Buffer.from([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08])  // Example system ID
-    }),
-    new blenoCharacteristic({
-      uuid: serialNumberCharacteristicUUID,
-      properties: ['read'],
-      value: Buffer.from('SN123456')  // Example serial number
-    })
+    new BloodPressureCharacteristic()
   ]
 });
 
-// Create and start the Blood Pressure Service
-const bloodPressureService = new blenoPrimaryService({
-  uuid: bloodPressureServiceUUID,
-  characteristics: [
-    bloodPressureMeasurementCharacteristic,
-    bloodPressureFeatureCharacteristic
-  ]
-});
-
-// Start advertising the BP Monitor peripheral
 bleno.on('stateChange', (state) => {
-  console.log(`State change: ${state}`);
+  console.log(`bleno stateChange: ${state}`);
   if (state === 'poweredOn') {
-    console.log('Starting advertising...');
-    bleno.startAdvertising('A&D_UA-656BLE1234', [bloodPressureServiceUUID, deviceInformationServiceUUID]);
+    bleno.startAdvertising(DEVICE_NAME, [SERVICE_UUID]);
   } else {
     bleno.stopAdvertising();
   }
 });
 
-// Set up GATT services after advertising starts
 bleno.on('advertisingStart', (error) => {
-  if (error) {
-    console.error('Advertising failed to start:', error);
-    return;
+  console.log('Advertising start:', error ? `error ${error}` : 'success');
+  if (!error) {
+    bleno.setServices([bpService]);
   }
-  console.log('Advertising started and services set');
-  bleno.setServices([bloodPressureService, deviceInformationService]);
 });
 
-// Start the Bleno event loop
-bleno.on('stateChange', (state) => {
-  if (state === 'poweredOn') {
-    console.log('GATT server running');
-  }
+bleno.on('accept', (clientAddress) => {
+  console.log(`Accepted connection from: ${clientAddress}`);
+});
+
+bleno.on('disconnect', (clientAddress) => {
+  console.log(`Disconnected from: ${clientAddress}`);
 });
