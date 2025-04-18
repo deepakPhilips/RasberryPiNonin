@@ -25,7 +25,7 @@ class NoInputNoOutputAgent(dbus.service.Object):
     def RequestAuthorization(self, device):
         print(f"RequestAuthorization from {device}")
 
-    @dbus.service.method(AGENT_INTERFACE, in_signature="o", out_signature="")
+    @dbus.service.method(AGENT_INTERFACE, in_signature="os", out_signature="")
     def AuthorizeService(self, device, uuid):
         print(f"AuthorizeService {uuid} for {device}")
 
