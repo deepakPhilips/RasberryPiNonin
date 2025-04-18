@@ -73,28 +73,28 @@ function handleAdvertisingStart(error) {
     ]);
 }
 
-function createPrimaryService(uuid, characteristics) {
-	return new PrimaryService({ uuid, characteristics });
-}
+// function createPrimaryService(uuid, characteristics) {
+// 	return new PrimaryService({ uuid, characteristics });
+// }
 
-function createCharacteristic(uuid, properties, value, descriptorValue) {
-	return new Characteristic({
-		uuid,
-		properties,
-		value: Buffer.from(value),
-		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
-	});
-}
+// function createCharacteristic(uuid, properties, value, descriptorValue) {
+// 	return new Characteristic({
+// 		uuid,
+// 		properties,
+// 		value: Buffer.from(value),
+// 		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
+// 	});
+// }
 
-function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
-	return new Characteristic({
-		uuid,
-		properties: ['notify'],
-		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
-		onSubscribe,
-		onUnsubscribe,
-	});
-}
+// function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
+// 	return new Characteristic({
+// 		uuid,
+// 		properties: ['notify'],
+// 		descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
+// 		onSubscribe,
+// 		onUnsubscribe,
+// 	});
+// }
 
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
     counter = 0;
@@ -103,8 +103,8 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
     if (isValidMeasurement(options.saturation, options.pulse)) {
         const measBuffer = Buffer.from(processMeasurement());
         console.log('Sending measurement buffer:', measBuffer);
-        console.log('Buffer as hex:', measBuffer.toString('hex'));
-        updateValueCallback(measBuffer);
+        console.log('Buffer as hex:', measBuffer.toString('hex'));  // Log the hex representation
+        updateValueCallback(measBuffer);  // Send the measurement
         console.log('Measurement sent via updateValueCallback');
     } else {
         console.error('Invalid measurement values. Exiting.');

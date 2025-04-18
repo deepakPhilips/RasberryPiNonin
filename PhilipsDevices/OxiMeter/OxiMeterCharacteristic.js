@@ -14,7 +14,7 @@ function createCharacteristic(uuid, properties, value, descriptorValue) {
 function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
     return new Characteristic({
         uuid,
-        properties: ['notify'],
+        properties: ['read', 'notify'], // Added 'read' here too
         descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
         onSubscribe,
         onUnsubscribe,
