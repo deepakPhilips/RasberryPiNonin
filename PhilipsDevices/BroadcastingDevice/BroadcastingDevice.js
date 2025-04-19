@@ -2,7 +2,6 @@ const bleno = require('@abandonware/bleno');
 const program = require('commander').program;
 const { execSync } = require('child_process');
 
-
 const { createPrimaryService } = require('./BroadcastingDeviceService');
 const {
     createCharacteristic,
@@ -31,15 +30,29 @@ const deviceConfig = loadDeviceById(deviceId);
 console.log("🚀 ~ deviceConfig:", deviceConfig)
 const DEVICE_TYPE = deviceConfig.type;
 
+// Optional CLI validations
+if (DEVICE_TYPE === 'Heart Rate Monitor' && !options.pulse) {
+    console.error("❌ Please provide --pulse for Heart Rate Monitor simulation.");
+    process.exit(1);
+}
+if (DEVICE_TYPE === 'Pulse Oximeter' && (!options.pulse || !options.saturation)) {
+    console.error("❌ Please provide --pulse and --saturation for Pulse Oximeter simulation.");
+    process.exit(1);
+}
+if (DEVICE_TYPE === 'Thermometer' && !options.temperature) {
+    console.error("❌ Please provide --temperature for Thermometer simulation.");
+    process.exit(1);
+}
 
+// Set MAC address before advertising
 try {
     console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
     execSync('bash ./set_mac.sh', { stdio: 'inherit' });
-  } catch (error) {
+} catch (error) {
     console.error('❌ Failed to set MAC address:', error.message);
-  }
+}
 
-// Handle BLE state changes
+// BLE stack: on poweredOn, start advertising
 bleno.on('stateChange', (state) => {
     console.log(`GATT ${DEVICE_TYPE.toLowerCase()} server running`);
     if (state === 'poweredOn') {
@@ -52,18 +65,18 @@ bleno.on('stateChange', (state) => {
     }
 });
 
-// Handle client connection
+// BLE: Client connected
 bleno.on('accept', (clientAddress) => {
     console.log('Connected to:', clientAddress);
 });
 
-// Handle client disconnection
+// BLE: Client disconnected
 bleno.on('disconnect', () => {
     console.log('Disconnected');
     process.exit(0);
 });
 
-// Handle advertising start
+// BLE: Advertising started
 bleno.on('advertisingStart', (error) => {
     if (error) {
         console.error('Advertising error:', error);
@@ -72,16 +85,23 @@ bleno.on('advertisingStart', (error) => {
 
     console.log('Started advertising');
 
-    // Create measurement characteristic
+    // Descriptor label for measurement characteristic
+    const descriptorLabel = {
+        'Thermometer': 'Temperature Measurement',
+        'Pulse Oximeter': 'Oxygen Saturation Measurement',
+        'Heart Rate Monitor': 'Heart Rate Measurement',
+    }[DEVICE_TYPE] || 'Measurement';
+
+    // Create main measurement characteristic
     const measurementChar = createNotifyCharacteristic(
         deviceConfig.characteristicID.toLowerCase().replace(/-/g, ''),
-        DEVICE_TYPE === deviceConfig.type,
+        descriptorLabel,
         handleMeasurementSubscribe.bind(null, options, DEVICE_TYPE),
         handleMeasurementUnsubscribe,
-        handRequestCallBack        
+        handRequestCallBack
     );
 
-    // Define services
+    // Core services (Device Info + Measurement)
     const services = [
         createPrimaryService('180A', [
             createCharacteristic('2A29', ['read'], deviceConfig.manufacturer, 'Manufacturer Name'),
@@ -95,7 +115,7 @@ bleno.on('advertisingStart', (error) => {
         ]),
     ];
 
-    // Add thermometer-specific service if applicable
+    // Thermometer-specific write characteristic (Foracare serial command)
     if (DEVICE_TYPE === 'Thermometer') {
         services.push(
             createPrimaryService('1523', [
@@ -117,6 +137,5 @@ bleno.on('advertisingStart', (error) => {
         );
     }
 
-    // Set services
     bleno.setServices(services);
 });
