@@ -16,6 +16,7 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         const buffer = getTemperatureValue(temp);
         console.log('Sending temperature after delay:', buffer.toString('hex'));
         updateValueCallback(buffer);
+        process.exit(2);
       }, 500);
     }
   }
