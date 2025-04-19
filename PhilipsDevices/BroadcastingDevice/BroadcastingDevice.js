@@ -17,6 +17,9 @@ program
     .option('--temperature <n>', 'temperature', parseFloat)
 
 
+    program.parse(process.argv);
+    const options = program.opts();
+    
     const { oximeter } = options;
     
 // Load config based on --oximeter flag
@@ -27,18 +30,16 @@ const configPath = oximeter == 1
 const deviceConfig = require(configPath);
 const DEVICE_TYPE = deviceConfig.type;
 
-// CLI option parsing
-if (DEVICE_TYPE === 'Pulse Oximeter') {
-  program
-    .requiredOption('-s, --saturation <n>', 'saturation', parseInt)
-    .requiredOption('-p, --pulse <n>', 'pulse', parseInt);
-} else {
-  program
-    .requiredOption('-t, --temperature <n>', 'temperature', parseFloat);
-}
+// // CLI option parsing
+// if (DEVICE_TYPE === 'Pulse Oximeter') {
+//   program
+//     .requiredOption('-s, --saturation <n>', 'saturation', parseInt)
+//     .requiredOption('-p, --pulse <n>', 'pulse', parseInt);
+// } else {
+//   program
+//     .requiredOption('-t, --temperature <n>', 'temperature', parseFloat);
+// }
 
-program.parse(process.argv);
-const options = program.opts();
 
 bleno.on('stateChange', (state) => {
   console.log(`GATT ${DEVICE_TYPE.toLowerCase()} server running`);
