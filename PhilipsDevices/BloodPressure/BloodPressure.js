@@ -59,6 +59,7 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
   console.log('Buffer:', buffer);
   console.log('Hex:', buffer.toString('hex'));
   updateValueCallback(buffer);
+  process.exit(3);
 }
 
 function handleMeasurementUnsubscribe() {
