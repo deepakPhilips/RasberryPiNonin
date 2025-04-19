@@ -1,5 +1,14 @@
 const bleno = require('@abandonware/bleno');
 const program = require('commander').program;
+const { execSync } = require('child_process');
+
+try {
+  console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+  execSync('bash ./set_mac.sh', { stdio: 'inherit' });
+} catch (error) {
+  console.error('❌ Failed to set MAC address:', error.message);
+}
+
 
 const { createPrimaryService } = require('./BroadcastingDeviceService');
 const {
