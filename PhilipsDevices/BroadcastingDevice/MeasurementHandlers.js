@@ -38,21 +38,20 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     } 
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
-const diastolic = options.diastolic || 80;
-const map = options.map || 90;
-
-const buffer = Buffer.alloc(7);
-buffer.writeUInt8(0x00, 0); // Flags
-
-encodeSfloat(systolic).copy(buffer, 1);
-encodeSfloat(diastolic).copy(buffer, 3);
-encodeSfloat(map).copy(buffer, 5);
-
-console.log('Sending BP measurement (correct SFLOAT):', buffer.toString('hex'));
-updateValueCallback(buffer);
-setTimeout(() => process.exit(0), 300);
-
-    }    
+        const diastolic = options.diastolic || 80;
+        const map = options.map || 90;
+      
+        const buffer = Buffer.alloc(7);
+        buffer.writeUInt8(0x00, 0); // Flags
+      
+        encodeSfloat(systolic).copy(buffer, 1);  // systolic
+        encodeSfloat(diastolic).copy(buffer, 3); // diastolic
+        encodeSfloat(map).copy(buffer, 5);       // MAP
+      
+        console.log('Sending BP measurement:', buffer.toString('hex'));
+        updateValueCallback(buffer);
+        setTimeout(() => process.exit(0), 300);
+      }   
     else {
         console.warn('Unsupported device type:', deviceType);
     }
@@ -112,21 +111,20 @@ setTimeout(() => process.exit(0), 300);
 }
 
 function encodeSfloat(value) {
+    // IEEE-11073 16-bit SFLOAT
+    // Mantissa: 12-bit signed, Exponent: 4-bit signed
     let exponent = -2;
-    let mantissa = Math.round(value * Math.pow(10, -exponent)); // scale value
-
-    // Adjust for edge cases
+    let mantissa = Math.round(value * 100); // scale by 10^2
+  
     if (mantissa > 2047) mantissa = 2047;
     if (mantissa < -2048) mantissa = -2048;
-
-    // Convert exponent to 4-bit signed
-    if (exponent < 0) exponent = (16 + exponent) & 0x0F;
-
-    const sfloat = (exponent << 12) | (mantissa & 0x0FFF);
+  
+    // Pack exponent and mantissa into 16-bit
+    let sfloat = (mantissa & 0x0FFF) | ((exponent & 0x0F) << 12);
     const buffer = Buffer.alloc(2);
     buffer.writeUInt16LE(sfloat, 0);
     return buffer;
-}
+  }
 
 
   
