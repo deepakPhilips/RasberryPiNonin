@@ -67,21 +67,51 @@ function handleMeasurementUnsubscribe() {
   process.exit(0);
 }
 
-// Builds the simulated blood pressure packet based on 2A35 spec
-function buildBloodPressurePacket() {
-  counter++;
-  const flags = 0b00000000; // No timestamp, no pulse in kPa
-  const buffer = Buffer.alloc(13);
+// // Builds the simulated blood pressure packet based on 2A35 spec
+// function buildBloodPressurePacket() {
+//   counter++;
+//   const flags = 0b00000000; // No timestamp, no pulse in kPa
+//   const buffer = Buffer.alloc(13);
 
-  buffer.writeUInt8(flags, 0);
-  buffer.writeUInt16LE(options.sys, 1);   // Systolic
-  buffer.writeUInt16LE(options.dia, 3);   // Diastolic
-  buffer.writeUInt16LE(Math.round((options.sys + options.dia) / 2), 5); // MAP (mean)
-  buffer.writeUInt8(0, 7); // No timestamp
-  buffer.writeUInt16LE(options.pulse, 8); // Pulse rate
-  buffer.writeUInt8(counter % 256, 10);   // User ID / sequence
-  buffer.writeUInt8(0, 11); // Measurement status (optional)
-  buffer.writeUInt8(0, 12);
+//   buffer.writeUInt8(flags, 0);
+//   buffer.writeUInt16LE(options.sys, 1);   // Systolic
+//   buffer.writeUInt16LE(options.dia, 3);   // Diastolic
+//   buffer.writeUInt16LE(Math.round((options.sys + options.dia) / 2), 5); // MAP (mean)
+//   buffer.writeUInt8(0, 7); // No timestamp
+//   buffer.writeUInt16LE(options.pulse, 8); // Pulse rate
+//   buffer.writeUInt8(counter % 256, 10);   // User ID / sequence
+//   buffer.writeUInt8(0, 11); // Measurement status (optional)
+//   buffer.writeUInt8(0, 12);
 
-  return buffer;
-}
+//   return buffer;
+// }
+
+
+function sfloatFromNumber(num) {
+    const exponent = 0; // 10^0
+    const mantissa = Math.round(num * 1); // No scaling
+  
+    let raw = (exponent << 12) | (mantissa & 0x0FFF);
+    const buffer = Buffer.alloc(2);
+    buffer.writeUInt16LE(raw, 0);
+    return buffer;
+  }
+  
+  function buildBloodPressurePacket() {
+    counter++;
+    const flags = 0b00010000; // Units in mmHg, pulse rate present
+    const buffer = Buffer.alloc(13);
+  
+    buffer.writeUInt8(flags, 0);
+  
+    // Write SFLOATs (2 bytes each)
+    sfloatFromNumber(options.sys).copy(buffer, 1);  // Systolic
+    sfloatFromNumber(options.dia).copy(buffer, 3);  // Diastolic
+    sfloatFromNumber((options.sys + options.dia) / 2).copy(buffer, 5); // MAP
+    sfloatFromNumber(options.pulse).copy(buffer, 7); // Pulse
+  
+    buffer.writeUInt8(counter % 256, 9);   // User ID
+    buffer.writeUInt16LE(0, 10);           // Measurement status (optional, here 0)
+  
+    return buffer;
+  }
