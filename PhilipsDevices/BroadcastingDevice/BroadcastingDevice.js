@@ -3,8 +3,14 @@ const bleno = require('@abandonware/bleno');
 const fs = require('fs');
 const program = require('commander').program;
 
-// Load config based on --oximeter flag
-const configPath = process.argv.includes('--oximeter')
+// Declare the --oximeter flag
+program.option('--oximeter', 'Run in Pulse Oximeter mode');
+
+// Pre-parse to detect mode and load correct config
+program.allowUnknownOption(true).parse(process.argv);
+const options = program.opts();
+
+const configPath = options.oximeter
   ? './OximeterDeviceConfig.json'
   : './ThermometerDeviceConfig.json';
 
@@ -17,7 +23,7 @@ const {
   createNotifyCharacteristic,
 } = require('./BroadcastingDeviceCharacteristic');
 
-// CLI option parsing
+// CLI option parsing based on device type
 if (DEVICE_TYPE === 'Pulse Oximeter') {
   program
     .requiredOption('-s, --saturation <n>', 'saturation', parseInt)
@@ -28,7 +34,7 @@ if (DEVICE_TYPE === 'Pulse Oximeter') {
 }
 
 program.parse(process.argv);
-const options = program.opts();
+const runtimeOptions = program.opts();
 
 bleno.on('stateChange', (state) => {
   console.log(`GATT ${DEVICE_TYPE.toLowerCase()} server running`);
@@ -63,7 +69,7 @@ bleno.on('advertisingStart', (error) => {
     DEVICE_TYPE === 'Pulse Oximeter' ? 'Measurement' : 'Temperature Measurement',
     handleMeasurementSubscribe,
     handleMeasurementUnsubscribe,
-    getTemperatureValue // used only for thermometer
+    DEVICE_TYPE === 'Thermometer' ? () => getTemperatureValue(runtimeOptions.temperature) : null
   );
 
   const services = [
@@ -100,7 +106,7 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
   console.log('Device subscribed, sending measurement...');
 
   if (DEVICE_TYPE === 'Pulse Oximeter') {
-    const { saturation, pulse } = options;
+    const { saturation, pulse } = runtimeOptions;
     if (saturation <= 0 || saturation > 100 || pulse <= 0 || pulse > 321) {
       console.error('Invalid measurement values');
       process.exit(2);
@@ -109,7 +115,7 @@ function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
     console.log('Sending measurement:', buf.toString('hex'));
     updateValueCallback(buf);
   } else {
-    const temp = options.temperature;
+    const temp = runtimeOptions.temperature;
     let count = 0;
     const interval = setInterval(() => {
       if (count >= 2) {
