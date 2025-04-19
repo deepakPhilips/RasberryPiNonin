@@ -12,12 +12,13 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
       updateValueCallback(buf);
     } else {
       const temp = options.temperature;
-      setTimeout(() => {
-        const buffer = getTemperatureValue(temp);
+      const buffer = getTemperatureValue(temp);
         console.log('Sending temperature after delay:', buffer.toString('hex'));
         updateValueCallback(buffer);
-        process.exit(2);
-      }, 500);
+        setTimeout(() => {
+            console.log('✅ Temperature sent, exiting process');
+            process.exit(0);
+          }, 300); 
     }
   }
   
