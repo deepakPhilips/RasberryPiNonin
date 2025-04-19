@@ -92,40 +92,30 @@ function handleMeasurementUnsubscribe() {
 // }
 
 
-function sfloatFromNumber(num) {
-    let exponent = 0;
-    let mantissa = Math.round(num);
+function sfloatFromNumber(value) {
+    if (isNaN(value)) return Buffer.from([0xFF, 0xFF]); // special "NaN" value
   
-    if (mantissa < 0) {
-      mantissa = (1 << 12) + mantissa; // 2's complement
+    let exponent = 0;
+    let mantissa = value;
+  
+    // Scale down if value is too big for 12-bit signed
+    while (mantissa > 2047) {
+      mantissa = mantissa / 10;
+      exponent++;
     }
   
-    
-    function sfloatFromNumber(value) {
-        if (isNaN(value)) return Buffer.from([0xFF, 0xFF]); // special "NaN" value
-      
-        let exponent = 0;
-        let mantissa = value;
-      
-        // Scale down if value is too big for 12-bit signed
-        while (mantissa > 2047) {
-          mantissa = mantissa / 10;
-          exponent++;
-        }
-      
-        mantissa = Math.round(mantissa);
-      
-        // Two's complement for negative mantissas
-        if (mantissa < 0) {
-          mantissa = (1 << 12) + mantissa;
-        }
-      
-        const sfloat = (exponent << 12) | (mantissa & 0x0FFF);
-        const buffer = Buffer.alloc(2);
-        buffer.writeUInt16LE(sfloat, 0);
-        return buffer;
-      }
-      
+    mantissa = Math.round(mantissa);
+  
+    // Two's complement for negative mantissas
+    if (mantissa < 0) {
+      mantissa = (1 << 12) + mantissa;
+    }
+  
+    const sfloat = (exponent << 12) | (mantissa & 0x0FFF);
+    const buffer = Buffer.alloc(2);
+    buffer.writeUInt16LE(sfloat, 0);
+    return buffer;
+  }
   
   function buildBloodPressurePacket() {
     counter++;
