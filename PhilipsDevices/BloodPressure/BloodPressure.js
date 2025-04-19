@@ -100,11 +100,32 @@ function sfloatFromNumber(num) {
       mantissa = (1 << 12) + mantissa; // 2's complement
     }
   
-    const raw = (exponent << 12) | (mantissa & 0x0FFF);
-    const buffer = Buffer.alloc(2);
-    buffer.writeUInt16LE(raw, 0);
-    return buffer;
-  }
+    
+    function sfloatFromNumber(value) {
+        if (isNaN(value)) return Buffer.from([0xFF, 0xFF]); // special "NaN" value
+      
+        let exponent = 0;
+        let mantissa = value;
+      
+        // Scale down if value is too big for 12-bit signed
+        while (mantissa > 2047) {
+          mantissa = mantissa / 10;
+          exponent++;
+        }
+      
+        mantissa = Math.round(mantissa);
+      
+        // Two's complement for negative mantissas
+        if (mantissa < 0) {
+          mantissa = (1 << 12) + mantissa;
+        }
+      
+        const sfloat = (exponent << 12) | (mantissa & 0x0FFF);
+        const buffer = Buffer.alloc(2);
+        buffer.writeUInt16LE(sfloat, 0);
+        return buffer;
+      }
+      
   
   function buildBloodPressurePacket() {
     counter++;
