@@ -12,18 +12,9 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     updateValueCallback(buf);
   } else {
     const temp = options.temperature;
-    let count = 0;
-    const interval = setInterval(() => {
-      if (count >= 2) {
-        clearInterval(interval);
-        console.log('All temperature measurements sent');
-        return;
-      }
-      const buffer = getTemperatureValue(temp + count);
-      console.log('Sending:', buffer.toString('hex'));
-      updateValueCallback(buffer);
-      count++;
-    }, 1500);
+    const buffer = getTemperatureValue(temp + count);
+    console.log('Sending:', buffer.toString('hex'));
+    updateValueCallback(buffer);
   }
 }
 
