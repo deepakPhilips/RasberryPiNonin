@@ -11,6 +11,7 @@ const {
 const {
     handleMeasurementSubscribe,
     handleMeasurementUnsubscribe,
+    handRequestCallBack
 } = require('./MeasurementHandlers');
 const { loadDeviceById } = require('./DeviceConfigLoader');
 
@@ -75,7 +76,9 @@ bleno.on('advertisingStart', (error) => {
     const measurementChar = createNotifyCharacteristic(
         deviceConfig.characteristicID.toLowerCase().replace(/-/g, ''),
         DEVICE_TYPE === 'Pulse Oximeter' ? 'Measurement' : 'Temperature Measurement',
-        handleMeasurementSubscribe.bind(null, options, DEVICE_TYPE),handleMeasurementUnsubscribe,        
+        handleMeasurementSubscribe.bind(null, options, DEVICE_TYPE),
+        handleMeasurementUnsubscribe,
+        handRequestCallBack        
     );
 
     // Define services

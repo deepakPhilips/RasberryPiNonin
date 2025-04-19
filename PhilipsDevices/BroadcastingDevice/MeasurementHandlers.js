@@ -32,6 +32,10 @@ function handleMeasurementUnsubscribe() {
   process.exit(3);
 }
 
+function handRequestCallBack() {
+    console.log('Measurement request received');
+}
+
 function processOximeterMeasurement(saturation, pulse) {
   const pai = Math.floor(Math.random() * 6 + 1);
   const pai2 = Math.floor(Math.random() * 100 + 1);
@@ -60,4 +64,5 @@ function getTemperatureValue(tempCelsius) {
 module.exports = {
   handleMeasurementSubscribe,
   handleMeasurementUnsubscribe,
+  handRequestCallBack
 };
