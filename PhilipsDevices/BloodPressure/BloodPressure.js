@@ -3,6 +3,7 @@ const program = require('commander').program;
 const deviceConfig = require('./BloodPressureDeviceConfig.json');
 const { createPrimaryService } = require('./BloodPressureService');
 const { createNotifyCharacteristic } = require('./BloodPressureCharacteristic');
+const deviceInfoService = require('./DeviceInfoService');
 
 let counter = 0;
 
@@ -38,7 +39,8 @@ bleno.on('advertisingStart', (error) => {
         handleMeasurementSubscribe,
         handleMeasurementUnsubscribe
       )
-    ])
+    ]),
+    deviceInfoService
   ]);
 });
 
