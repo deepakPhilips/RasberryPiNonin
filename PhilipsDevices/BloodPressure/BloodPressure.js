@@ -24,6 +24,12 @@ bleno.on('stateChange', (state) => {
   }
 });
 
+bleno.on('indicateConfirmation', () => {
+    console.log('✅ Reading confirmed — disconnecting...');
+    bleno.disconnect(); // cleanly disconnect
+    process.exit(0);
+  });
+
 bleno.on('advertisingStart', (error) => {
   if (error) {
     console.error('Advertising start error:', error);
