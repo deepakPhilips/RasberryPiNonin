@@ -52,14 +52,13 @@ bleno.on('disconnect', () => {
   console.log('Disconnected from client');
   process.exit(0);
 });
-
 function handleMeasurementSubscribe(maxValueSize, updateValueCallback) {
-  console.log('Client subscribed – sending measurement');
-  const buffer = Buffer.from(buildBloodPressurePacket());
-  console.log('Buffer:', buffer);
-  console.log('Hex:', buffer.toString('hex'));
+  console.log('✅ Validic subscribed — sending BP data');
+
+  const buffer = buildBloodPressurePacket(); // this should return a proper 2A35 packet
+  console.log('🩺 Sending BP Packet (hex):', buffer.toString('hex'));
+
   updateValueCallback(buffer);
-  process.exit(3);
 }
 
 function handleMeasurementUnsubscribe() {
@@ -88,8 +87,13 @@ function handleMeasurementUnsubscribe() {
 
 
 function sfloatFromNumber(num) {
-    const exponent = 0; // 10^0
-    const mantissa = Math.round(num);
+    let exponent = 0;
+    let mantissa = Math.round(num);
+  
+    if (mantissa < 0) {
+      mantissa = (1 << 12) + mantissa; // 2's complement
+    }
+  
     const raw = (exponent << 12) | (mantissa & 0x0FFF);
     const buffer = Buffer.alloc(2);
     buffer.writeUInt16LE(raw, 0);
@@ -100,16 +104,16 @@ function sfloatFromNumber(num) {
     counter++;
     const buffer = Buffer.alloc(13);
   
-    const flags = 0b00010000; // mmHg, pulse present
+    const flags = 0b00011110; // mmHg, Pulse + User ID + Measurement Status
     buffer.writeUInt8(flags, 0);
   
     sfloatFromNumber(options.sys).copy(buffer, 1); // Systolic
     sfloatFromNumber(options.dia).copy(buffer, 3); // Diastolic
     sfloatFromNumber((options.sys + options.dia) / 2).copy(buffer, 5); // MAP
-    sfloatFromNumber(options.pulse).copy(buffer, 7); // Pulse
+    sfloatFromNumber(options.pulse).copy(buffer, 7); // Pulse Rate
   
-    buffer.writeUInt8(counter % 256, 9);  // User ID
-    buffer.writeUInt16LE(0, 10);          // Measurement Status
+    buffer.writeUInt8(counter % 256, 9);   // User ID
+    buffer.writeUInt16LE(0, 10);           // Measurement Status (e.g., body movement detected = 0)
   
     return buffer;
   }
