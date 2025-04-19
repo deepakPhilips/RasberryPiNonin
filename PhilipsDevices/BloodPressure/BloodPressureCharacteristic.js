@@ -5,7 +5,7 @@ const Descriptor = bleno.Descriptor;
 function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe) {
     return new Characteristic({
       uuid,
-      properties: ['indicate', 'notify'], // <-- add indicate
+      properties: ['indicate'], // <-- add indicate
       descriptors: [new Descriptor({ uuid: '2901', value: descriptorValue })],
       onSubscribe,
       onUnsubscribe,
