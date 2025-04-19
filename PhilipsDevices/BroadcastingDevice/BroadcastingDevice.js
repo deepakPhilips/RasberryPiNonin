@@ -20,7 +20,10 @@ program
     .option('--saturation <n>', 'saturation', parseInt)
     .option('--pulse <n>', 'pulse', parseInt)
     .option('--weight <n>', 'weight', parseFloat)
-    .option('--temperature <n>', 'temperature', parseFloat);
+    .option('--temperature <n>', 'temperature', parseFloat)
+    .option('--systolic <n>', 'systolic', parseFloat)
+    .option('--diastolic <n>', 'diastolic', parseFloat)
+    .option('--map <n>', 'mean arterial pressure', parseFloat)
 
 program.parse(process.argv);
 const options = program.opts();
@@ -47,6 +50,11 @@ if (DEVICE_TYPE === 'Thermometer' && !options.temperature) {
 
 if (DEVICE_TYPE === 'Weight Scale' && !options.weight) {
     console.error("❌ Please provide --weight for Weight Scale simulation.");
+    process.exit(1);
+}
+
+if (DEVICE_TYPE === 'Blood Pressure Monitor' && (!options.systolic || !options.diastolic)) {
+    console.error("❌ Please provide --systolic and --diastolic for Blood Pressure Monitor simulation.");
     process.exit(1);
 }
 
@@ -97,6 +105,7 @@ bleno.on('advertisingStart', (error) => {
         'Pulse Oximeter': 'Oxygen Saturation Measurement',
         'Heart Rate Monitor': 'Heart Rate Measurement',
         'Weight Scale': 'Weight Measurement',
+        'Blood Pressure Monitor': 'Blood Pressure Measurement',
     }[DEVICE_TYPE] || 'Measurement';
 
     // Create main measurement characteristic

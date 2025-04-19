@@ -35,7 +35,23 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         console.log('Sending weight:', buffer.toString('hex'));
         updateValueCallback(buffer);
         setTimeout(() => process.exit(0), 300);
-    } else {
+    } 
+    else if (deviceType === 'Blood Pressure Monitor') {
+        const systolic = options.systolic || 120;
+        const diastolic = options.diastolic || 80;
+        const map = options.map || 90;
+    
+        const buffer = Buffer.alloc(7);
+        buffer.writeUInt8(0x00, 0); // Flags
+        buffer.writeUInt16LE(encodeSfloat(systolic), 1);   // Systolic
+        buffer.writeUInt16LE(encodeSfloat(diastolic), 3);  // Diastolic
+        buffer.writeUInt16LE(encodeSfloat(map), 5);        // MAP
+    
+        console.log('Sending BP measurement:', buffer.toString('hex'));
+        updateValueCallback(buffer);
+        setTimeout(() => process.exit(0), 300);
+    }    
+    else {
         console.warn('Unsupported device type:', deviceType);
     }
   }
@@ -92,6 +108,13 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     buffer.writeInt8(exponent, 4);
     return buffer;
 }
+
+function encodeSfloat(value) {
+    const exponent = 0x0; // scale = 1
+    const mantissa = Math.round(value);
+    return (exponent << 12) | (mantissa & 0x0FFF);
+}
+
   
   module.exports = {
     handleMeasurementSubscribe,
