@@ -1,22 +1,25 @@
 function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateValueCallback) {
-  console.log('Device subscribed, sending measurement...');
-
-  if (deviceType === 'Pulse Oximeter') {
-    const { saturation, pulse } = options;
-    if (saturation <= 0 || saturation > 100 || pulse <= 0 || pulse > 321) {
-      console.error('Invalid measurement values');
-      process.exit(2);
+    console.log('Device subscribed, sending measurement...');
+  
+    if (deviceType === 'Pulse Oximeter') {
+      const { saturation, pulse } = options;
+      if (saturation <= 0 || saturation > 100 || pulse <= 0 || pulse > 321) {
+        console.error('Invalid measurement values');
+        process.exit(2);
+      }
+      const buf = Buffer.from(processOximeterMeasurement(saturation, pulse));
+      console.log('Sending measurement:', buf.toString('hex'));
+      updateValueCallback(buf);
+    } else {
+      const temp = options.temperature;
+      setTimeout(() => {
+        const buffer = getTemperatureValue(temp);
+        console.log('Sending temperature after delay:', buffer.toString('hex'));
+        updateValueCallback(buffer);
+      }, 500);
     }
-    const buf = Buffer.from(processOximeterMeasurement(saturation, pulse));
-    console.log('Sending measurement:', buf.toString('hex'));
-    updateValueCallback(buf);
-  } else {
-    const temp = options.temperature;
-    const buffer = getTemperatureValue(temp);
-    console.log('Sending:', buffer.toString('hex'));
-    updateValueCallback(buffer);
   }
-}
+  
 
 function handleMeasurementUnsubscribe() {
   console.log('Measurement unsubscribed');
