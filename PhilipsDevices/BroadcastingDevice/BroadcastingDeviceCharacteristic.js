@@ -13,7 +13,7 @@ function createCharacteristic(uuid, properties, value, descriptorValue) {
 }
 
 function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe, onReadCallback = null) {
-  const props = ['notify','read'];
+  const props = ['read','notify'];
   const handlers = {
     uuid,
     properties: props,
@@ -22,14 +22,15 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
     onUnsubscribe,
   };
 
+  handlers.onReadRequest = (offset, callback) => {
+    const buffer = onReadCallback();
+    console.log('[onReadRequest] Responding with:', buffer);
+    callback(Characteristic.RESULT_SUCCESS, buffer);
+  };
   if (onReadCallback) {
     props.push('indicate');
     handlers.properties = props;
-    handlers.onReadRequest = (offset, callback) => {
-      const buffer = onReadCallback();
-      console.log('[onReadRequest] Responding with:', buffer);
-      callback(Characteristic.RESULT_SUCCESS, buffer);
-    };
+    
   } else {
     props.push('read');
     handlers.properties = props;

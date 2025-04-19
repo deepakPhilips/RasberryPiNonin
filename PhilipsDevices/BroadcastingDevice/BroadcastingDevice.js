@@ -75,8 +75,7 @@ bleno.on('advertisingStart', (error) => {
     const measurementChar = createNotifyCharacteristic(
         deviceConfig.characteristicID.toLowerCase().replace(/-/g, ''),
         DEVICE_TYPE === 'Pulse Oximeter' ? 'Measurement' : 'Temperature Measurement',
-        handleMeasurementSubscribe.bind(null, options, DEVICE_TYPE),
-        handleMeasurementUnsubscribe
+        handleMeasurementSubscribe.bind(null, options, DEVICE_TYPE),handleMeasurementUnsubscribe,        
     );
 
     // Define services
