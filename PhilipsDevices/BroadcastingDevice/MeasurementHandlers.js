@@ -42,7 +42,7 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         const map = options.map || 90;
     
         const buffer = Buffer.alloc(7);
-        buffer.writeUInt8(0x00, 0); // Flags
+        buffer.writeUInt8(0x00, 0); // Flags = 0 (no timestamp, no pulse rate, etc.)
         buffer.writeUInt16LE(encodeSfloat(systolic), 1);   // Systolic
         buffer.writeUInt16LE(encodeSfloat(diastolic), 3);  // Diastolic
         buffer.writeUInt16LE(encodeSfloat(map), 5);        // MAP
@@ -110,8 +110,12 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
 }
 
 function encodeSfloat(value) {
-    const exponent = 0x0; // scale = 1
-    const mantissa = Math.round(value);
+    // IEEE-11073 SFLOAT (16-bit float)
+    // Format: 12-bit mantissa + 4-bit exponent (base-10)
+    const exponent = 0; // scale by 10^0
+    let mantissa = Math.round(value);
+
+    if (mantissa > 0x0FFF) mantissa = 0x0FFF;
     return (exponent << 12) | (mantissa & 0x0FFF);
 }
 
