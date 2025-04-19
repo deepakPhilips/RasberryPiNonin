@@ -19,7 +19,8 @@ program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
     .option('--saturation <n>', 'saturation', parseInt)
     .option('--pulse <n>', 'pulse', parseInt)
-    .option('--temperature <n>', 'temperature', parseFloat);
+    .option('--pulse <n>', 'pulse', parseInt)
+    .option('--weight <n>', 'weight', parseFloat);
 
 program.parse(process.argv);
 const options = program.opts();
