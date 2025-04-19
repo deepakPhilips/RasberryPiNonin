@@ -38,18 +38,20 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     } 
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
-        const diastolic = options.diastolic || 80;
-        const map = options.map || 90;
-    
-        const buffer = Buffer.alloc(7);
-        buffer.writeUInt8(0x00, 0); // Flags = 0 (no timestamp, no pulse rate, etc.)
-        buffer.writeUInt16LE(encodeSfloat(systolic), 1);   // Systolic
-        buffer.writeUInt16LE(encodeSfloat(diastolic), 3);  // Diastolic
-        buffer.writeUInt16LE(encodeSfloat(map), 5);        // MAP
-    
-        console.log('Sending BP measurement:', buffer.toString('hex'));
-        updateValueCallback(buffer);
-        setTimeout(() => process.exit(0), 300);
+const diastolic = options.diastolic || 80;
+const map = options.map || 90;
+
+const buffer = Buffer.alloc(7);
+buffer.writeUInt8(0x00, 0); // Flags
+
+encodeSfloat(systolic).copy(buffer, 1);
+encodeSfloat(diastolic).copy(buffer, 3);
+encodeSfloat(map).copy(buffer, 5);
+
+console.log('Sending BP measurement (correct SFLOAT):', buffer.toString('hex'));
+updateValueCallback(buffer);
+setTimeout(() => process.exit(0), 300);
+
     }    
     else {
         console.warn('Unsupported device type:', deviceType);
@@ -110,14 +112,22 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
 }
 
 function encodeSfloat(value) {
-    // IEEE-11073 SFLOAT (16-bit float)
-    // Format: 12-bit mantissa + 4-bit exponent (base-10)
-    const exponent = 0; // scale by 10^0
-    let mantissa = Math.round(value);
+    let exponent = -2;
+    let mantissa = Math.round(value * Math.pow(10, -exponent)); // scale value
 
-    if (mantissa > 0x0FFF) mantissa = 0x0FFF;
-    return (exponent << 12) | (mantissa & 0x0FFF);
+    // Adjust for edge cases
+    if (mantissa > 2047) mantissa = 2047;
+    if (mantissa < -2048) mantissa = -2048;
+
+    // Convert exponent to 4-bit signed
+    if (exponent < 0) exponent = (16 + exponent) & 0x0F;
+
+    const sfloat = (exponent << 12) | (mantissa & 0x0FFF);
+    const buffer = Buffer.alloc(2);
+    buffer.writeUInt16LE(sfloat, 0);
+    return buffer;
 }
+
 
   
   module.exports = {
