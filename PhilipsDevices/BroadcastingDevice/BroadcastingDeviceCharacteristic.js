@@ -13,7 +13,7 @@ function createCharacteristic(uuid, properties, value, descriptorValue) {
 }
 
 function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubscribe, onReadCallback = null) {
-  const props = ['notify'];
+  const props = ['notify','read'];
   const handlers = {
     uuid,
     properties: props,
