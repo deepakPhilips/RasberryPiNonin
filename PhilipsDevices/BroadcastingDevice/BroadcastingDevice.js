@@ -3,13 +3,6 @@ const bleno = require('@abandonware/bleno');
 const fs = require('fs');
 const program = require('commander').program;
 
-// Load config based on --oximeter flag
-const configPath = process.argv.includes('--oximeter')
-  ? './OximeterDeviceConfig.json'
-  : './ThermometerDeviceConfig.json';
-
-const deviceConfig = require(configPath);
-const DEVICE_TYPE = deviceConfig.type;
 
 const { createPrimaryService } = require('./BroadcastingDeviceService');
 const {
@@ -17,6 +10,22 @@ const {
   createNotifyCharacteristic,
 } = require('./BroadcastingDeviceCharacteristic');
 
+program
+    .requiredOption('--oximeter <n>', 'oximeter',parseInt)
+    .option('--saturation <n>', 'saturation', parseInt)
+    .option('--pulse <n>', 'pulse', parseInt)
+    .option('--temperature <n>', 'temperature', parseFloat)
+
+
+    const { oximeter } = options;
+    
+// Load config based on --oximeter flag
+const configPath = oximeter
+  ? './OximeterDeviceConfig.json'
+  : './ThermometerDeviceConfig.json';
+
+const deviceConfig = require(configPath);
+const DEVICE_TYPE = deviceConfig.type;
 
 // CLI option parsing
 if (DEVICE_TYPE === 'Pulse Oximeter') {
