@@ -12,7 +12,7 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     updateValueCallback(buf);
   } else {
     const temp = options.temperature;
-    const buffer = getTemperatureValue(temp + count);
+    const buffer = getTemperatureValue(temp);
     console.log('Sending:', buffer.toString('hex'));
     updateValueCallback(buffer);
   }
