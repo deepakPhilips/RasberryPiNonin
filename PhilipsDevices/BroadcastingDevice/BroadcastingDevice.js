@@ -20,7 +20,7 @@ program
     const { oximeter } = options;
     
 // Load config based on --oximeter flag
-const configPath = oximeter
+const configPath = oximeter == 1
   ? './OximeterDeviceConfig.json'
   : './ThermometerDeviceConfig.json';
 
