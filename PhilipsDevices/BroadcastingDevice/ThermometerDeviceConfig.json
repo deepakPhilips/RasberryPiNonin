@@ -1,0 +1,19 @@
+{
+  "id": 18,
+  "type": "Thermometer",
+  "manufacturer": "ForaCare",
+  "model": "IR20b",
+  "disabled": false,
+  "broadcastingName": "FORA IR20",
+  "broadcastingServiceID": "1809",
+  "readingServiceID": "1809",
+  "characteristicID": "2A1C",
+  "requiresPairing": false,
+  "options": 0,
+  "connectionTimeout": 30,
+  "readingTimeout": 30,
+  "libVersion": 1,
+  "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/ble-21.jpg",
+  "instructions": "Turn on the thermometer and take your temperature.",
+  "readingInstructions": "Please wait while your temperature reading is being received."
+}
