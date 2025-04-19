@@ -111,21 +111,18 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
 }
 
 function encodeSfloat(value) {
-    // IEEE-11073 16-bit SFLOAT
-    // Mantissa: 12-bit signed, Exponent: 4-bit signed
-    let exponent = -2;
-    let mantissa = Math.round(value * 100); // scale by 10^2
+    const exponent = -2; // scale = 10^-2
+    const mantissa = Math.round(value * 100); // scale up
   
-    if (mantissa > 2047) mantissa = 2047;
-    if (mantissa < -2048) mantissa = -2048;
+    // Bound to 12-bit signed range
+    const boundedMantissa = Math.max(-2048, Math.min(2047, mantissa));
+    const sfloat = (exponent & 0x0F) << 12 | (boundedMantissa & 0x0FFF);
   
-    // Pack exponent and mantissa into 16-bit
-    let sfloat = (mantissa & 0x0FFF) | ((exponent & 0x0F) << 12);
     const buffer = Buffer.alloc(2);
     buffer.writeUInt16LE(sfloat, 0);
     return buffer;
   }
-
+  
 
   
   module.exports = {
