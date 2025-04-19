@@ -29,6 +29,15 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
       updateValueCallback(buffer);
       setTimeout(() => process.exit(0), 300);
     }
+    else if (deviceType === 'Weight Scale') {
+        const weight = options.weight;
+        const buffer = getWeightValue(weight);
+        console.log('Sending weight:', buffer.toString('hex'));
+        updateValueCallback(buffer);
+        setTimeout(() => process.exit(0), 300);
+    } else {
+        console.warn('Unsupported device type:', deviceType);
+    }
   }
   
   function handleMeasurementUnsubscribe() {
@@ -72,6 +81,17 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     buffer.writeUInt8(bpm, 1);
     return buffer;
   }
+
+  function getWeightValue(weightKg) {
+    const flags = 0x00; // 0 = weight in kg
+    const exponent = -2;
+    const mantissa = Math.round(weightKg * 100); // scale to 0.01 kg
+    const buffer = Buffer.alloc(5);
+    buffer.writeUInt8(flags, 0);
+    buffer.writeIntLE(mantissa, 1, 3);
+    buffer.writeInt8(exponent, 4);
+    return buffer;
+}
   
   module.exports = {
     handleMeasurementSubscribe,

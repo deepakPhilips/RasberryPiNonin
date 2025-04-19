@@ -44,6 +44,11 @@ if (DEVICE_TYPE === 'Thermometer' && !options.temperature) {
     process.exit(1);
 }
 
+if (DEVICE_TYPE === 'Weight Scale' && !options.weight) {
+    console.error("❌ Please provide --weight for Weight Scale simulation.");
+    process.exit(1);
+}
+
 // Set MAC address before advertising
 try {
     console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
@@ -90,6 +95,7 @@ bleno.on('advertisingStart', (error) => {
         'Thermometer': 'Temperature Measurement',
         'Pulse Oximeter': 'Oxygen Saturation Measurement',
         'Heart Rate Monitor': 'Heart Rate Measurement',
+        'Weight Scale': 'Weight Measurement',
     }[DEVICE_TYPE] || 'Measurement';
 
     // Create main measurement characteristic
