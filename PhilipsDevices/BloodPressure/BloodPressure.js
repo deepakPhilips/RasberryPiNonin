@@ -89,9 +89,8 @@ function handleMeasurementUnsubscribe() {
 
 function sfloatFromNumber(num) {
     const exponent = 0; // 10^0
-    const mantissa = Math.round(num * 1); // No scaling
-  
-    let raw = (exponent << 12) | (mantissa & 0x0FFF);
+    const mantissa = Math.round(num);
+    const raw = (exponent << 12) | (mantissa & 0x0FFF);
     const buffer = Buffer.alloc(2);
     buffer.writeUInt16LE(raw, 0);
     return buffer;
@@ -99,19 +98,18 @@ function sfloatFromNumber(num) {
   
   function buildBloodPressurePacket() {
     counter++;
-    const flags = 0b00010000; // Units in mmHg, pulse rate present
     const buffer = Buffer.alloc(13);
   
+    const flags = 0b00010000; // mmHg, pulse present
     buffer.writeUInt8(flags, 0);
   
-    // Write SFLOATs (2 bytes each)
-    sfloatFromNumber(options.sys).copy(buffer, 1);  // Systolic
-    sfloatFromNumber(options.dia).copy(buffer, 3);  // Diastolic
+    sfloatFromNumber(options.sys).copy(buffer, 1); // Systolic
+    sfloatFromNumber(options.dia).copy(buffer, 3); // Diastolic
     sfloatFromNumber((options.sys + options.dia) / 2).copy(buffer, 5); // MAP
     sfloatFromNumber(options.pulse).copy(buffer, 7); // Pulse
   
-    buffer.writeUInt8(counter % 256, 9);   // User ID
-    buffer.writeUInt16LE(0, 10);           // Measurement status (optional, here 0)
+    buffer.writeUInt8(counter % 256, 9);  // User ID
+    buffer.writeUInt16LE(0, 10);          // Measurement Status
   
     return buffer;
   }
