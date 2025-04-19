@@ -22,7 +22,8 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
     onUnsubscribe,
   };
 
-  props.push('indicate');
+  if (onReadCallback) {
+    props.push('indicate');
     handlers.properties = props;
     handlers.onReadRequest = (offset, callback) => {
       try {
@@ -34,6 +35,7 @@ function createNotifyCharacteristic(uuid, descriptorValue, onSubscribe, onUnsubs
         callback(Characteristic.RESULT_UNLIKELY_ERROR);
       }
     };
+  }
 
   return new Characteristic(handlers);
 }
