@@ -101,16 +101,17 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
 
   function getWeightValue(weightKg) {
     const flags = 0x00;
-    const exponent = 0x0E; // Two's complement of -2 in BLE unsigned 8-bit
+    const exponent = -2;
+    const mantissa = Math.round(weightKg * 100); // scale to 0.01 kg
   
-    const mantissa = Math.round(weightKg * 100);
     const buffer = Buffer.alloc(5);
     buffer.writeUInt8(flags, 0);
-    buffer.writeUIntLE(mantissa, 1, 3); // 3 bytes unsigned
-    buffer.writeUInt8(exponent, 4);    // BLE 8-bit unsigned
+    buffer.writeIntLE(mantissa, 1, 3);
+    buffer.writeUInt8(exponent & 0xFF, 4); // safely cast -2 to 0xFE for unsigned byte
   
     return buffer;
   }
+  
   
 
 function encodeSfloat(value) {
