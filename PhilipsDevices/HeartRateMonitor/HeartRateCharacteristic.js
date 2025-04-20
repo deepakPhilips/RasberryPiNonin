@@ -22,11 +22,11 @@ function processHeartRateMeasurement(pulse) {
 function createHeartRateCharacteristic(uuid) {
   return new Characteristic({
     uuid,
-    properties: ['notify'],
+    properties: ['indicate', 'notify'],
     descriptors: [new Descriptor({ uuid: '2901', value: 'Heart Rate Measurement' })],
 
     onSubscribe: (maxValueSize, updateValueCallback) => {
-      console.log('✅ Client subscribed to heart rate');
+      console.log('✅ Client subscribed to HRM characteristic');
 
       interval = setInterval(() => {
         const simulatedPulse = Math.floor(Math.random() * 40 + 60); // 60–100 bpm
@@ -37,7 +37,7 @@ function createHeartRateCharacteristic(uuid) {
     },
 
     onUnsubscribe: () => {
-      console.log('❌ Client unsubscribed');
+      console.log('❌ Client unsubscribed from HRM');
       clearInterval(interval);
     }
   });

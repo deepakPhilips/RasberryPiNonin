@@ -1,0 +1,19 @@
+{
+    "id": 4,
+    "type": "Heart Rate Monitor",
+    "manufacturer": "Beets BLU",
+    "model": "HRM1",
+    "disabled": false,
+    "broadcastingName": "Beets Blu HRM1",
+    "broadcastingServiceID": "180D",
+    "readingServiceID": "180D",
+    "characteristicID": "2A37",
+    "requiresPairing": false,
+    "options": 0,
+    "connectionTimeout": 30,
+    "readingTimeout": 120,
+    "libVersion": 1,
+    "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/ble-6.jpg",
+    "instructions": "Wear the heart rate monitor to make it visible.",
+    "readingInstructions": "Please be patient while your heart rate data is captured. This can take up to 60 seconds."
+  }
