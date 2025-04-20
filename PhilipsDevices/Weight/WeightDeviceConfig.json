@@ -1,0 +1,21 @@
+{
+    "id": 14,
+    "type": "Weight Scale",
+    "manufacturer": "A&D",
+    "model": "UC-352BLE",
+    "disabled": false,
+    "broadcastingName": "A&D_UC-352BLE_SIM",
+    "broadcastingServiceID": "23434100-1FE4-1EFF-80CB-00FF78297D8B",
+    "readingServiceID": "23434100-1FE4-1EFF-80CB-00FF78297D8B",
+    "characteristicID": "23434101-1FE4-1EFF-80CB-00FF78297D8B",
+    "requiresPairing": true,
+    "requiresOSPairing": true,
+    "options": 1,
+    "connectionTimeout": 90,
+    "readingTimeout": 30,
+    "libVersion": 1,
+    "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/ble-17.jpg",
+    "instructions": "Stand on your scale. Step off your scale when 'Step off' is displayed.",
+    "readingInstructions": "Stand on your scale. Step off your scale when 'Step off' is displayed."
+  }
+  

@@ -1,9 +1,9 @@
 const bleno = require('@abandonware/bleno');
-const deviceConfig = require('./HeartRateDeviceConfig.json');
-const { createHeartRateCharacteristic } = require('./HeartRateCharacteristic');
+const deviceConfig = require('./WeightDeviceConfig.json');
+const { createWeightCharacteristic } = require('./WeightCharacteristic');
 
 bleno.on('stateChange', (state) => {
-  console.log('💓 HRM BLE State:', state);
+  console.log('Weight Scale BLE state:', state);
   if (state === 'poweredOn') {
     bleno.startAdvertising(deviceConfig.broadcastingName, [deviceConfig.broadcastingServiceID]);
   } else {
@@ -12,14 +12,17 @@ bleno.on('stateChange', (state) => {
 });
 
 bleno.on('advertisingStart', (err) => {
-  if (err) return console.error('❌ Advertising failed:', err);
+  if (err) {
+    console.error('❌ Advertising error:', err);
+    return;
+  }
   console.log(`📡 Advertising as ${deviceConfig.broadcastingName}`);
 
   bleno.setServices([
     new bleno.PrimaryService({
       uuid: deviceConfig.readingServiceID,
       characteristics: [
-        createHeartRateCharacteristic(deviceConfig.characteristicID)
+        createWeightCharacteristic(deviceConfig.characteristicID)
       ]
     })
   ]);
