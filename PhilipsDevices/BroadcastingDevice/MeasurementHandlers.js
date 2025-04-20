@@ -26,8 +26,9 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     else if (deviceType === 'Weight Scale') {
         console.log('✅ Validic subscribed — sending weight');
   
+        
         const flags = 0x00; // no timestamp, no user ID, no BMI
-        const weight = sfloatFromNumber(weightValue);
+        const weight = sfloatFromNumber(options.weight);
   
         const packet = Buffer.concat([Buffer.from([flags]), weight]);
         console.log('⚖️ Sending weight packet (hex):', packet.toString('hex'));
