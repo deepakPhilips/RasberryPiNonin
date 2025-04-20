@@ -35,10 +35,7 @@ console.log("🚀 ~ deviceConfig:", deviceConfig)
 const DEVICE_TYPE = deviceConfig.type;
 
 // Optional CLI validations
-if (DEVICE_TYPE === 'Heart Rate Monitor' && !options.pulse) {
-    console.error("❌ Please provide --pulse for Heart Rate Monitor simulation.");
-    process.exit(1);
-}
+
 if (DEVICE_TYPE === 'Pulse Oximeter' && (!options.pulse || !options.saturation)) {
     console.error("❌ Please provide --pulse and --saturation for Pulse Oximeter simulation.");
     process.exit(1);
@@ -103,7 +100,6 @@ bleno.on('advertisingStart', (error) => {
     const descriptorLabel = {
         'Thermometer': 'Temperature Measurement',
         'Pulse Oximeter': 'Oxygen Saturation Measurement',
-        'Heart Rate Monitor': 'Heart Rate Measurement',
         'Weight Scale': 'Weight Measurement',
         'Blood Pressure Monitor': 'Blood Pressure Measurement',
     }[DEVICE_TYPE] || 'Measurement';

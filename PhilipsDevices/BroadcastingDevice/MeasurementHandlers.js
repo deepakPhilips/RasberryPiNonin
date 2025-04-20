@@ -22,13 +22,7 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         process.exit(0);
       }, 300);
   
-    } else if (deviceType === 'Heart Rate Monitor') {
-      const bpm = options.pulse || 72;
-      const buffer = getHeartRateMeasurement(bpm);
-      console.log('Sending heart rate:', buffer.toString('hex'));
-      updateValueCallback(buffer);
-      setTimeout(() => process.exit(0), 300);
-    }
+    }  
     else if (deviceType === 'Weight Scale') {
         const weight = options.weight;
         const buffer = getWeightValue(weight);
