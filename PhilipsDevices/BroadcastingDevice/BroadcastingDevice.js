@@ -67,6 +67,7 @@ try {
 bleno.on('stateChange', (state) => {
     console.log(`GATT ${DEVICE_TYPE.toLowerCase()} server running`);
     if (state === 'poweredOn') {
+        console.log("🚀 ~ bleno.on ~ deviceConfig.broadcastingName:", deviceConfig.broadcastingName)
         bleno.startAdvertising(deviceConfig.broadcastingName, [
             '180A',
             deviceConfig.broadcastingServiceID.toLowerCase().replace(/-/g, ''),
