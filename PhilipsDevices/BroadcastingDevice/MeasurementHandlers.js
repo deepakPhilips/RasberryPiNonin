@@ -100,17 +100,19 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
   }
 
   function getWeightValue(weightKg) {
-    const flags = 0x00;
-    const exponent = -2;
-    const mantissa = Math.round(weightKg * 100); // scale to 0.01 kg
-  
     const buffer = Buffer.alloc(5);
-    buffer.writeUInt8(flags, 0);
-    buffer.writeIntLE(mantissa, 1, 3);
-    buffer.writeUInt8(exponent & 0xFF, 4); // safely cast -2 to 0xFE for unsigned byte
+  
+    const weight = Math.round(weightKg * 100); // in 0.01 kg
+    buffer.writeUInt8(0x00, 0); // Flags = 0
+    buffer.writeUInt16LE(weight, 1); // 2 bytes for weight (e.g. 7150 → 0x1BDE)
+  
+    // Reserved / checksum / status byte — needs to be “valid”
+    buffer.writeUInt8(0x00, 3); // often unused
+    buffer.writeUInt8(0x00, 4); // reserved or checksum
   
     return buffer;
   }
+  
   
   
 
