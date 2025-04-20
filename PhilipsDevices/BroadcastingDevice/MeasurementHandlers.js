@@ -33,20 +33,24 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         const weight = options.weight;
         const buffer = getWeightValue(weight);
     
-        console.log('Subscribed to weight notifications, sending...');
+        console.log('Subscribed to weight notifications, waiting before sending...');
     
-        let count = 0;
-        const interval = setInterval(() => {
-            if (count >= 3) {
-                clearInterval(interval);
-                setTimeout(() => process.exit(0), 500);
-                return;
-            }
-            console.log(`Sending weight [${count + 1}]:`, buffer.toString('hex'));
-            updateValueCallback(buffer);
-            count++;
-        }, 800); // send every 800ms
-    } 
+        // Wait 2 seconds before starting transmission
+        setTimeout(() => {
+            let count = 0;
+            const interval = setInterval(() => {
+                if (count >= 3) {
+                    clearInterval(interval);
+                    console.log('✅ Finished sending weight. Exiting...');
+                    setTimeout(() => process.exit(0), 1000);
+                    return;
+                }
+                console.log(`📦 Sending weight [${count + 1}]:`, buffer.toString('hex'));
+                updateValueCallback(buffer);
+                count++;
+            }, 1000); // Send every 1 sec
+        }, 2000); // Initial delay before any data is sent
+    }
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
         const diastolic = options.diastolic || 80;
