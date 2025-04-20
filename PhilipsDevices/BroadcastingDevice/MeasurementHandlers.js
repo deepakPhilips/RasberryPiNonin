@@ -30,27 +30,20 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
       setTimeout(() => process.exit(0), 300);
     }
     else if (deviceType === 'Weight Scale') {
-        const weight = options.weight;
-        const buffer = getWeightValue(weight);
-    
-        console.log('Subscribed to weight notifications, waiting before sending...');
-    
-        // Wait 2 seconds before starting transmission
-        setTimeout(() => {
-            let count = 0;
-            const interval = setInterval(() => {
-                if (count >= 3) {
-                    clearInterval(interval);
-                    console.log('✅ Finished sending weight. Exiting...');
-                    setTimeout(() => process.exit(0), 1000);
-                    return;
-                }
-                console.log(`📦 Sending weight [${count + 1}]:`, buffer.toString('hex'));
-                updateValueCallback(buffer);
-                count++;
-            }, 1000); // Send every 1 sec
-        }, 2000); // Initial delay before any data is sent
-    }
+        const buffer = getSamicoWeightPacket();
+        console.log('Sending 19-byte weight measurement:', buffer.toString('hex'));
+
+        let count = 0;
+        const interval = setInterval(() => {
+            if (count >= 3) {
+                clearInterval(interval);
+                setTimeout(() => process.exit(0), 1000);
+                return;
+            }
+            updateValueCallback(buffer);
+            count++;
+        }, 1000);
+    } 
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
         const diastolic = options.diastolic || 80;
@@ -143,6 +136,51 @@ function encodeSfloat(value) {
     return buffer;
   }
   
+
+  function getSamicoWeightPacket() {
+    const buffer = Buffer.alloc(19);
+    const flag = 0x1E;
+    const weightKg = 72.5;
+    const weightRaw = Math.round(weightKg * 200); // scaling factor for Samico
+    const year = 2022;
+    const month = 1;
+    const day = 26;
+    const hour = 23;
+    const minute = 59;
+    const second = 47;
+    const userId = 1;
+    const bmi = 0x0100;
+    const height = 0x00FD;
+
+    buffer.writeUInt8(flag, 0);
+    buffer.writeInt16LE(weightRaw, 1);
+    buffer.writeUInt16LE(year, 3);
+    buffer.writeUInt8(month, 5);
+    buffer.writeUInt8(day, 6);
+    buffer.writeUInt8(hour, 7);
+    buffer.writeUInt8(minute, 8);
+    buffer.writeUInt8(second, 9);
+    buffer.writeUInt8(userId, 10);
+    buffer.writeUInt16LE(bmi, 11);
+    buffer.writeUInt16LE(height, 13);
+    buffer.writeUInt32LE(0x00000000, 15); // trailing padding/reserved
+
+    return buffer;
+}
+
+function encodeSfloat(value) {
+    const exponent = -2; // scale = 10^-2
+    const mantissa = Math.round(value * 100); // scale up
+
+    // Bound to 12-bit signed range
+    const boundedMantissa = Math.max(-2048, Math.min(2047, mantissa));
+    const sfloat = (exponent & 0x0F) << 12 | (boundedMantissa & 0x0FFF);
+
+    const buffer = Buffer.alloc(2);
+    buffer.writeUInt16LE(sfloat, 0);
+    return buffer;
+}
+
 
   
   module.exports = {
