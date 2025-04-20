@@ -11,6 +11,12 @@ NEW_MAC="$MAC_PREFIX:$RAND_HEX"
 
 echo "🔄 Setting new Bluetooth MAC address to: $NEW_MAC"
 
+# Check for required tool
+if ! command -v btmgmt &> /dev/null; then
+  echo "❌ Error: 'btmgmt' not found. Please install bluez."
+  exit 1
+fi
+
 # Restart Bluetooth stack with new address
 sudo systemctl stop bluetooth
 sudo hciconfig hci0 down
