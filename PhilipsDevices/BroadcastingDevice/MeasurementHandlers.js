@@ -100,18 +100,17 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
   }
 
   function getWeightValue(weightKg) {
-    const buffer = Buffer.alloc(5);
-  
-    const weight = Math.round(weightKg * 100); // in 0.01 kg
-    buffer.writeUInt8(0x00, 0); // Flags = 0
-    buffer.writeUInt16LE(weight, 1); // 2 bytes for weight (e.g. 7150 → 0x1BDE)
-  
-    // Reserved / checksum / status byte — needs to be “valid”
-    buffer.writeUInt8(0x00, 3); // often unused
-    buffer.writeUInt8(0x00, 4); // reserved or checksum
-  
-    return buffer;
-  }
+  const buffer = Buffer.alloc(5);
+
+  const weight = Math.round(weightKg * 10); // Pyle uses tenths of kg, not hundredths
+  buffer.writeUInt8(0x22, 0);              // Flags: 0x22 = stable + kg
+  buffer.writeUInt16LE(weight, 1);         // Weight (e.g., 725 = 72.5 kg)
+  buffer.writeUInt8(0x00, 3);              // Status / reserved
+  buffer.writeUInt8(0x00, 4);              // Reserved / checksum
+
+  return buffer;
+}
+
   
   
   
