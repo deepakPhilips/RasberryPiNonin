@@ -32,9 +32,13 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     else if (deviceType === 'Weight Scale') {
         const weight = options.weight;
         const buffer = getWeightValue(weight);
-        console.log('Sending weight:', buffer.toString('hex'));
-        updateValueCallback(buffer);
-        setTimeout(() => process.exit(0), 300);
+    
+        console.log('Preparing to send weight after delay...');
+        setTimeout(() => {
+            console.log('Sending weight:', buffer.toString('hex'));
+            updateValueCallback(buffer);
+            setTimeout(() => process.exit(0), 300); // exit after send
+        }, 1000); // 1 second delay
     } 
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
