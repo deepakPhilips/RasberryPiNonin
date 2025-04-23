@@ -87,10 +87,14 @@ class WeightCharacteristic extends bleno.Characteristic {
     updateValueCallback = callback;
     console.log('Subscribed to weight notify');
     setTimeout(() => {
-      const buffer = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4kg
-      updateValueCallback(buffer);
-      console.log('Measurement sent');
-    }, 2000);
+        const buffer = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4kg
+        if (typeof updateValueCallback === 'function') {
+          updateValueCallback(buffer);
+          console.log('📤 Measurement sent');
+        } else {
+          console.warn('⚠️ No subscriber to send weight to');
+        }
+      }, 2000);
   }
 
   onUnsubscribe() {
