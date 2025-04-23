@@ -1,6 +1,6 @@
 const bleno = require('@abandonware/bleno');
 const dbus = require('dbus-next');
-const { Interface, method } = dbus.interface;
+const { Interface } = dbus.interface;
 
 const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
@@ -14,36 +14,36 @@ const bus = dbus.systemBus();
 class NoInputNoOutputAgent extends Interface {
   constructor() {
     super('org.bluez.Agent1');
+    this.addMethod('RequestPinCode', { inSignature: 'o', outSignature: 's' }, this.RequestPinCode);
+    this.addMethod('RequestPasskey', { inSignature: 'o', outSignature: 'u' }, this.RequestPasskey);
+    this.addMethod('RequestConfirmation', { inSignature: 'ou', outSignature: '' }, this.RequestConfirmation);
+    this.addMethod('AuthorizeService', { inSignature: 'os', outSignature: '' }, this.AuthorizeService);
+    this.addMethod('Cancel', { inSignature: 'o', outSignature: '' }, this.Cancel);
+    this.addMethod('Release', { inSignature: '', outSignature: '' }, this.Release);
   }
 
-  @method({ inSignature: 'o', outSignature: 's' })
   RequestPinCode(device) {
     console.log(`RequestPinCode for ${device}`);
     return '0000';
   }
 
-  @method({ inSignature: 'o', outSignature: 'u' })
   RequestPasskey(device) {
     console.log(`RequestPasskey for ${device}`);
     return 123456;
   }
 
-  @method({ inSignature: 'ou', outSignature: '' })
   RequestConfirmation(device, passkey) {
     console.log(`RequestConfirmation: ${passkey} for ${device}`);
   }
 
-  @method({ inSignature: 'os', outSignature: '' })
   AuthorizeService(device, uuid) {
     console.log(`AuthorizeService: ${uuid}`);
   }
 
-  @method({ inSignature: 'o', outSignature: '' })
   Cancel(device) {
     console.log(`Cancel pairing for ${device}`);
   }
 
-  @method({ inSignature: '', outSignature: '' })
   Release() {
     console.log('Agent released');
   }
@@ -124,7 +124,6 @@ const deviceInfoService = new bleno.PrimaryService({
   ],
 });
 
-// Handle BLE state changes
 bleno.on('stateChange', (state) => {
   console.log(`BLE state changed to: ${state}`);
   if (state === 'poweredOn') {
@@ -143,7 +142,6 @@ bleno.on('advertisingStart', (error) => {
   }
 });
 
-// Register pairing agent and launch BLE peripheral
 registerAgent()
   .then(() => console.log('🔒 Pairing agent ready'))
   .catch((err) => console.error('❌ Pairing setup failed:', err));
