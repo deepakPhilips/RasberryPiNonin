@@ -15,6 +15,7 @@ program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
     .option('--weight <n>', 'weight', parseFloat);
 
+program.parse(process.argv);
 const options = program.opts(); 
 
 let updateValueCallback = null;
