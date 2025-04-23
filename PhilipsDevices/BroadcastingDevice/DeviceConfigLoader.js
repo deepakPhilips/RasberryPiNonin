@@ -8,7 +8,15 @@ function loadDeviceById(id) {
   return devices.find((device) => device.id === id) || null;
 }
 
+function loadPairableDeviceById(id) {
+  const filePath = path.join(__dirname, 'pairable_ble_devices.json');
+  const devices = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+  return devices.find((device) => device.id === id) || null;
+}
+
 
 module.exports = {
     loadDeviceById,
+    loadPairableDeviceById
 };

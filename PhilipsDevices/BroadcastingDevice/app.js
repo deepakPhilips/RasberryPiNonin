@@ -6,8 +6,11 @@ const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
 
-const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
-const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
+const deviceConfig = loadDeviceById(deviceId);
+
+
+const WEIGHT_SERVICE_UUID = deviceConfig.broadcastingServiceID;
+const WEIGHT_CHAR_UUID = deviceConfig.characteristicID;
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
 
@@ -147,7 +150,7 @@ const deviceInfoService = new bleno.PrimaryService({
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
-    bleno.startAdvertising('A&D_UC-352BLE_AA26F0', [WEIGHT_SERVICE_UUID]);
+    bleno.startAdvertising(deviceConfig.broadcastingName, ['180A',WEIGHT_SERVICE_UUID]);
   } else {
     bleno.stopAdvertising();
   }
