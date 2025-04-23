@@ -2,12 +2,21 @@ const bleno = require('@abandonware/bleno');
 const dbus = require('dbus-next');
 const { Interface } = dbus.interface;
 const bus = dbus.systemBus();
+const { execSync } = require('child_process');
 
 const DEVICE_NAME = 'A&D_UC-352BLE_AA26F0';
 const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
 const DATE_TIME_UUID = '2A08';
 const DIS_UUID = '180A';
+
+// Set MAC address before advertising
+try {
+  console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+  execSync('bash ./set_mac.sh', { stdio: 'inherit' });
+} catch (error) {
+  console.error('❌ Failed to set MAC address:', error.message);
+}
 
 function encodeWeightMeasurement() {
   const weightVal = Math.round(79.4 * 100);
