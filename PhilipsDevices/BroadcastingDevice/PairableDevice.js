@@ -4,10 +4,12 @@ const { Variant } = dbus;
 const { Interface } = require('dbus-next').interface;
 const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
+const { loadPairableDeviceById } = require('./DeviceConfigLoader');
 const program = require('commander').program;
 
-const deviceConfig = loadDeviceById(deviceId);
-
+const deviceConfig = loadPairableDeviceById(deviceId);
+console.log("🚀 ~ deviceConfig:", deviceConfig)
+const DEVICE_TYPE = deviceConfig.type;
 
 const WEIGHT_SERVICE_UUID = deviceConfig.broadcastingServiceID;
 const WEIGHT_CHAR_UUID = deviceConfig.characteristicID;
