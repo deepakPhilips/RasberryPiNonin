@@ -3,6 +3,7 @@ const dbus = require('dbus-next');
 const { Variant } = dbus;
 const { Interface } = require('dbus-next').interface;
 const { systemBus } = dbus;
+const { execSync } = require('child_process');
 
 const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
@@ -10,6 +11,13 @@ const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
 
 let updateValueCallback = null;
+
+try {
+    console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+    execSync('bash ./set_mac.sh', { stdio: 'inherit' });
+} catch (error) {
+    console.error('❌ Failed to set MAC address:', error.message);
+}
 
 class NoInputNoOutputAgent extends Interface {
   constructor() {
