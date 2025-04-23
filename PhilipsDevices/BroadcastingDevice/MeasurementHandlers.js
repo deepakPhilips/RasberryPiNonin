@@ -39,17 +39,6 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         } else {
           console.warn('⚠️ No subscriber to send weight to');
         }
-
-
-        // setTimeout(() => {
-        //     const buffer = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4kg
-        //     if (typeof updateValueCallback === 'function') {
-        //       updateValueCallback(buffer);
-        //       console.log('📤 Measurement sent');
-        //     } else {
-        //       console.warn('⚠️ No subscriber to send weight to');
-        //     }
-        //   }, 2000) // small delay to mimic real-world behavior
       } 
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
@@ -114,16 +103,6 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
     return buffer;
   }
 
-  function getWeightValue(weightKg) {
-    const flags = 0x00; // 0 = weight in kg
-    const exponent = -2;
-    const mantissa = Math.round(weightKg * 100); // scale to 0.01 kg
-    const buffer = Buffer.alloc(5);
-    buffer.writeUInt8(flags, 0);
-    buffer.writeIntLE(mantissa, 1, 3);
-    buffer.writeInt8(exponent, 4);
-    return buffer;
-}
 
 function encodeSfloat(value) {
     const exponent = -2; // scale = 10^-2

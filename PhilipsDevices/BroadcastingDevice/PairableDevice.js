@@ -7,14 +7,7 @@ const { execSync, exec } = require('child_process');
 const { loadPairableDeviceById } = require('./DeviceConfigLoader');
 const program = require('commander').program;
 
-const deviceConfig = loadPairableDeviceById(deviceId);
-console.log("🚀 ~ deviceConfig:", deviceConfig)
-const DEVICE_TYPE = deviceConfig.type;
 
-const WEIGHT_SERVICE_UUID = deviceConfig.broadcastingServiceID;
-const WEIGHT_CHAR_UUID = deviceConfig.characteristicID;
-const DATETIME_CHAR_UUID = '2A08';
-const DEVICE_INFO_SERVICE_UUID = '180A';
 
 program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
@@ -22,6 +15,16 @@ program
 
 program.parse(process.argv);
 const options = program.opts(); 
+
+
+const deviceConfig = loadPairableDeviceById(options.deviceId);
+console.log("🚀 ~ deviceConfig:", deviceConfig)
+const DEVICE_TYPE = deviceConfig.type;
+
+const WEIGHT_SERVICE_UUID = deviceConfig.broadcastingServiceID;
+const WEIGHT_CHAR_UUID = deviceConfig.characteristicID;
+const DATETIME_CHAR_UUID = '2A08';
+const DEVICE_INFO_SERVICE_UUID = '180A';
 
 let updateValueCallback = null;
 
