@@ -13,10 +13,10 @@ const DEVICE_INFO_SERVICE_UUID = '180A';
 
 program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
-    .option('--weight <n>', 'weight', parseFloat)
+    .option('--weight <n>', 'weight', parseFloat);
 
-    const options = program.opts();
-    
+const options = program.opts(); // ✅ this line is required
+
 let updateValueCallback = null;
 
 try {
@@ -26,10 +26,10 @@ try {
     console.error('❌ Failed to set MAC address:', error.message);
 }
 
-// if (DEVICE_TYPE === 'Weight Scale' && !options.weight) {
-//     console.error("❌ Please provide --weight for Weight Scale simulation.");
-//     process.exit(1);
-// }
+if (!options.weight) {
+    console.error("❌ Missing --weight. Please provide a weight in kg (e.g. --weight 78.5)");
+    process.exit(1);
+  }
 
 
 class NoInputNoOutputAgent extends Interface {
