@@ -3,12 +3,17 @@ const dbus = require('dbus-next');
 const { Variant } = dbus;
 const { Interface } = require('dbus-next').interface;
 const { systemBus } = dbus;
-const { execSync } = require('child_process');
+const { execSync, exec } = require('child_process');
+const program = require('commander').program;
 
 const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
+
+program
+    .requiredOption('--deviceId <n>', 'deviceId', parseInt)
+    .option('--weight <n>', 'weight', parseFloat)
 
 let updateValueCallback = null;
 
@@ -18,6 +23,12 @@ try {
 } catch (error) {
     console.error('❌ Failed to set MAC address:', error.message);
 }
+
+// if (DEVICE_TYPE === 'Weight Scale' && !options.weight) {
+//     console.error("❌ Please provide --weight for Weight Scale simulation.");
+//     process.exit(1);
+// }
+
 
 class NoInputNoOutputAgent extends Interface {
   constructor() {
@@ -201,13 +212,27 @@ function encodeMeasurement(weightKg) {
   }
   
   function sendDynamicWeight() {
-    const weight = Math.random() * (120 - 50) + 50; // Random weight between 50–120 kg
-    const buffer = encodeMeasurement(weight);
+    const buffer = encodeMeasurement(options.weight);
   
     if (typeof updateValueCallback === 'function') {
       updateValueCallback(buffer);
-      console.log(`📤 Sent dynamic weight: ${weight.toFixed(1)} kg`);
+      console.log(`📤 Sent dynamic weight: ${options.weight.toFixed(1)} kg`);
+      setTimeout(() => {
+        disconnectFromCentral();
+      }, 1000);
     } else {
       console.warn('⚠️ No subscriber to send weight to');
     }
   }
+
+
+function disconnectFromCentral() {
+  // Disconnect from all connections (no direct API in bleno)
+  exec('bluetoothctl disconnect', (err, stdout, stderr) => {
+    if (err) {
+      console.error('❌ Failed to disconnect:', err);
+    } else {
+      console.log('✅ Disconnected from central to complete measurement');
+    }
+  });
+}
