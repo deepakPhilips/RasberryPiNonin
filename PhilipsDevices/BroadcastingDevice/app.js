@@ -1,6 +1,7 @@
 const bleno = require('@abandonware/bleno');
 const dbus = require('dbus-next');
-const { Interface, Variant } = dbus;
+const Variant = dbus.Variant;
+const Interface = require('dbus-next').Interface;
 const { systemBus } = dbus;
 
 const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
