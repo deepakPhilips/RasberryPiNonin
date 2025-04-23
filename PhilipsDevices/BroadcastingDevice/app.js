@@ -227,7 +227,6 @@ function encodeMeasurement(weightKg) {
 
 
 function disconnectFromCentral() {
-  // Disconnect from all connections (no direct API in bleno)
   exec('bluetoothctl disconnect', (err, stdout, stderr) => {
     if (err) {
       console.error('❌ Failed to disconnect:', err);
