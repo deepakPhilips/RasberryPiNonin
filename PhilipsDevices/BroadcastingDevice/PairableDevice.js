@@ -158,6 +158,7 @@ bleno.on('stateChange', (state) => {
     bleno.startAdvertising(deviceConfig.broadcastingName, [
                 '180A',
                 deviceConfig.broadcastingServiceID.toLowerCase().replace(/-/g, ''),
+                deviceConfig.readingServiceID.toLowerCase().replace(/-/g, ''),
             ]);
   } else {
     bleno.stopAdvertising();
