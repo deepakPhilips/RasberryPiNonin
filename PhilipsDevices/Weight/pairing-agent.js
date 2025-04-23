@@ -1,54 +1,57 @@
 const dbus = require('dbus-next');
-const { Interface, property, method, signal } = dbus.interface;
-const { systemBus } = dbus;
+const { Interface, DBusError, Variant } = dbus.interface;
+const bus = dbus.systemBus();
 
 class NoInputNoOutputAgent extends Interface {
-  @method({ inSignature: 'o', outSignature: '' })
-  RequestAuthorization(device) {
-    console.log(`Authorization requested for ${device}`);
+  constructor() {
+    super('org.bluez.Agent1');
   }
 
-  @method({ inSignature: 'o', outSignature: '' })
-  AuthorizeService(device, uuid) {
-    console.log(`AuthorizeService request for ${device} on ${uuid}`);
-  }
-
-  @method({ inSignature: 'o', outSignature: 'u' })
-  RequestPasskey(device) {
-    console.log(`RequestPasskey for ${device}`);
-    return 123456;
-  }
-
-  @method({ inSignature: 'o', outSignature: 's' })
   RequestPinCode(device) {
-    console.log(`RequestPinCode for ${device}`);
+    console.log(`🔐 RequestPinCode for ${device}`);
     return '0000';
   }
 
-  @method({ inSignature: '', outSignature: '' })
-  Release() {
-    console.log('Agent released');
+  RequestPasskey(device) {
+    console.log(`🔐 RequestPasskey for ${device}`);
+    return 123456;
   }
 
-  @method({ inSignature: 'o', outSignature: '' })
+  DisplayPasskey(device, passkey, entered) {
+    console.log(`💡 DisplayPasskey: ${passkey} for ${device}`);
+  }
+
+  RequestConfirmation(device, passkey) {
+    console.log(`🔐 RequestConfirmation for ${device}: ${passkey}`);
+    return;
+  }
+
+  AuthorizeService(device, uuid) {
+    console.log(`✅ AuthorizeService for ${device}, UUID: ${uuid}`);
+    return;
+  }
+
   Cancel(device) {
-    console.log(`Cancel request for ${device}`);
+    console.log(`❌ Cancel pairing with ${device}`);
+    return;
+  }
+
+  Release() {
+    console.log('🧹 Release agent');
   }
 }
 
 async function registerAgent() {
-  const bus = systemBus();
   const bluez = await bus.getProxyObject('org.bluez', '/org/bluez');
   const agentManager = bluez.getInterface('org.bluez.AgentManager1');
 
-  const agent = new NoInputNoOutputAgent('org.bluez.Agent1');
-  await bus.requestName('org.bluez.PairingAgent');
-  bus.export('/org/bluez/agent/node', agent);
+  const agent = new NoInputNoOutputAgent();
+  await bus.export('/org/bluez/agent/node', agent);
 
   await agentManager.RegisterAgent('/org/bluez/agent/node', 'NoInputNoOutput');
   await agentManager.RequestDefaultAgent('/org/bluez/agent/node');
 
-  console.log('✅ Pairing agent registered');
+  console.log('✅ Pairing agent registered and default');
 }
 
 registerAgent().catch(err => {
