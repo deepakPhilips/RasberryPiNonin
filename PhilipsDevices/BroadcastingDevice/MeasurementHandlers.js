@@ -1,3 +1,4 @@
+const {  exec } = require('child_process');
 function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateValueCallback) {
     console.log('Device subscribed, sending measurement...');
   
