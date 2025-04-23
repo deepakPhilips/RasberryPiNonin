@@ -86,15 +86,8 @@ class WeightCharacteristic extends bleno.Characteristic {
   onSubscribe(maxValueSize, callback) {
     updateValueCallback = callback;
     console.log('Subscribed to weight notify');
-    setTimeout(() => {
-        const buffer = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4kg
-        if (typeof updateValueCallback === 'function') {
-          updateValueCallback(buffer);
-          console.log('📤 Measurement sent');
-        } else {
-          console.warn('⚠️ No subscriber to send weight to');
-        }
-      }, 2000);
+    setTimeout(sendDynamicWeight, 2000);
+
   }
 
   onUnsubscribe() {
@@ -187,3 +180,34 @@ class CommandControlCharacteristic extends bleno.Characteristic {
   
 // Launch everything
 registerAgent().catch(console.error);
+
+
+function encodeMeasurement(weightKg) {
+    const flags = 0x02;
+    const weightHg = Math.round(weightKg * 10); // kg → hectograms (2 decimal precision)
+    const now = new Date();
+  
+    const buffer = Buffer.alloc(10);
+    buffer.writeUInt8(flags, 0);
+    buffer.writeUInt16LE(weightHg, 1); // 2 bytes for weight
+    buffer.writeUInt16LE(now.getFullYear(), 3);
+    buffer.writeUInt8(now.getMonth() + 1, 5); // Month is 0-indexed
+    buffer.writeUInt8(now.getDate(), 6);
+    buffer.writeUInt8(now.getHours(), 7);
+    buffer.writeUInt8(now.getMinutes(), 8);
+    buffer.writeUInt8(now.getSeconds(), 9);
+  
+    return buffer;
+  }
+  
+  function sendDynamicWeight() {
+    const weight = Math.random() * (120 - 50) + 50; // Random weight between 50–120 kg
+    const buffer = encodeMeasurement(weight);
+  
+    if (typeof updateValueCallback === 'function') {
+      updateValueCallback(buffer);
+      console.log(`📤 Sent dynamic weight: ${weight.toFixed(1)} kg`);
+    } else {
+      console.warn('⚠️ No subscriber to send weight to');
+    }
+  }
