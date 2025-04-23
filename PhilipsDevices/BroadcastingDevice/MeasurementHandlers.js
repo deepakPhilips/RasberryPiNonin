@@ -27,15 +27,15 @@ function handleMeasurementSubscribe(options, deviceType, maxValueSize, updateVal
         console.log('✅ Validic subscribed — sending weight');
   
         
-        const flags = 0x00; // no timestamp, no user ID, no BMI
-        const weight = sfloatFromNumber(options.weight);
-  
-        const packet = Buffer.concat([Buffer.from([flags]), weight]);
-        console.log('⚖️ Sending weight packet (hex):', packet.toString('hex'));
-  
         setTimeout(() => {
-          updateValueCallback(packet);
-        }, 1000); // small delay to mimic real-world behavior
+            const buffer = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4kg
+            if (typeof updateValueCallback === 'function') {
+              updateValueCallback(buffer);
+              console.log('📤 Measurement sent');
+            } else {
+              console.warn('⚠️ No subscriber to send weight to');
+            }
+          }, 2000) // small delay to mimic real-world behavior
       } 
     else if (deviceType === 'Blood Pressure Monitor') {
         const systolic = options.systolic || 120;
