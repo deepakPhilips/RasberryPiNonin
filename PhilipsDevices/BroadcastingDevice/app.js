@@ -1,6 +1,7 @@
 const bleno = require('@abandonware/bleno');
 const dbus = require('dbus-next');
-const { Interface } = dbus.interface;
+const { Interface, Variant } = dbus;
+const { systemBus } = dbus;
 
 const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
@@ -9,62 +10,63 @@ const DEVICE_INFO_SERVICE_UUID = '180A';
 
 let updateValueCallback = null;
 
-const bus = dbus.systemBus();
-
 class NoInputNoOutputAgent extends Interface {
   constructor() {
     super('org.bluez.Agent1');
-    this.addMethod('RequestPinCode', { inSignature: 'o', outSignature: 's' }, this.RequestPinCode);
-    this.addMethod('RequestPasskey', { inSignature: 'o', outSignature: 'u' }, this.RequestPasskey);
-    this.addMethod('RequestConfirmation', { inSignature: 'ou', outSignature: '' }, this.RequestConfirmation);
-    this.addMethod('AuthorizeService', { inSignature: 'os', outSignature: '' }, this.AuthorizeService);
-    this.addMethod('Cancel', { inSignature: 'o', outSignature: '' }, this.Cancel);
-    this.addMethod('Release', { inSignature: '', outSignature: '' }, this.Release);
   }
 
-  RequestPinCode(device) {
-    console.log(`RequestPinCode for ${device}`);
+  RequestPinCode(msg, device) {
+    console.log(`RequestPinCode: ${device}`);
     return '0000';
   }
 
-  RequestPasskey(device) {
-    console.log(`RequestPasskey for ${device}`);
-    return 123456;
+  RequestPasskey(msg, device) {
+    console.log(`RequestPasskey: ${device}`);
+    return new Variant('u', 123456);
   }
 
-  RequestConfirmation(device, passkey) {
+  RequestConfirmation(msg, device, passkey) {
     console.log(`RequestConfirmation: ${passkey} for ${device}`);
   }
 
-  AuthorizeService(device, uuid) {
-    console.log(`AuthorizeService: ${uuid}`);
+  AuthorizeService(msg, device, uuid) {
+    console.log(`AuthorizeService for ${uuid}`);
   }
 
-  Cancel(device) {
-    console.log(`Cancel pairing for ${device}`);
+  Cancel(msg, device) {
+    console.log(`Cancel for ${device}`);
   }
 
-  Release() {
+  Release(msg) {
     console.log('Agent released');
   }
 }
 
+NoInputNoOutputAgent.$methods = {
+  RequestPinCode: ['o', 's', []],
+  RequestPasskey: ['o', 'u', []],
+  RequestConfirmation: ['ou', '', []],
+  AuthorizeService: ['os', '', []],
+  Cancel: ['o', '', []],
+  Release: ['', '', []],
+};
+
 async function registerAgent() {
-  const path = '/test/agent';
+  const bus = systemBus();
   const agent = new NoInputNoOutputAgent();
-  bus.export(path, agent);
+  const AGENT_PATH = '/test/agent';
+
+  bus.export(AGENT_PATH, agent);
 
   const bluez = await bus.getProxyObject('org.bluez', '/org/bluez');
   const agentManager = bluez.getInterface('org.bluez.AgentManager1');
 
-  await agentManager.RegisterAgent(path, 'NoInputNoOutput');
-  console.log('✅ Pairing agent registered with NoInputNoOutput');
-
-  await agentManager.RequestDefaultAgent(path);
-  console.log('✅ Default agent set');
+  await agentManager.RegisterAgent(AGENT_PATH, 'NoInputNoOutput');
+  await agentManager.RequestDefaultAgent(AGENT_PATH);
+  console.log('✅ Pairing agent registered and set as default');
 }
 
-class WeightMeasurementCharacteristic extends bleno.Characteristic {
+class WeightCharacteristic extends bleno.Characteristic {
   constructor() {
     super({
       uuid: WEIGHT_CHAR_UUID,
@@ -73,18 +75,17 @@ class WeightMeasurementCharacteristic extends bleno.Characteristic {
   }
 
   onSubscribe(maxValueSize, callback) {
-    console.log('✅ Subscribed to weight characteristic');
     updateValueCallback = callback;
-
+    console.log('Subscribed to weight notify');
     setTimeout(() => {
-      const data = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4 kg
-      console.log('📤 Sending weight measurement');
-      callback(data);
+      const buffer = Buffer.from('021a03e90704170d3a1e', 'hex'); // 79.4kg
+      updateValueCallback(buffer);
+      console.log('Measurement sent');
     }, 2000);
   }
 
   onUnsubscribe() {
-    console.log('❎ Unsubscribed from weight characteristic');
+    console.log('Unsubscribed');
     updateValueCallback = null;
   }
 }
@@ -98,7 +99,7 @@ class DateTimeCharacteristic extends bleno.Characteristic {
   }
 
   onWriteRequest(data, offset, withoutResponse, callback) {
-    console.log('🕒 Received DateTime write:', data.toString('hex'));
+    console.log('Received DateTime:', data.toString('hex'));
     callback(this.RESULT_SUCCESS);
   }
 }
@@ -106,7 +107,7 @@ class DateTimeCharacteristic extends bleno.Characteristic {
 const weightService = new bleno.PrimaryService({
   uuid: WEIGHT_SERVICE_UUID,
   characteristics: [
-    new WeightMeasurementCharacteristic(),
+    new WeightCharacteristic(),
     new DateTimeCharacteristic(),
   ],
 });
@@ -125,7 +126,6 @@ const deviceInfoService = new bleno.PrimaryService({
 });
 
 bleno.on('stateChange', (state) => {
-  console.log(`BLE state changed to: ${state}`);
   if (state === 'poweredOn') {
     bleno.startAdvertising('A&D_UC-352BLE_AA26F0', [WEIGHT_SERVICE_UUID]);
   } else {
@@ -135,13 +135,12 @@ bleno.on('stateChange', (state) => {
 
 bleno.on('advertisingStart', (error) => {
   if (!error) {
-    console.log('🚀 BLE advertising started');
+    console.log('✅ Advertising started');
     bleno.setServices([deviceInfoService, weightService]);
   } else {
-    console.error('❌ Advertising start error:', error);
+    console.error('❌ Advertising error:', error);
   }
 });
 
-registerAgent()
-  .then(() => console.log('🔒 Pairing agent ready'))
-  .catch((err) => console.error('❌ Pairing setup failed:', err));
+// Launch everything
+registerAgent().catch(console.error);
