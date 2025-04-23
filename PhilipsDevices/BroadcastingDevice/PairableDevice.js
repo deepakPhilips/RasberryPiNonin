@@ -155,7 +155,7 @@ const deviceInfoService = new bleno.PrimaryService({
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
-    bleno.startAdvertising(deviceConfig.broadcastingName, ['180A',WEIGHT_SERVICE_UUID]);
+    bleno.startAdvertising(deviceConfig.broadcastingName, [WEIGHT_SERVICE_UUID]);
   } else {
     bleno.stopAdvertising();
   }
