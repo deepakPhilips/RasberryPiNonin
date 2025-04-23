@@ -145,11 +145,41 @@ bleno.on('stateChange', (state) => {
 bleno.on('advertisingStart', (error) => {
   if (!error) {
     console.log('✅ Advertising started');
-    bleno.setServices([deviceInfoService, weightService]);
+    bleno.setServices([deviceInfoService, weightService, commandService]);
   } else {
     console.error('❌ Advertising error:', error);
   }
 });
 
+class CommandControlCharacteristic extends bleno.Characteristic {
+    constructor() {
+      super({
+        uuid: '233BF001-5A34-1B6D-975C-000D5690ABE4',
+        properties: ['write'],
+      });
+    }
+  
+    onWriteRequest(data, offset, withoutResponse, callback) {
+      const hex = data.toString('hex');
+      console.log('✅ Control characteristic received:', hex);
+  
+      // Respond to specific commands
+      if (hex === '0301a601') {
+        console.log('→ Enable measurement buffer');
+      } else if (hex === '020112') {
+        console.log('→ Delete existing measurements');
+      } else {
+        console.log('→ Unknown control command');
+      }
+  
+      callback(this.RESULT_SUCCESS);
+    }
+  }
+
+  const commandService = new bleno.PrimaryService({
+    uuid: '233BF000-5A34-1B6D-975C-000D5690ABE4',
+    characteristics: [new CommandControlCharacteristic()],
+  });
+  
 // Launch everything
 registerAgent().catch(console.error);
