@@ -1,31 +1,52 @@
 const dbus = require('dbus-next');
-const { Variant } = dbus;
-const BLUEZ_SERVICE_NAME = 'org.bluez';
-const AGENT_PATH = '/org/bluez/agent/node';
-const AGENT_INTERFACE = 'org.bluez.Agent1';
+const { Interface, property, method, signal } = dbus.interface;
+const { systemBus } = dbus;
+
+class NoInputNoOutputAgent extends Interface {
+  @method({ inSignature: 'o', outSignature: '' })
+  RequestAuthorization(device) {
+    console.log(`Authorization requested for ${device}`);
+  }
+
+  @method({ inSignature: 'o', outSignature: '' })
+  AuthorizeService(device, uuid) {
+    console.log(`AuthorizeService request for ${device} on ${uuid}`);
+  }
+
+  @method({ inSignature: 'o', outSignature: 'u' })
+  RequestPasskey(device) {
+    console.log(`RequestPasskey for ${device}`);
+    return 123456;
+  }
+
+  @method({ inSignature: 'o', outSignature: 's' })
+  RequestPinCode(device) {
+    console.log(`RequestPinCode for ${device}`);
+    return '0000';
+  }
+
+  @method({ inSignature: '', outSignature: '' })
+  Release() {
+    console.log('Agent released');
+  }
+
+  @method({ inSignature: 'o', outSignature: '' })
+  Cancel(device) {
+    console.log(`Cancel request for ${device}`);
+  }
+}
 
 async function registerAgent() {
-  const bus = dbus.systemBus();
-  const bluez = await bus.getProxyObject(BLUEZ_SERVICE_NAME, '/org/bluez');
+  const bus = systemBus();
+  const bluez = await bus.getProxyObject('org.bluez', '/org/bluez');
   const agentManager = bluez.getInterface('org.bluez.AgentManager1');
 
-  const agent = {
-    [AGENT_INTERFACE]: {
-      RequestPinCode: () => { throw new Error('Not implemented'); },
-      RequestPasskey: () => { throw new Error('Not implemented'); },
-      DisplayPasskey: () => {},
-      DisplayPinCode: () => {},
-      RequestConfirmation: () => {},
-      AuthorizeService: () => {},
-      Cancel: () => {},
-      Release: () => {},
-    }
-  };
+  const agent = new NoInputNoOutputAgent('org.bluez.Agent1');
+  await bus.requestName('org.bluez.PairingAgent');
+  bus.export('/org/bluez/agent/node', agent);
 
-  await bus.export(AGENT_PATH, agent);
-
-  await agentManager.RegisterAgent(AGENT_PATH, 'NoInputNoOutput');
-  await agentManager.RequestDefaultAgent(AGENT_PATH);
+  await agentManager.RegisterAgent('/org/bluez/agent/node', 'NoInputNoOutput');
+  await agentManager.RequestDefaultAgent('/org/bluez/agent/node');
 
   console.log('✅ Pairing agent registered');
 }
