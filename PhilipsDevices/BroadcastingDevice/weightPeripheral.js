@@ -1,59 +1,81 @@
 const bleno = require('@abandonware/bleno');
-const BlenoPrimaryService = bleno.PrimaryService;
-const BlenoCharacteristic = bleno.Characteristic;
-const Descriptor = bleno.Descriptor;
+const { PrimaryService, Characteristic, Descriptor } = bleno;
 
-const SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
-const CHARACTERISTIC_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
+const DEVICE_NAME = 'A&D_UC-352BLE_AA26F0';
+const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
+const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
+const DATE_TIME_UUID = '2A08';
+const DIS_UUID = '180A';
 
-const WeightMeasurementCharacteristic = new BlenoCharacteristic({
-  uuid: CHARACTERISTIC_UUID,
-  properties: ['notify'],
-  descriptors: [
-    new Descriptor({
-      uuid: '2901',
-      value: 'Weight Measurement'
-    })
-  ],
-  onSubscribe: function(maxValueSize, updateValueCallback) {
-    console.log('Weight subscribed');
-    const weightKg = 70.3; // update with desired weight
-    const measurement = encodeWeightMeasurement(weightKg);
-    console.log('Sending weight data:', measurement.toString('hex'));
-    updateValueCallback(measurement);
-  },
-  onUnsubscribe: function() {
-    console.log('Weight unsubscribed');
-  }
-});
-
-function encodeWeightMeasurement(weightKg) {
-  const flags = 0x03; // weight in kg, timestamp present
-  const weight = Math.round(weightKg * 200); // 0.005 kg resolution → 1kg = 200 units
+// Sample weight = 79.4kg
+function encodeWeightMeasurement() {
+  const weightVal = Math.round(79.4 * 100); // 0.01 kg unit
   const now = new Date();
   const buffer = Buffer.alloc(10);
-
-  buffer.writeUInt8(flags, 0);                   // Flags
-  buffer.writeUInt16LE(weight, 1);              // Weight (kg)
-  buffer.writeUInt16LE(now.getFullYear(), 3);   // Year
-  buffer.writeUInt8(now.getMonth() + 1, 5);     // Month
-  buffer.writeUInt8(now.getDate(), 6);          // Day
-  buffer.writeUInt8(now.getHours(), 7);         // Hour
-  buffer.writeUInt8(now.getMinutes(), 8);       // Minute
-  buffer.writeUInt8(now.getSeconds(), 9);       // Second
-
+  buffer.writeUInt8(0x02, 0); // flags (unit in kg)
+  buffer.writeUInt16LE(weightVal, 1);
+  buffer.writeUInt16LE(now.getFullYear(), 3);
+  buffer.writeUInt8(now.getMonth() + 1, 5);
+  buffer.writeUInt8(now.getDate(), 6);
+  buffer.writeUInt8(now.getHours(), 7);
+  buffer.writeUInt8(now.getMinutes(), 8);
+  buffer.writeUInt8(now.getSeconds(), 9);
   return buffer;
 }
 
-const weightService = new BlenoPrimaryService({
-  uuid: SERVICE_UUID,
-  characteristics: [WeightMeasurementCharacteristic]
+const weightCharacteristic = new Characteristic({
+  uuid: WEIGHT_CHAR_UUID,
+  properties: ['notify'],
+  descriptors: [
+    new Descriptor({ uuid: '2901', value: 'Weight Measurement' })
+  ],
+  onSubscribe: (maxSize, updateCallback) => {
+    console.log('Client subscribed to weight');
+    const data = encodeWeightMeasurement();
+    console.log('Sending:', data.toString('hex'));
+    updateCallback(data);
+  },
+  onUnsubscribe: () => console.log('Client unsubscribed')
 });
 
+const dateTimeCharacteristic = new Characteristic({
+  uuid: DATE_TIME_UUID,
+  properties: ['write'],
+  onWriteRequest: (data, offset, withoutResponse, callback) => {
+    console.log('DateTime written:', data.toString('hex'));
+    callback(Characteristic.RESULT_SUCCESS);
+  }
+});
+
+const deviceInfoCharacteristics = [
+  { uuid: '2A29', value: 'A&D Medical' },
+  { uuid: '2A24', value: 'UC-352BLE' },
+  { uuid: '2A25', value: '5200906508' },
+  { uuid: '2A26', value: 'CWSP009_111' },
+  { uuid: '2A27', value: '0.00' },
+  { uuid: '2A28', value: '0.00' },
+  { uuid: '2A23', value: Buffer.from('f026aafeffb51434', 'hex') },
+].map(item => new Characteristic({
+  uuid: item.uuid,
+  properties: ['read'],
+  value: Buffer.isBuffer(item.value) ? item.value : Buffer.from(item.value, 'utf-8')
+}));
+
+const weightService = new PrimaryService({
+  uuid: WEIGHT_SERVICE_UUID,
+  characteristics: [weightCharacteristic, dateTimeCharacteristic]
+});
+
+const deviceInfoService = new PrimaryService({
+  uuid: DIS_UUID,
+  characteristics: deviceInfoCharacteristics
+});
+
+// === BLE Lifecycle ===
 bleno.on('stateChange', state => {
-  console.log(`BLE stateChange: ${state}`);
+  console.log(`BLE state: ${state}`);
   if (state === 'poweredOn') {
-    bleno.startAdvertising('A&D_UC-352BLE_SIM', [SERVICE_UUID]);
+    bleno.startAdvertising(DEVICE_NAME, [WEIGHT_SERVICE_UUID]);
   } else {
     bleno.stopAdvertising();
   }
@@ -61,9 +83,9 @@ bleno.on('stateChange', state => {
 
 bleno.on('advertisingStart', error => {
   if (!error) {
-    console.log('Started advertising weight service');
-    bleno.setServices([weightService]);
+    console.log('Advertising...');
+    bleno.setServices([weightService, deviceInfoService]);
   } else {
-    console.error('Advertising start error:', error);
+    console.error('Advertising error:', error);
   }
 });
