@@ -15,7 +15,7 @@ program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
     .option('--weight <n>', 'weight', parseFloat);
 
-const options = program.opts(); // ✅ this line is required
+const options = program.opts(); 
 
 let updateValueCallback = null;
 
@@ -26,8 +26,8 @@ try {
     console.error('❌ Failed to set MAC address:', error.message);
 }
 
-if (!options.weight) {
-    console.error("❌ Missing --weight. Please provide a weight in kg (e.g. --weight 78.5)");
+if (typeof options.weight !== 'number' || isNaN(options.weight)) {
+    console.error("❌ Invalid or missing --weight. Please provide a valid number (e.g. --weight 78.5)");
     process.exit(1);
   }
 
