@@ -362,5 +362,26 @@
     "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/640/generic-thermometer.png",
     "instructions": "Ensure your thermometer is on. Check your thermometer's user manual if you have trouble transferring your readings to your mobile phone.",
     "readingInstructions": "Ensure your thermometer is on. Take a reading with your thermometer."
+  },
+  {
+    "id": 39,
+    "type": "Weight Scale",
+    "manufacturer": "CVS Health",
+    "model": "Digital Glass Body Analysis Scale",
+    "disabled": false,
+    "broadcastingName": "BF720$",
+    "broadcastingServiceID": "181D",
+    "readingServiceID": "181D",
+    "characteristicID": "2A9D",
+    "requiresPairing": true,
+    "requiresOSPairing": true,
+    "options": 1,
+    "connectionTimeout": 30,
+    "readingTimeout": 120,
+    "libVersion": 1,
+    "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/640/cvs_health_body_composition_monitor_and_scale.png",
+    "instructions": "Stand on your scale to take a measurement. Be sure to assign your reading to your user profile using the up and down arrows to select a user and the Set button to assign the reading to the user.",
+    "pairingInstructions": "Insert batteries into the scale. If batteries are already inserted, remove and re-insert batteries. Scale should flash ”use app” on screen.",
+    "readingInstructions": "Receiving Readings"
   }
 ]

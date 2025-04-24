@@ -89,7 +89,7 @@ async function promptIfNeeded() {
         console.log(`GATT ${DEVICE_TYPE.toLowerCase()} server running`);
         if (state === 'poweredOn') {
             console.log("🚀 ~ bleno.on ~ deviceConfig.broadcastingName:", deviceConfig.broadcastingName);
-            bleno.startAdvertising('A&D_UC-352BLE_AA26F0', [
+            bleno.startAdvertising(deviceConfig.broadcastingName, [
                 '180A',
                 deviceConfig.broadcastingServiceID.toLowerCase().replace(/-/g, ''),
             ]);
