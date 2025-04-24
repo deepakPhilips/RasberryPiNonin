@@ -162,6 +162,7 @@ bleno.on('advertisingStart', (error) => {
   }
 });
 
+
 class CommandControlCharacteristic extends bleno.Characteristic {
     constructor() {
       super({
