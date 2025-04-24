@@ -383,5 +383,26 @@
     "instructions": "Stand on your scale to take a measurement. Be sure to assign your reading to your user profile using the up and down arrows to select a user and the Set button to assign the reading to the user.",
     "pairingInstructions": "Insert batteries into the scale. If batteries are already inserted, remove and re-insert batteries. Scale should flash ”use app” on screen.",
     "readingInstructions": "Receiving Readings"
+  },
+  {
+    "id": 44,
+    "type": "Weight Scale",
+    "manufacturer": "Zewa",
+    "model": "21300 (v2)",
+    "disabled": false,
+    "broadcastingName": "Zewa21300",
+    "broadcastingServiceID": "A602",
+    "readingServiceID": "A602",
+    "characteristicID": "A621",
+    "requiresPairing": true,
+    "options": 1,
+    "connectionTimeout": 30,
+    "readingTimeout": 30,
+    "PairingTimeout": 30,
+    "libVersion": 1,
+    "peripheralImageURL": "https://assets.validic.com/mobile/peripheral/640/Zewa-21300-Wireless-Smart-Scale-v2.png",
+    "pairingInstructions": "Step on your scale to turn it on. Once the Bluetooth icon appears on scale, step off.",
+    "instructions": "Stand on your scale to take a reading.",
+    "readingInstructions": "Step off after the reading starts blinking on the device."
   }
 ]
