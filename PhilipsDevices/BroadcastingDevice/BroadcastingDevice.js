@@ -26,6 +26,7 @@ program
 
 program.parse(process.argv);
 let options = program.opts();
+console.log('Parsed options:', options);
 
 async function promptIfNeeded() {
     const rl = readline.createInterface({
