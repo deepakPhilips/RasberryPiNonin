@@ -1,4 +1,8 @@
 const bleno = require('@abandonware/bleno');
+const dbus = require('dbus-next');
+const { Variant } = dbus;
+const { Interface } = require('dbus-next').interface;
+const { systemBus } = dbus;
 const program = require('commander').program;
 const { execSync } = require('child_process');
 const readline = require('readline');
