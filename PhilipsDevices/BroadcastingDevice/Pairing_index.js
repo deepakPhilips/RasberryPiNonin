@@ -48,14 +48,6 @@ async function promptDetails() {
     const deviceConfig = loadDeviceById(options.deviceId);
     const DEVICE_TYPE = deviceConfig.type;
 
-    if (DEVICE_TYPE === 'Thermometer' && !options.temperature) {
-        options.temperature = parseFloat(await ask('Enter Temperature: '));
-    }
-
-    if (DEVICE_TYPE === 'Pulse Oximeter' && (!options.pulse || !options.saturation)) {
-        options.pulse = parseInt(await ask('Enter Pulse: '));
-        options.saturation = parseInt(await ask('Enter Saturation: '));
-    }
 
     if (DEVICE_TYPE === 'Weight Scale' && !options.weight) {
         options.weight = parseFloat(await ask('Enter Weight: '));
@@ -64,6 +56,10 @@ async function promptDetails() {
     if (DEVICE_TYPE === 'Blood Pressure Monitor' && (!options.systolic || !options.diastolic)) {
         options.systolic = parseFloat(await ask('Enter Systolic: '));
         options.diastolic = parseFloat(await ask('Enter Diastolic: '));
+    }
+
+    if (DEVICE_TYPE === 'Glucose Meter' && !options.glucose) {
+        options.glucose = parseFloat(await ask('Enter Glucose: '));
     }
 
     rl.close();
