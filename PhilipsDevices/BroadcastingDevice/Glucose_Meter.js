@@ -110,44 +110,56 @@ class RACPCharacteristic extends bleno.Characteristic {
 }
 
 function encodeGlucoseMeasurement(glucoseMgDl) {
-    const flags = 0x02; // Glucose Concentration and Type+Location present
-    const sequenceNumber = 1;
-    const now = new Date();
-  
-    const buffer = Buffer.alloc(14);
-    buffer.writeUInt8(flags, 0); // Flags
-    buffer.writeUInt16LE(sequenceNumber, 1); // Sequence Number
-  
-    buffer.writeUInt16LE(now.getFullYear(), 3);
-    buffer.writeUInt8(now.getMonth() + 1, 5);
-    buffer.writeUInt8(now.getDate(), 6);
-    buffer.writeUInt8(now.getHours(), 7);
-    buffer.writeUInt8(now.getMinutes(), 8);
-    buffer.writeUInt8(now.getSeconds(), 9);
-  
-    // 🚀 Correct scaling: mg/dL → kg/L
-    const glucoseKgL = glucoseMgDl * 0.00001;
-    const sfloat = encodeSFloatProper(glucoseKgL);
-    buffer.writeUInt16LE(sfloat, 10); 
-  
-    buffer.writeUInt8(0x11, 12); // Type + Location
-    return buffer;
-  }
+  const flags = 0x02;
+  const sequenceNumber = 1;
+  const now = new Date();
+  const buffer = Buffer.alloc(14);
+
+  buffer.writeUInt8(flags, 0);
+  buffer.writeUInt16LE(sequenceNumber, 1);
+
+  buffer.writeUInt16LE(now.getFullYear(), 3);
+  buffer.writeUInt8(now.getMonth() + 1, 5);
+  buffer.writeUInt8(now.getDate(), 6);
+  buffer.writeUInt8(now.getHours(), 7);
+  buffer.writeUInt8(now.getMinutes(), 8);
+  buffer.writeUInt8(now.getSeconds(), 9);
+
+  const glucoseKgL = glucoseMgDl * 0.00001; // scale to kg/L
+  const sfloat = encodeSFloatCorrect(glucoseKgL);
+
+  buffer.writeUInt16LE(sfloat, 10);
+
+  buffer.writeUInt8(0x11, 12); // Sample type + location
+  return buffer;
+}
   
   // Correct SFLOAT encoding with scaling
-  function encodeSFloatProper(value) {
+  function encodeSFloatCorrect(value) {
     if (value === 0) return 0;
-  
+
     let exponent = 0;
     while (value < 1) {
-      value *= 10;
-      exponent--;
+        value *= 10;
+        exponent--;
     }
+    while (value >= 2048) { // mantissa must fit into 12 bits (signed)
+        value /= 10;
+        exponent++;
+    }
+
     const mantissa = Math.round(value);
-  
-    const exp = (exponent < 0) ? (0x10 + exponent) & 0x0F : exponent; // 4 bits
-    return (exp << 12) | (mantissa & 0x0FFF);
-  }
+
+    if (mantissa < 0) {
+        mantissa = (1 << 12) + mantissa; // two's complement for negative mantissa
+    }
+
+    if (exponent < 0) {
+        exponent = (1 << 4) + exponent; // two's complement 4 bits
+    }
+
+    return ((exponent & 0x0F) << 12) | (mantissa & 0x0FFF);
+}
 
 function sendGlucoseMeasurement() {
   const buffer = encodeGlucoseMeasurement(options.glucose);
