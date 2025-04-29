@@ -60,8 +60,9 @@ class BloodPressureMeasurement extends bleno.Characteristic {
 }
 
 function encodeBPMeasurement(systolic, diastolic, pulseRate) {
-  const buffer = Buffer.alloc(15);
-  buffer.writeUInt8(0x1E, 0); // Flags: mmHg, timestamp, pulse rate
+  const buffer = Buffer.alloc(16); // Was 15, now correctly 16
+
+  buffer.writeUInt8(0x1E, 0); // Flags
   buffer.writeUInt16LE(systolic * 10, 1);
   buffer.writeUInt16LE(diastolic * 10, 3);
   buffer.writeUInt16LE(80 * 10, 5); // MAP
@@ -74,9 +75,11 @@ function encodeBPMeasurement(systolic, diastolic, pulseRate) {
   buffer.writeUInt8(now.getMinutes(), 12);
   buffer.writeUInt8(now.getSeconds(), 13);
 
-  buffer.writeUInt16LE(pulseRate * 10, 14);
+  buffer.writeUInt16LE(pulseRate * 10, 14);  // ✅ Now safe at offset 14
+
   return buffer;
 }
+
 
 function sendBPMeasurement() {
   const buffer = encodeBPMeasurement(120, 80, 72);
