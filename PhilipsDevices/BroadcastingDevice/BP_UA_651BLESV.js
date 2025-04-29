@@ -9,7 +9,7 @@ const { loadDeviceById } = require('./DeviceConfigLoader');
 
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
-let readyToSendMeasurement = false;  
+
 try {
   console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
   execSync('bash ./set_mac.sh', { stdio: 'inherit' });
@@ -99,14 +99,9 @@ class BloodPressureCharacteristic extends bleno.Characteristic {
   }
 
   onSubscribe(maxValueSize, callback) {
-    if (readyToSendMeasurement) {
-        updateValueCallback = callback;
-        console.log('Subscribed to BP notify');
-        setTimeout(sendDynamicBPMeasurement, 2000);
-    }else {
-        console.log('⛔ Cannot send yet, waiting for control writes.');
-      }
-   
+    updateValueCallback = callback;
+    console.log('Subscribed to BP notify');
+    setTimeout(sendDynamicBPMeasurement, 2000);
   }
 
   onUnsubscribe() {
@@ -237,7 +232,7 @@ class CommandControlCharacteristic extends bleno.Characteristic {
       } else {
         console.log('→ Unknown control command');
       }
-      readyToSendMeasurement = true;  // ✅ Set after both writes
+  
       callback(this.RESULT_SUCCESS);
     }
   }
