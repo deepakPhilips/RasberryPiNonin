@@ -136,7 +136,7 @@ const deviceInfoService = new bleno.PrimaryService({
   uuid: DEVICE_INFO_SERVICE_UUID,
   characteristics: [
     new bleno.Characteristic({ uuid: '2A29', properties: ['read'], value: Buffer.from('A&D Medical') }),
-    new bleno.Characteristic({ uuid: '2A24', properties: ['read'], value: Buffer.from('UA-651BLES-V') }),
+    new bleno.Characteristic({ uuid: '2A24', properties: ['read'], value: Buffer.from('UA-656BLE') }),
     new bleno.Characteristic({ uuid: '2A25', properties: ['read'], value: Buffer.from('123456789') }),
     new bleno.Characteristic({ uuid: '2A26', properties: ['read'], value: Buffer.from('Firmware_1.0') }),
     new bleno.Characteristic({ uuid: '2A27', properties: ['read'], value: Buffer.from('1.0') }),
@@ -174,16 +174,16 @@ function encodeBPMeasurement(systolic, diastolic, pulse) {
   buffer.writeUInt8(flags, 0);
   buffer.writeUInt16LE(systolic * 10, 1);
   buffer.writeUInt16LE(diastolic * 10, 3);
-  buffer.writeUInt16LE(diastolic * 10, 5); // MAP = mean arterial pressure (approx same as diastolic for now)
+  buffer.writeUInt16LE(diastolic * 10, 5); // MAP (mean arterial pressure) = same as diastolic for now
   buffer.writeUInt16LE(now.getFullYear(), 7);
   buffer.writeUInt8(now.getMonth() + 1, 9);
   buffer.writeUInt8(now.getDate(), 10);
   buffer.writeUInt8(now.getHours(), 11);
   buffer.writeUInt8(now.getMinutes(), 12);
   buffer.writeUInt8(now.getSeconds(), 13);
-  buffer.writeUInt16LE(pulse * 10, 14); // Pulse rate
+  buffer.writeUInt16LE(pulse * 10, 14);
   buffer.writeUInt8(1, 16); // User ID
-  buffer.writeUInt8(0, 17); // Measurement Status (optional)
+  buffer.writeUInt8(0, 17); // Measurement Status
   return buffer;
 }
 
