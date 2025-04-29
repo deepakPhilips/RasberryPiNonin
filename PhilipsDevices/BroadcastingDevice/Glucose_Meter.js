@@ -125,7 +125,7 @@ function encodeGlucoseMeasurement(glucoseMgDl) {
   buffer.writeUInt8(now.getMinutes(), 8);
   buffer.writeUInt8(now.getSeconds(), 9);
 
-  const sfloat = encodeSFloat(glucoseMgDl);  // 🛠️ Correctly encode mg/dL directly
+  const sfloat = encodeSFloat(glucoseMgDl * 0.00001);  // 🛠️ Correctly encode mg/dL directly
   buffer.writeUInt16LE(sfloat, 10);
 
   buffer.writeUInt8(0x11, 12); // Type (capillary whole blood) + Location (finger)
