@@ -2,6 +2,7 @@ const readline = require('readline');
 const program = require('commander').program;
 
 const { set_mac, registerAgent } = require('./Pairinig_Registration');
+const { loadDeviceById } = require('./DeviceConfigLoader');
 
 // First setup MAC and Agent
 async function main() {
