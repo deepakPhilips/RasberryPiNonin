@@ -3,6 +3,7 @@ const BloodPressureService = require('./services/bloodPressureService');
 const DeviceInfoService = require('./services/deviceInfoService');
 const BatteryService = require('./services/batteryService');
 const CustomService = require('./services/customService');
+const { execSync, exec } = require('child_process');
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
@@ -11,6 +12,13 @@ bleno.on('stateChange', (state) => {
     bleno.stopAdvertising();
   }
 });
+
+try {
+    console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+    execSync('bash ./set_mac.sh', { stdio: 'inherit' });
+} catch (error) {
+    console.error('❌ Failed to set MAC address:', error.message);
+}
 
 bleno.on('advertisingStart', (error) => {
   if (!error) {
@@ -21,4 +29,6 @@ bleno.on('advertisingStart', (error) => {
       new CustomService()
     ]);
   }
+  console.log("🚀 ~ bleno.on ~ error:", error)
+
 });
