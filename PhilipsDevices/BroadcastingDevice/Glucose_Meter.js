@@ -12,16 +12,16 @@ program
     .option('--glucose <n>', 'glucose mg/dL', parseFloat);
 
 program.parse(process.argv);
-const options = program.opts(); 
+const options = program.opts();
 const deviceConfig = loadDeviceById(options.deviceId);
 
 if (typeof options.glucose !== 'number' || isNaN(options.glucose)) {
-  console.error("❌ Invalid or missing --glucose. Provide valid number (e.g. --glucose 127.5)");
+  console.error("❌ Invalid or missing --glucose. Provide a valid number (e.g., --glucose 127.5)");
   process.exit(1);
 }
 
 try {
-  console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+  console.log('🛠️ Running set_mac.sh to update Bluetooth MAC...');
   execSync('bash ./set_mac.sh', { stdio: 'inherit' });
 } catch (error) {
   console.error('❌ Failed to set MAC address:', error.message);
@@ -30,7 +30,6 @@ try {
 let glucoseNotifyCallback = null;
 let racpIndicateCallback = null;
 
-// BLE Agent for Pairing
 class NoInputNoOutputAgent extends Interface {
   constructor() { super('org.bluez.Agent1'); }
   RequestPinCode(device) { console.log(`RequestPinCode: ${device}`); return '0000'; }
@@ -93,14 +92,15 @@ class RACPCharacteristic extends bleno.Characteristic {
 
     if (glucoseNotifyCallback) {
       console.log('🕒 Sending glucose measurement after RACP command...');
-      setTimeout(sendGlucoseMeasurement, 1000); // Send after 1 sec
+      setTimeout(sendGlucoseMeasurement, 1000); // 1 sec delay
     }
 
     if (racpIndicateCallback) {
-      const racpResponse = Buffer.from([0x06, 0x01, 0x01, 0x00]); // RACP Response: Success
+      const racpResponse = Buffer.from([0x06, 0x01, 0x01, 0x00]); // RACP Success response
       racpIndicateCallback(racpResponse);
-      console.log('📤 Sent RACP success response');
+      console.log('📤 Sent RACP success indication');
     }
+
     callback(this.RESULT_SUCCESS);
   }
 
@@ -109,41 +109,41 @@ class RACPCharacteristic extends bleno.Characteristic {
   }
 }
 
+// Proper SFLOAT encoder
+function encodeSFloat(value) {
+  let exponent = 0;
+  let mantissa = Math.round(value);
+
+  if (mantissa < 0) {
+    mantissa = (1 << 12) + mantissa; // Two's complement for negatives
+  }
+
+  return (exponent << 12) | (mantissa & 0x0FFF);
+}
+
 function encodeGlucoseMeasurement(glucoseMgDl) {
-    const flags = 0x02; // Glucose concentration, sample type and location present
-    const sequenceNumber = 1;
-    const now = new Date();
-  
-    const buffer = Buffer.alloc(14);
-    buffer.writeUInt8(flags, 0); // Flags
-    buffer.writeUInt16LE(sequenceNumber, 1); // Sequence Number
-  
-    buffer.writeUInt16LE(now.getFullYear(), 3);
-    buffer.writeUInt8(now.getMonth() + 1, 5);
-    buffer.writeUInt8(now.getDate(), 6);
-    buffer.writeUInt8(now.getHours(), 7);
-    buffer.writeUInt8(now.getMinutes(), 8);
-    buffer.writeUInt8(now.getSeconds(), 9);
-  
-    // 🔥 Correct SFLOAT encoding here:
-    const sfloat = encodeSFloat(glucoseMgDl);
-    buffer.writeUInt16LE(sfloat, 10);
-  
-    buffer.writeUInt8(0x11, 12); // Type (Capillary Whole Blood) + Location (Finger)
-  
-    return buffer;
-  }
-  
-  function encodeSFloat(value) {
-    let exponent = 0;
-    let mantissa = Math.round(value);
-  
-    if (mantissa < 0) {
-      mantissa = (1 << 12) + mantissa; // Two's complement for negative numbers
-    }
-  
-    return (exponent << 12) | (mantissa & 0x0FFF);
-  }
+  const flags = 0x02; // Glucose Concentration and Type+Location present
+  const sequenceNumber = 1;
+  const now = new Date();
+
+  const buffer = Buffer.alloc(14);
+  buffer.writeUInt8(flags, 0); // Flags
+  buffer.writeUInt16LE(sequenceNumber, 1); // Sequence Number
+
+  buffer.writeUInt16LE(now.getFullYear(), 3);
+  buffer.writeUInt8(now.getMonth() + 1, 5);
+  buffer.writeUInt8(now.getDate(), 6);
+  buffer.writeUInt8(now.getHours(), 7);
+  buffer.writeUInt8(now.getMinutes(), 8);
+  buffer.writeUInt8(now.getSeconds(), 9);
+
+  const sfloat = encodeSFloat(glucoseMgDl);
+  buffer.writeUInt16LE(sfloat, 10); // Correct SFLOAT glucose value
+
+  buffer.writeUInt8(0x11, 12); // Type 1 (Capillary blood) | Location 1 (Finger)
+
+  return buffer;
+}
 
 function sendGlucoseMeasurement() {
   const buffer = encodeGlucoseMeasurement(options.glucose);
