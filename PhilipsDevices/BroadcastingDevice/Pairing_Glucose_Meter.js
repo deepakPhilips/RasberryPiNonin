@@ -161,9 +161,13 @@ function sendGlucoseMeasurement() {
   const buffer = encodeGlucoseMeasurement(options.glucose);
   console.log("🚀 ~ sendGlucoseMeasurement ~ buffer:", buffer);
 
+  
   if (glucoseNotifyCallback) {
     glucoseNotifyCallback(buffer);
     console.log(`📤 Sent glucose measurement: ${options.glucose} mg/dL`);
+    setTimeout(() => {
+      disconnectFromCentral();
+    }, 1000);
   } else {
     console.warn('⚠️ No subscriber for glucose notify');
   }
@@ -197,3 +201,13 @@ bleno.on('advertisingStart', (error) => {
 });
 
 registerAgent().catch(console.error);
+
+function disconnectFromCentral() {
+  exec('bluetoothctl disconnect', (err, stdout, stderr) => {
+    if (err) {
+      console.error('❌ Failed to disconnect:', err);
+    } else {
+      console.log('✅ Disconnected from central to complete measurement');
+    }
+  });
+}
