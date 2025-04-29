@@ -3,8 +3,7 @@ const dbus = require('dbus-next');
 const { Variant } = dbus;
 const { Interface } = dbus.interface;
 const { systemBus } = dbus;
-const { exec } = require('child_process');
-
+const { execSync, exec } = require('child_process');
 const DEVICE_NAME = 'BLEsmart_000000D7FA';
 const BP_SERVICE_UUID = '1810';
 const DEVICE_INFO_UUID = '180A';
@@ -135,6 +134,13 @@ const bpService = new bleno.PrimaryService({
     new DateTimeCharacteristic()
   ]
 });
+
+try {
+    console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+    execSync('bash ./set_mac.sh', { stdio: 'inherit' });
+} catch (error) {
+    console.error('❌ Failed to set MAC address:', error.message);
+}
 
 // Start BLE
 bleno.on('stateChange', (state) => {
