@@ -1,4 +1,5 @@
 const bleno = require('@abandonware/bleno');
+const { exec } = require('child_process');
 const DATETIME_CHAR_UUID = '2A08';
 
 const deviceInfoService  = ( props)=> new bleno.PrimaryService({
