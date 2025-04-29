@@ -5,9 +5,8 @@ const { Interface } = require('dbus-next').interface;
 const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
+const { loadDeviceById } = require('./DeviceConfigLoader');
 
-const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
-const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
 
@@ -17,6 +16,9 @@ program
 
 program.parse(process.argv);
 const options = program.opts(); 
+const deviceConfig = loadDeviceById(options.deviceId);
+// const DEVICE_TYPE = deviceConfig.type;
+
 
 let updateValueCallback = null;
 
@@ -92,7 +94,7 @@ async function registerAgent() {
 class WeightCharacteristic extends bleno.Characteristic {
   constructor() {
     super({
-      uuid: WEIGHT_CHAR_UUID,
+      uuid: deviceConfig.characteristicID,
       properties: ['notify'],
     });
   }
@@ -125,7 +127,7 @@ class DateTimeCharacteristic extends bleno.Characteristic {
 }
 
 const weightService = new bleno.PrimaryService({
-  uuid: WEIGHT_SERVICE_UUID,
+  uuid: deviceConfig.broadcastingServiceID,
   characteristics: [
     new WeightCharacteristic(),
     new DateTimeCharacteristic(),
@@ -147,7 +149,7 @@ const deviceInfoService = new bleno.PrimaryService({
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
-    bleno.startAdvertising('A&D_UC-352BLE_AA26F0', [WEIGHT_SERVICE_UUID]);
+    bleno.startAdvertising(deviceConfig.broadcastingName, [deviceConfig.broadcastingServiceID]);
   } else {
     bleno.stopAdvertising();
   }
