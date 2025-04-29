@@ -777,7 +777,7 @@
     "manufacturer": "Zewa",
     "model": "UAM-820BT",
     "disabled": false,
-    "broadcastingName": "[0-1]{1}UAM-820BT(BA43DC65)?$",
+    "broadcastingName": "0UAM-820BT",
     "broadcastingServiceID": "7809",
     "readingServiceID": "7809",
     "characteristicID": "8A91",
