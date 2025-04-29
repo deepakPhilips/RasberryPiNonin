@@ -300,7 +300,7 @@ function encodeBPMeasurement(systolic, diastolic, pulseRate) {
 
 // Blood Pressure Service
 const bpService = new bleno.PrimaryService({
-  uuid: BP_SERVICE_UUID,
+  uuid: WEIGHT_SERVICE_UUID,
   characteristics: [
     new BloodPressureMeasurement(),
     new DateTimeCharacteristic()
