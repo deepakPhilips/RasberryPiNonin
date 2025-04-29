@@ -172,16 +172,16 @@ function encodeBPMeasurement(systolic, diastolic, pulse) {
   const buffer = Buffer.alloc(19);
 
   buffer.writeUInt8(flags, 0);
-  buffer.writeUInt16LE(systolic * 10, 1);
-  buffer.writeUInt16LE(diastolic * 10, 3);
-  buffer.writeUInt16LE(diastolic * 10, 5); // MAP (mean arterial pressure) = same as diastolic for now
+  buffer.writeUInt16LE(systolic , 1);
+  buffer.writeUInt16LE(diastolic , 3);
+  buffer.writeUInt16LE(diastolic , 5); // MAP (mean arterial pressure) = same as diastolic for now
   buffer.writeUInt16LE(now.getFullYear(), 7);
   buffer.writeUInt8(now.getMonth() + 1, 9);
   buffer.writeUInt8(now.getDate(), 10);
   buffer.writeUInt8(now.getHours(), 11);
   buffer.writeUInt8(now.getMinutes(), 12);
   buffer.writeUInt8(now.getSeconds(), 13);
-  buffer.writeUInt16LE(pulse * 10, 14);
+  buffer.writeUInt16LE(pulse , 14);
   buffer.writeUInt8(1, 16); // User ID
   buffer.writeUInt8(0, 17); // Measurement Status
   return buffer;
