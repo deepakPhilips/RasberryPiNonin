@@ -9,8 +9,7 @@ const { loadDeviceById } = require('./DeviceConfigLoader');
 
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
-let readyToSendMeasurement = false; 
-
+let readyToSendMeasurement = false;  
 try {
   console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
   execSync('bash ./set_mac.sh', { stdio: 'inherit' });
@@ -104,9 +103,10 @@ class BloodPressureCharacteristic extends bleno.Characteristic {
         updateValueCallback = callback;
         console.log('Subscribed to BP notify');
         setTimeout(sendDynamicBPMeasurement, 2000);
-      } else {
+    }else {
         console.log('⛔ Cannot send yet, waiting for control writes.');
       }
+   
   }
 
   onUnsubscribe() {
@@ -217,25 +217,32 @@ function disconnectFromCentral() {
 }
 
 
-const ControlCharacteristic = new bleno.Characteristic({
-    uuid: '233BF001-5A34-1B6D-975C-000D5690ABE4',
-    properties: ['write', 'writeWithoutResponse'],
-    onWriteRequest: (data, offset, withoutResponse, callback) => {
-      console.log('✅ Received Control command:', data.toString('hex'));
-  
-      if (data.equals(Buffer.from('0301a601', 'hex'))) {
-        console.log('➡️ Enable measurement buffer command received');
-      }
-      if (data.equals(Buffer.from('020112', 'hex'))) {
-        console.log('➡️ Delete existing measurements command received');
-      }
-  
-      readyToSendMeasurement = true;  // ✅ Set after both writes
-      callback(bleno.Characteristic.RESULT_SUCCESS);
+class CommandControlCharacteristic extends bleno.Characteristic {
+    constructor() {
+      super({
+        uuid: '233BF001-5A34-1B6D-975C-000D5690ABE4',
+        properties: ['write'],
+      });
     }
-  });
+  
+    onWriteRequest(data, offset, withoutResponse, callback) {
+      const hex = data.toString('hex');
+      console.log('✅ Control characteristic received:', hex);
+  
+      // Respond to specific commands
+      if (hex === '0301a601') {
+        console.log('→ Enable measurement buffer');
+      } else if (hex === '020112') {
+        console.log('→ Delete existing measurements');
+      } else {
+        console.log('→ Unknown control command');
+      }
+      readyToSendMeasurement = true;  // ✅ Set after both writes
+      callback(this.RESULT_SUCCESS);
+    }
+  }
 
   const commandService = new bleno.PrimaryService({
     uuid: '233BF000-5A34-1B6D-975C-000D5690ABE4',
-    characteristics: [new ControlCharacteristic()],
+    characteristics: [new CommandControlCharacteristic()],
   });
