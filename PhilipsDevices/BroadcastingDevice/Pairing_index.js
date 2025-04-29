@@ -2,7 +2,6 @@ const readline = require('readline');
 const program = require('commander').program;
 
 const { set_mac, registerAgent } = require('./Pairinig_Registration');
-const { promptDetails } = require('./Pairing_CommonServices');
 
 // First setup MAC and Agent
 async function main() {
