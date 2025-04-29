@@ -198,8 +198,8 @@ class CommandControlCharacteristic extends bleno.Characteristic {
   });
   
   if(deviceConfig.requiresPairing === true) {
-// Launch everything
-registerAgent().catch(console.error);
+    // Launch everything
+    registerAgent().catch(console.error);
   }
 
 
