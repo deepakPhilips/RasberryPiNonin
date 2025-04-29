@@ -4,7 +4,7 @@ const { Variant } = dbus;
 const { Interface } = dbus.interface;
 const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
-const DEVICE_NAME = 'BLEsmart_000000D7FA';
+const DEVICE_NAME = 'A&D_UA-651BLE';
 const BP_SERVICE_UUID = '1810';
 const DEVICE_INFO_UUID = '180A';
 
