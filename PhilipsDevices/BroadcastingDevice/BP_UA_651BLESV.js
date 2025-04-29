@@ -218,7 +218,7 @@ function disconnectFromCentral() {
 
 
 const ControlCharacteristic = new bleno.Characteristic({
-    uuid: CONTROL_CHARACTERISTIC_UUID,
+    uuid: '233BF001-5A34-1B6D-975C-000D5690ABE4',
     properties: ['write', 'writeWithoutResponse'],
     onWriteRequest: (data, offset, withoutResponse, callback) => {
       console.log('✅ Received Control command:', data.toString('hex'));
