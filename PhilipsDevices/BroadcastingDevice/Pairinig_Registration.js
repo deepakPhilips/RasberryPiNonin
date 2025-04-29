@@ -3,7 +3,7 @@ const dbus = require('dbus-next');
 const { Variant } = dbus;
 const { Interface } = require('dbus-next').interface;
 const { systemBus } = dbus;
-
+const { execSync } = require('child_process');
 class NoInputNoOutputAgent extends Interface {
     constructor() {
       super('org.bluez.Agent1');
