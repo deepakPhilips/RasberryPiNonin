@@ -223,7 +223,7 @@ function encodeMeasurement(weightKg) {
       updateValueCallback(buffer);
       console.log(`📤 Sent dynamic weight: ${options.weight.toFixed(1)} kg`);
       setTimeout(() => {
-        disconnectFromCentral();
+        // disconnectFromCentral();
       }, 1000);
     } else {
       console.warn('⚠️ No subscriber to send weight to');
