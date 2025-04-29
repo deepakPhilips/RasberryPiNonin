@@ -217,7 +217,7 @@ function disconnectFromCentral() {
 }
 
 
-const ControlCharacteristic = new BlenoCharacteristic({
+const ControlCharacteristic = new bleno.Characteristic({
     uuid: CONTROL_CHARACTERISTIC_UUID,
     properties: ['write', 'writeWithoutResponse'],
     onWriteRequest: (data, offset, withoutResponse, callback) => {
