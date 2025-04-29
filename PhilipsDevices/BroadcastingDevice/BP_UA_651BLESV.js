@@ -147,7 +147,7 @@ const deviceInfoService = new bleno.PrimaryService({
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
-    bleno.startAdvertising('A&D_UA-651BLE', [deviceConfig.broadcastingServiceID]);
+    bleno.startAdvertising(deviceConfig.broadcastingName, [deviceConfig.broadcastingServiceID]);
   } else {
     bleno.stopAdvertising();
   }
