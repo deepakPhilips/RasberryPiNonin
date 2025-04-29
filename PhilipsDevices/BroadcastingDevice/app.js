@@ -10,7 +10,7 @@ const WEIGHT_SERVICE_UUID = '1810';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
-const DeviceName = 'BLEsmart_000000D7FA';
+const DeviceName = 'BP7150';
 program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
     .option('--weight <n>', 'weight', parseFloat);
@@ -286,16 +286,6 @@ function encodeBPMeasurement(systolic, diastolic, pulseRate) {
   return buffer;
 }
 
-// // DateTime (2A08) - writable
-// class DateTimeCharacteristic extends bleno.Characteristic {
-//   constructor() {
-//     super({ uuid: '2A08', properties: ['write'] });
-//   }
-//   onWriteRequest(data, offset, withoutResponse, callback) {
-//     console.log('🕒 DateTime written:', data.toString('hex'));
-//     callback(this.RESULT_SUCCESS);
-//   }
-// }
 
 
 // Blood Pressure Service
