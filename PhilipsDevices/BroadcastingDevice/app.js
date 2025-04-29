@@ -6,11 +6,11 @@ const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
 
-const WEIGHT_SERVICE_UUID = '23434100-1FE4-1EFF-80CB-00FF78297D8B';
+const WEIGHT_SERVICE_UUID = '1810';
 const WEIGHT_CHAR_UUID = '23434101-1FE4-1EFF-80CB-00FF78297D8B';
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
-
+const DeviceName = 'BLEsmart_000000D7FA';
 program
     .requiredOption('--deviceId <n>', 'deviceId', parseInt)
     .option('--weight <n>', 'weight', parseFloat);
@@ -147,7 +147,7 @@ const deviceInfoService = new bleno.PrimaryService({
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
-    bleno.startAdvertising('A&D_UC-352BLE_AA26F0', [WEIGHT_SERVICE_UUID]);
+    bleno.startAdvertising(DeviceName, [WEIGHT_SERVICE_UUID]);
   } else {
     bleno.stopAdvertising();
   }
@@ -156,7 +156,7 @@ bleno.on('stateChange', (state) => {
 bleno.on('advertisingStart', (error) => {
   if (!error) {
     console.log('✅ Advertising started');
-    bleno.setServices([deviceInfoService, weightService, commandService]);
+    bleno.setServices([deviceInfoService, bpService, commandService]);
   } else {
     console.error('❌ Advertising error:', error);
   }
@@ -238,3 +238,60 @@ function disconnectFromCentral() {
     }
   });
 }
+
+class BloodPressureMeasurement extends bleno.Characteristic {
+  constructor() {
+    super({ uuid: '2A35', properties: ['indicate'] });
+  }
+  onSubscribe(_, callback) {
+    updateValueCallback = callback;
+    console.log('✅ Subscribed to BP notify');
+    setTimeout(sendBPMeasurement, 2000);
+  }
+  onUnsubscribe() {
+    updateValueCallback = null;
+    console.log('❌ Unsubscribed from BP notify');
+  }
+}
+
+function encodeBPMeasurement(systolic, diastolic, pulseRate) {
+  const buffer = Buffer.alloc(16); // Was 15, now correctly 16
+
+  buffer.writeUInt8(0x1E, 0); // Flags
+  buffer.writeUInt16LE(systolic * 10, 1);
+  buffer.writeUInt16LE(diastolic * 10, 3);
+  buffer.writeUInt16LE(80 * 10, 5); // MAP
+
+  const now = new Date();
+  buffer.writeUInt16LE(now.getFullYear(), 7);
+  buffer.writeUInt8(now.getMonth() + 1, 9);
+  buffer.writeUInt8(now.getDate(), 10);
+  buffer.writeUInt8(now.getHours(), 11);
+  buffer.writeUInt8(now.getMinutes(), 12);
+  buffer.writeUInt8(now.getSeconds(), 13);
+
+  buffer.writeUInt16LE(pulseRate * 10, 14);  // ✅ Now safe at offset 14
+
+  return buffer;
+}
+
+// DateTime (2A08) - writable
+class DateTimeCharacteristic extends bleno.Characteristic {
+  constructor() {
+    super({ uuid: '2A08', properties: ['write'] });
+  }
+  onWriteRequest(data, offset, withoutResponse, callback) {
+    console.log('🕒 DateTime written:', data.toString('hex'));
+    callback(this.RESULT_SUCCESS);
+  }
+}
+
+
+// Blood Pressure Service
+const bpService = new bleno.PrimaryService({
+  uuid: BP_SERVICE_UUID,
+  characteristics: [
+    new BloodPressureMeasurement(),
+    new DateTimeCharacteristic()
+  ]
+})
