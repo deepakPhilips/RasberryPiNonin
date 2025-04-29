@@ -110,29 +110,30 @@ class RACPCharacteristic extends bleno.Characteristic {
 }
 
 function encodeGlucoseMeasurement(glucoseMgDl) {
-  const flags = 0x00; // SI units, no optional fields
-  const sequenceNumber = 1;
-  const now = new Date();
-
-  const buffer = Buffer.alloc(13);
-  buffer.writeUInt8(flags, 0);
-  buffer.writeUInt16LE(sequenceNumber, 1);
-  buffer.writeUInt16LE(now.getFullYear(), 3);
-  buffer.writeUInt8(now.getMonth() + 1, 5);
-  buffer.writeUInt8(now.getDate(), 6);
-  buffer.writeUInt8(now.getHours(), 7);
-  buffer.writeUInt8(now.getMinutes(), 8);
-  buffer.writeUInt8(now.getSeconds(), 9);
-
-  // Glucose Concentration (SFLOAT, mg/dL)
-  let glucoseSfloat = Math.round(options.glucose * 1000 / 1000); // Simplified
-  buffer.writeUInt16LE(glucoseSfloat, 10);
-
-  // Type (0x01: Capillary Whole blood) | Sample Location (0x01: Finger)
-  buffer.writeUInt8(0x11, 12);
-
-  return buffer;
-}
+    const flags = 0x02; // Glucose Concentration, Type/Location present
+    const sequenceNumber = 1;
+    const now = new Date();
+  
+    const buffer = Buffer.alloc(15); // Needs 15 bytes now
+    buffer.writeUInt8(flags, 0); // Flags
+    buffer.writeUInt16LE(sequenceNumber, 1); // Sequence Number
+  
+    buffer.writeUInt16LE(now.getFullYear(), 3);
+    buffer.writeUInt8(now.getMonth() + 1, 5);
+    buffer.writeUInt8(now.getDate(), 6);
+    buffer.writeUInt8(now.getHours(), 7);
+    buffer.writeUInt8(now.getMinutes(), 8);
+    buffer.writeUInt8(now.getSeconds(), 9);
+  
+    const glucoseValue = Math.round(glucoseMgDl); // mg/dL integer
+    buffer.writeUInt16LE(glucoseValue, 10); // Glucose Concentration SFLOAT (simplified)
+  
+    buffer.writeUInt8(0x11, 12); // Sample Type (1) + Location (1)
+  
+    buffer.writeUInt8(0x00, 13); // No sensor status bits (optional)
+  
+    return buffer.slice(0, 14); // Slice only needed part
+  }
 
 function sendGlucoseMeasurement() {
   const buffer = encodeGlucoseMeasurement(options.glucose);
