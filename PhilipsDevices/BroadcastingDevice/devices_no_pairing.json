@@ -963,7 +963,7 @@
     "manufacturer": "A&D",
     "model": "UA-656BLE",
     "disabled": false,
-    "broadcastingName": "'A&D_UA-651BLE'",
+    "broadcastingName": "A&D_UA-651BLE",
     "broadcastingServiceID": "1810",
     "readingServiceID": "1810",
     "characteristicID": "2A35",
