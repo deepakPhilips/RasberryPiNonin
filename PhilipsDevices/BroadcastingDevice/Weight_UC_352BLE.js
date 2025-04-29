@@ -10,29 +10,29 @@ const { loadDeviceById } = require('./DeviceConfigLoader');
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
 
+try {
+  console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
+  execSync('bash ./set_mac.sh', { stdio: 'inherit' });
+} catch (error) {
+  console.error('❌ Failed to set MAC address:', error.message);
+}
+
+if (typeof options.weight !== 'number' || isNaN(options.weight)) {
+  console.error("❌ Invalid or missing --weight. Please provide a valid number (e.g. --weight 78.5)");
+  process.exit(1);
+}
+
+
 program
-    .requiredOption('--deviceId <n>', 'deviceId', parseInt)
     .option('--weight <n>', 'weight', parseFloat);
 
 program.parse(process.argv);
 const options = program.opts(); 
-const deviceConfig = loadDeviceById(options.deviceId);
+const deviceConfig = loadDeviceById(14);
 // const DEVICE_TYPE = deviceConfig.type;
 
 
 let updateValueCallback = null;
-
-try {
-    console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
-    execSync('bash ./set_mac.sh', { stdio: 'inherit' });
-} catch (error) {
-    console.error('❌ Failed to set MAC address:', error.message);
-}
-
-if (typeof options.weight !== 'number' || isNaN(options.weight)) {
-    console.error("❌ Invalid or missing --weight. Please provide a valid number (e.g. --weight 78.5)");
-    process.exit(1);
-  }
 
 
 class NoInputNoOutputAgent extends Interface {
@@ -194,8 +194,11 @@ class CommandControlCharacteristic extends bleno.Characteristic {
     characteristics: [new CommandControlCharacteristic()],
   });
   
+  if(deviceConfig.requiresPairing === true) {
 // Launch everything
 registerAgent().catch(console.error);
+  }
+
 
 
 function encodeMeasurement(weightKg) {
