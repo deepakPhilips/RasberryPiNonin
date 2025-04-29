@@ -6,6 +6,8 @@ const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
 const { loadDeviceById } = require('./DeviceConfigLoader');
+const { deviceInfoService } = require('./Pairing_CommonServices');
+
 
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';

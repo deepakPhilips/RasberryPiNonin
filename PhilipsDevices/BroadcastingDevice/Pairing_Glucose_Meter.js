@@ -6,6 +6,8 @@ const { systemBus } = dbus;
 const { execSync } = require('child_process');
 const program = require('commander').program;
 const { loadDeviceById } = require('./DeviceConfigLoader');
+const { deviceInfoService } = require('./Pairing_CommonServices');
+
 
 program
     .requiredOption('--deviceId <n>', 'device ID', parseInt)
