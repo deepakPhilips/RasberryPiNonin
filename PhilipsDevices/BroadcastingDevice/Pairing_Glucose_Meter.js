@@ -1,12 +1,10 @@
 const bleno = require('@abandonware/bleno');
-const dbus = require('dbus-next');
-const { Variant } = dbus;
-const { Interface } = dbus.interface;
-const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
 const { loadDeviceById } = require('./DeviceConfigLoader');
-const { deviceInfoService } = require('./Pairing_CommonServices');
+const { deviceInfoService, disconnectFromCentral } = require('./Pairing_CommonServices');
+const { registerAgent, set_mac } = require('./Pairinig_Registration');
+set_mac()
 
 
 program
@@ -22,45 +20,10 @@ if (typeof options.glucose !== 'number' || isNaN(options.glucose)) {
   process.exit(1);
 }
 
-try {
-  console.log('🛠️ Running set_mac.sh to update Bluetooth MAC...');
-  execSync('bash ./set_mac.sh', { stdio: 'inherit' });
-} catch (error) {
-  console.error('❌ Failed to set MAC address:', error.message);
-}
+
 
 let glucoseNotifyCallback = null;
 let racpIndicateCallback = null;
-
-class NoInputNoOutputAgent extends Interface {
-  constructor() { super('org.bluez.Agent1'); }
-  RequestPinCode(device) { console.log(`RequestPinCode: ${device}`); return '0000'; }
-  RequestPasskey(device) { return new Variant('u', 123456); }
-  RequestConfirmation(device, passkey) { console.log(`RequestConfirmation: ${passkey}`); }
-  AuthorizeService(device, uuid) { console.log(`AuthorizeService for ${uuid}`); }
-  Cancel(device) { console.log(`Cancel for ${device}`); }
-  Release() { console.log('Agent released'); }
-}
-NoInputNoOutputAgent.$methods = {
-  RequestPinCode: ['o', 's', []],
-  RequestPasskey: ['o', 'u', []],
-  RequestConfirmation: ['ou', '', []],
-  AuthorizeService: ['os', '', []],
-  Cancel: ['o', '', []],
-  Release: ['', '', []],
-};
-
-async function registerAgent() {
-  const bus = systemBus();
-  const agent = new NoInputNoOutputAgent();
-  const AGENT_PATH = '/test/agent';
-  bus.export(AGENT_PATH, agent);
-  const bluez = await bus.getProxyObject('org.bluez', '/org/bluez');
-  const agentManager = bluez.getInterface('org.bluez.AgentManager1');
-  await agentManager.RegisterAgent(AGENT_PATH, 'NoInputNoOutput');
-  await agentManager.RequestDefaultAgent(AGENT_PATH);
-  console.log('✅ Pairing agent registered');
-}
 
 class GlucoseMeasurementCharacteristic extends bleno.Characteristic {
   constructor() {
@@ -202,12 +165,3 @@ bleno.on('advertisingStart', (error) => {
 
 registerAgent().catch(console.error);
 
-function disconnectFromCentral() {
-  exec('bluetoothctl disconnect', (err, stdout, stderr) => {
-    if (err) {
-      console.error('❌ Failed to disconnect:', err);
-    } else {
-      console.log('✅ Disconnected from central to complete measurement');
-    }
-  });
-}

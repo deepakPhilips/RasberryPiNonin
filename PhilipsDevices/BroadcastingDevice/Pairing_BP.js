@@ -1,22 +1,11 @@
 const bleno = require('@abandonware/bleno');
-const dbus = require('dbus-next');
-const { Variant } = dbus;
-const { Interface } = require('dbus-next').interface;
-const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
 const { loadDeviceById } = require('./DeviceConfigLoader');
-const { deviceInfoService } = require('./Pairing_CommonServices');
+const { deviceInfoService, commandService, disconnectFromCentral, DateTimeCharacteristic } = require('./Pairing_CommonServices');
+const { registerAgent, set_mac } = require('./Pairinig_Registration');
+set_mac()
 
-const DATETIME_CHAR_UUID = '2A08';
-const DEVICE_INFO_SERVICE_UUID = '180A';
-
-try {
-  console.log('🛠️  Running set_mac.sh to update Bluetooth MAC...');
-  execSync('bash ./set_mac.sh', { stdio: 'inherit' });
-} catch (error) {
-  console.error('❌ Failed to set MAC address:', error.message);
-}
 
 program
   .requiredOption('--deviceId <n>', 'device ID', parseInt)
@@ -35,61 +24,6 @@ if (isNaN(options.systolic) || isNaN(options.diastolic) || isNaN(options.pulse))
 
 let updateValueCallback = null;
 
-class NoInputNoOutputAgent extends Interface {
-  constructor() {
-    super('org.bluez.Agent1');
-  }
-
-  RequestPinCode(msg, device) {
-    console.log(`RequestPinCode: ${device}`);
-    return '0000';
-  }
-
-  RequestPasskey(msg, device) {
-    console.log(`RequestPasskey: ${device}`);
-    return new Variant('u', 123456);
-  }
-
-  RequestConfirmation(msg, device, passkey) {
-    console.log(`RequestConfirmation: ${passkey} for ${device}`);
-  }
-
-  AuthorizeService(msg, device, uuid) {
-    console.log(`AuthorizeService for ${uuid}`);
-  }
-
-  Cancel(msg, device) {
-    console.log(`Cancel for ${device}`);
-  }
-
-  Release(msg) {
-    console.log('Agent released');
-  }
-}
-
-NoInputNoOutputAgent.$methods = {
-  RequestPinCode: ['o', 's', []],
-  RequestPasskey: ['o', 'u', []],
-  RequestConfirmation: ['ou', '', []],
-  AuthorizeService: ['os', '', []],
-  Cancel: ['o', '', []],
-  Release: ['', '', []],
-};
-
-async function registerAgent() {
-  const bus = systemBus();
-  const agent = new NoInputNoOutputAgent();
-  const AGENT_PATH = '/test/agent';
-
-  bus.export(AGENT_PATH, agent);
-
-  const bluez = await bus.getProxyObject('org.bluez', '/org/bluez');
-  const agentManager = bluez.getInterface('org.bluez.AgentManager1');
-
-  await agentManager.RegisterAgent(AGENT_PATH, 'NoInputNoOutput');
-  await agentManager.RequestDefaultAgent(AGENT_PATH);
-  console.log('✅ Pairing agent registered and set as default');
-}
 
 class BloodPressureCharacteristic extends bleno.Characteristic {
   constructor() {
@@ -111,21 +45,8 @@ class BloodPressureCharacteristic extends bleno.Characteristic {
   }
 }
 
-class DateTimeCharacteristic extends bleno.Characteristic {
-  constructor() {
-    super({
-      uuid: DATETIME_CHAR_UUID,
-      properties: ['write'],
-    });
-  }
 
-  onWriteRequest(data, offset, withoutResponse, callback) {
-    console.log('Received DateTime:', data.toString('hex'));
-    callback(this.RESULT_SUCCESS);
-  }
-}
-
-const bpService = new bleno.PrimaryService({
+const BPService = new bleno.PrimaryService({
   uuid: deviceConfig.broadcastingServiceID,
   characteristics: [
     new BloodPressureCharacteristic(),
@@ -146,15 +67,12 @@ bleno.on('stateChange', (state) => {
 bleno.on('advertisingStart', (error) => {
   if (!error) {
     console.log('✅ Advertising started');
-    bleno.setServices([deviceInfoService(deviceConfig), bpService, commandService]);
+    bleno.setServices([deviceInfoService(deviceConfig), BPService, commandService]);
   } else {
     console.error('❌ Advertising error:', error);
   }
 });
 
-if (deviceConfig.requiresPairing === true) {
-  registerAgent().catch(console.error);
-}
 
 function encodeBPMeasurement(systolic, diastolic, pulse) {
   const flags = 0x1E; // All present: units mmHg, timestamp, pulse rate
@@ -191,43 +109,4 @@ function sendDynamicBPMeasurement() {
   }
 }
 
-function disconnectFromCentral() {
-  exec('bluetoothctl disconnect', (err, stdout, stderr) => {
-    if (err) {
-      console.error('❌ Failed to disconnect:', err);
-    } else {
-      console.log('✅ Disconnected from central to complete measurement');
-    }
-  });
-}
-
-
-class CommandControlCharacteristic extends bleno.Characteristic {
-    constructor() {
-      super({
-        uuid: '233BF001-5A34-1B6D-975C-000D5690ABE4',
-        properties: ['write'],
-      });
-    }
-  
-    onWriteRequest(data, offset, withoutResponse, callback) {
-      const hex = data.toString('hex');
-      console.log('✅ Control characteristic received:', hex);
-  
-      // Respond to specific commands
-      if (hex === '0301a601') {
-        console.log('→ Enable measurement buffer');
-      } else if (hex === '020112') {
-        console.log('→ Delete existing measurements');
-      } else {
-        console.log('→ Unknown control command');
-      }
-  
-      callback(this.RESULT_SUCCESS);
-    }
-  }
-
-  const commandService = new bleno.PrimaryService({
-    uuid: '233BF000-5A34-1B6D-975C-000D5690ABE4',
-    characteristics: [new CommandControlCharacteristic()],
-  });
+registerAgent().catch(console.error);
