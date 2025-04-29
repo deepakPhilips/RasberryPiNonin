@@ -175,18 +175,7 @@ const glucoseService = new bleno.PrimaryService({
   ],
 });
 
-const deviceInfoService = new bleno.PrimaryService({
-  uuid: '180A',
-  characteristics: [
-    new bleno.Characteristic({ uuid: '2A29', properties: ['read'], value: Buffer.from('Generic') }),
-    new bleno.Characteristic({ uuid: '2A24', properties: ['read'], value: Buffer.from('Glucose Meter') }),
-    new bleno.Characteristic({ uuid: '2A25', properties: ['read'], value: Buffer.from('123456789') }),
-    new bleno.Characteristic({ uuid: '2A26', properties: ['read'], value: Buffer.from('1.0.0') }),
-    new bleno.Characteristic({ uuid: '2A27', properties: ['read'], value: Buffer.from('1.0.0') }),
-    new bleno.Characteristic({ uuid: '2A28', properties: ['read'], value: Buffer.from('1.0.0') }),
-    new bleno.Characteristic({ uuid: '2A23', properties: ['read'], value: Buffer.from('aabbccddeeff0011', 'hex') }),
-  ],
-});
+
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
@@ -199,7 +188,7 @@ bleno.on('stateChange', (state) => {
 bleno.on('advertisingStart', (error) => {
   if (!error) {
     console.log('✅ Advertising started');
-    bleno.setServices([deviceInfoService, glucoseService]);
+    bleno.setServices([deviceInfoService(deviceConfig), glucoseService]);
   } else {
     console.error('❌ Advertising error:', error);
   }

@@ -137,18 +137,6 @@ const weightService = new bleno.PrimaryService({
   ],
 });
 
-const deviceInfoService = new bleno.PrimaryService({
-  uuid: DEVICE_INFO_SERVICE_UUID,
-  characteristics: [
-    new bleno.Characteristic({ uuid: '2A29', properties: ['read'], value: Buffer.from('A&D Medical') }),
-    new bleno.Characteristic({ uuid: '2A24', properties: ['read'], value: Buffer.from('UC-352BLE') }),
-    new bleno.Characteristic({ uuid: '2A25', properties: ['read'], value: Buffer.from('5200906508') }),
-    new bleno.Characteristic({ uuid: '2A26', properties: ['read'], value: Buffer.from('CWSP009_111') }),
-    new bleno.Characteristic({ uuid: '2A27', properties: ['read'], value: Buffer.from('0.00') }),
-    new bleno.Characteristic({ uuid: '2A28', properties: ['read'], value: Buffer.from('0.00') }),
-    new bleno.Characteristic({ uuid: '2A23', properties: ['read'], value: Buffer.from('f026aafeffb51434', 'hex') }),
-  ],
-});
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
@@ -161,7 +149,7 @@ bleno.on('stateChange', (state) => {
 bleno.on('advertisingStart', (error) => {
   if (!error) {
     console.log('✅ Advertising started');
-    bleno.setServices([deviceInfoService, weightService, commandService]);
+    bleno.setServices([deviceInfoService(deviceConfig), weightService, commandService]);
   } else {
     console.error('❌ Advertising error:', error);
   }

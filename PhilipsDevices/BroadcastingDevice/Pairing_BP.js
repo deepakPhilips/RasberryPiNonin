@@ -6,6 +6,7 @@ const { systemBus } = dbus;
 const { execSync, exec } = require('child_process');
 const program = require('commander').program;
 const { loadDeviceById } = require('./DeviceConfigLoader');
+import { deviceInfoService } from './Pairing_CommonServices';
 
 const DATETIME_CHAR_UUID = '2A08';
 const DEVICE_INFO_SERVICE_UUID = '180A';
@@ -132,18 +133,7 @@ const bpService = new bleno.PrimaryService({
   ],
 });
 
-const deviceInfoService = new bleno.PrimaryService({
-  uuid: DEVICE_INFO_SERVICE_UUID,
-  characteristics: [
-    new bleno.Characteristic({ uuid: '2A29', properties: ['read'], value: Buffer.from('A&D Medical') }),
-    new bleno.Characteristic({ uuid: '2A24', properties: ['read'], value: Buffer.from('UA-656BLE') }),
-    new bleno.Characteristic({ uuid: '2A25', properties: ['read'], value: Buffer.from('123456789') }),
-    new bleno.Characteristic({ uuid: '2A26', properties: ['read'], value: Buffer.from('Firmware_1.0') }),
-    new bleno.Characteristic({ uuid: '2A27', properties: ['read'], value: Buffer.from('1.0') }),
-    new bleno.Characteristic({ uuid: '2A28', properties: ['read'], value: Buffer.from('1.0') }),
-    new bleno.Characteristic({ uuid: '2A23', properties: ['read'], value: Buffer.from('f026aafeffb51434', 'hex') }),
-  ],
-});
+
 
 bleno.on('stateChange', (state) => {
   if (state === 'poweredOn') {
@@ -156,7 +146,7 @@ bleno.on('stateChange', (state) => {
 bleno.on('advertisingStart', (error) => {
   if (!error) {
     console.log('✅ Advertising started');
-    bleno.setServices([deviceInfoService, bpService, commandService]);
+    bleno.setServices([deviceInfoService(deviceConfig), bpService, commandService]);
   } else {
     console.error('❌ Advertising error:', error);
   }
