@@ -1,14 +1,11 @@
 const bleno = require('@abandonware/bleno');
 const dbus = require('dbus-next');
 const { Variant } = dbus;
-const { Interface } = require('dbus-next').interface;
+const { Interface } = dbus.interface;
 const { systemBus } = dbus;
 const { execSync } = require('child_process');
 const program = require('commander').program;
 const { loadDeviceById } = require('./DeviceConfigLoader');
-
-const DEVICE_INFO_SERVICE_UUID = '180A';
-const DATETIME_CHAR_UUID = '2A08';
 
 program
     .requiredOption('--deviceId <n>', 'device ID', parseInt)
@@ -19,7 +16,7 @@ const options = program.opts();
 const deviceConfig = loadDeviceById(options.deviceId);
 
 if (typeof options.glucose !== 'number' || isNaN(options.glucose)) {
-  console.error("❌ Invalid or missing --glucose. Please provide a valid number (e.g. --glucose 125)");
+  console.error("❌ Invalid or missing --glucose. Provide valid number (e.g. --glucose 127.5)");
   process.exit(1);
 }
 
@@ -30,21 +27,19 @@ try {
   console.error('❌ Failed to set MAC address:', error.message);
 }
 
-let updateValueCallback = null;
+let glucoseNotifyCallback = null;
+let racpIndicateCallback = null;
 
-// Bluetooth pairing agent
+// BLE Agent for Pairing
 class NoInputNoOutputAgent extends Interface {
-  constructor() {
-    super('org.bluez.Agent1');
-  }
+  constructor() { super('org.bluez.Agent1'); }
   RequestPinCode(device) { console.log(`RequestPinCode: ${device}`); return '0000'; }
-  RequestPasskey(device) { console.log(`RequestPasskey: ${device}`); return new Variant('u', 123456); }
+  RequestPasskey(device) { return new Variant('u', 123456); }
   RequestConfirmation(device, passkey) { console.log(`RequestConfirmation: ${passkey}`); }
   AuthorizeService(device, uuid) { console.log(`AuthorizeService for ${uuid}`); }
   Cancel(device) { console.log(`Cancel for ${device}`); }
   Release() { console.log('Agent released'); }
 }
-
 NoInputNoOutputAgent.$methods = {
   RequestPinCode: ['o', 's', []],
   RequestPasskey: ['o', 'u', []],
@@ -58,11 +53,9 @@ async function registerAgent() {
   const bus = systemBus();
   const agent = new NoInputNoOutputAgent();
   const AGENT_PATH = '/test/agent';
-
   bus.export(AGENT_PATH, agent);
   const bluez = await bus.getProxyObject('org.bluez', '/org/bluez');
   const agentManager = bluez.getInterface('org.bluez.AgentManager1');
-
   await agentManager.RegisterAgent(AGENT_PATH, 'NoInputNoOutput');
   await agentManager.RequestDefaultAgent(AGENT_PATH);
   console.log('✅ Pairing agent registered');
@@ -71,31 +64,59 @@ async function registerAgent() {
 class GlucoseMeasurementCharacteristic extends bleno.Characteristic {
   constructor() {
     super({
-      uuid: deviceConfig.characteristicID,
+      uuid: '2A18',
       properties: ['notify'],
     });
   }
 
   onSubscribe(_, callback) {
-    updateValueCallback = callback;
-    console.log('✅ Subscribed to glucose notify');
-    setTimeout(sendGlucoseMeasurement, 2000);
+    glucoseNotifyCallback = callback;
+    console.log('✅ Subscribed to Glucose Measurement');
   }
 
   onUnsubscribe() {
-    updateValueCallback = null;
-    console.log('❌ Unsubscribed from glucose notify');
+    glucoseNotifyCallback = null;
+    console.log('❌ Unsubscribed from Glucose Measurement');
+  }
+}
+
+class RACPCharacteristic extends bleno.Characteristic {
+  constructor() {
+    super({
+      uuid: '2A52',
+      properties: ['indicate', 'write'],
+    });
+  }
+
+  onWriteRequest(data, offset, withoutResponse, callback) {
+    console.log('📥 Received RACP command:', data.toString('hex'));
+
+    if (glucoseNotifyCallback) {
+      console.log('🕒 Sending glucose measurement after RACP command...');
+      setTimeout(sendGlucoseMeasurement, 1000); // Send after 1 sec
+    }
+
+    if (racpIndicateCallback) {
+      const racpResponse = Buffer.from([0x06, 0x01, 0x01, 0x00]); // RACP Response: Success
+      racpIndicateCallback(racpResponse);
+      console.log('📤 Sent RACP success response');
+    }
+    callback(this.RESULT_SUCCESS);
+  }
+
+  onIndicate(callback) {
+    racpIndicateCallback = callback;
   }
 }
 
 function encodeGlucoseMeasurement(glucoseMgDl) {
-  const flags = 0x00; // no optional fields
-  const seqNumber = 1;
+  const flags = 0x00; // SI units, no optional fields
+  const sequenceNumber = 1;
   const now = new Date();
 
-  const buffer = Buffer.alloc(10);
+  const buffer = Buffer.alloc(13);
   buffer.writeUInt8(flags, 0);
-  buffer.writeUInt16LE(seqNumber, 1);
+  buffer.writeUInt16LE(sequenceNumber, 1);
   buffer.writeUInt16LE(now.getFullYear(), 3);
   buffer.writeUInt8(now.getMonth() + 1, 5);
   buffer.writeUInt8(now.getDate(), 6);
@@ -103,28 +124,36 @@ function encodeGlucoseMeasurement(glucoseMgDl) {
   buffer.writeUInt8(now.getMinutes(), 8);
   buffer.writeUInt8(now.getSeconds(), 9);
 
-  // glucose value (sfloat) comes next in real packets — skipping for minimal implementation
+  // Glucose Concentration (SFLOAT, mg/dL)
+  let glucoseSfloat = Math.round(options.glucose * 1000 / 1000); // Simplified
+  buffer.writeUInt16LE(glucoseSfloat, 10);
+
+  // Type (0x01: Capillary Whole blood) | Sample Location (0x01: Finger)
+  buffer.writeUInt8(0x11, 12);
 
   return buffer;
 }
 
 function sendGlucoseMeasurement() {
   const buffer = encodeGlucoseMeasurement(options.glucose);
-  if (typeof updateValueCallback === 'function') {
-    updateValueCallback(buffer);
-    console.log(`📤 Sent glucose: ${options.glucose.toFixed(1)} mg/dL`);
+  if (glucoseNotifyCallback) {
+    glucoseNotifyCallback(buffer);
+    console.log(`📤 Sent glucose measurement: ${options.glucose} mg/dL`);
   } else {
-    console.warn('⚠️ No subscriber to send glucose to');
+    console.warn('⚠️ No subscriber for glucose notify');
   }
 }
 
 const glucoseService = new bleno.PrimaryService({
   uuid: deviceConfig.broadcastingServiceID,
-  characteristics: [new GlucoseMeasurementCharacteristic()],
+  characteristics: [
+    new GlucoseMeasurementCharacteristic(),
+    new RACPCharacteristic()
+  ],
 });
 
 const deviceInfoService = new bleno.PrimaryService({
-  uuid: DEVICE_INFO_SERVICE_UUID,
+  uuid: '180A',
   characteristics: [
     new bleno.Characteristic({ uuid: '2A29', properties: ['read'], value: Buffer.from('Generic') }),
     new bleno.Characteristic({ uuid: '2A24', properties: ['read'], value: Buffer.from('Glucose Meter') }),
@@ -149,11 +178,8 @@ bleno.on('advertisingStart', (error) => {
     console.log('✅ Advertising started');
     bleno.setServices([deviceInfoService, glucoseService]);
   } else {
-    console.error('❌ Advertising failed:', error);
+    console.error('❌ Advertising error:', error);
   }
 });
 
-// Always register agent if pairing is required
-if (deviceConfig.requiresPairing || deviceConfig.requiresOSPairing) {
-  registerAgent().catch(console.error);
-}
+registerAgent().catch(console.error);
