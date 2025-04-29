@@ -254,6 +254,17 @@ class BloodPressureMeasurement extends bleno.Characteristic {
   }
 }
 
+function sendBPMeasurement() {
+  const buffer = encodeBPMeasurement(120, 80, 72);
+  if (typeof updateValueCallback === 'function') {
+    updateValueCallback(buffer);
+    console.log('📤 Sent BP: 120/80 mmHg, Pulse: 72');
+    setTimeout(disconnectFromCentral, 1000);
+  } else {
+    console.warn('⚠️ No subscriber to send BP');
+  }
+}
+
 function encodeBPMeasurement(systolic, diastolic, pulseRate) {
   const buffer = Buffer.alloc(16); // Was 15, now correctly 16
 
@@ -275,16 +286,16 @@ function encodeBPMeasurement(systolic, diastolic, pulseRate) {
   return buffer;
 }
 
-// DateTime (2A08) - writable
-class DateTimeCharacteristic extends bleno.Characteristic {
-  constructor() {
-    super({ uuid: '2A08', properties: ['write'] });
-  }
-  onWriteRequest(data, offset, withoutResponse, callback) {
-    console.log('🕒 DateTime written:', data.toString('hex'));
-    callback(this.RESULT_SUCCESS);
-  }
-}
+// // DateTime (2A08) - writable
+// class DateTimeCharacteristic extends bleno.Characteristic {
+//   constructor() {
+//     super({ uuid: '2A08', properties: ['write'] });
+//   }
+//   onWriteRequest(data, offset, withoutResponse, callback) {
+//     console.log('🕒 DateTime written:', data.toString('hex'));
+//     callback(this.RESULT_SUCCESS);
+//   }
+// }
 
 
 // Blood Pressure Service
