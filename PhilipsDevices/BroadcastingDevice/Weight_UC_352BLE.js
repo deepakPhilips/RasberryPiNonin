@@ -19,11 +19,12 @@ try {
 
 
 program
+    .requiredOption('--deviceId <n>', 'device ID', parseInt)
     .option('--weight <n>', 'weight', parseFloat);
 
 program.parse(process.argv);
 const options = program.opts(); 
-const deviceConfig = loadDeviceById(14);
+const deviceConfig = loadDeviceById(options.deviceId);
 // const DEVICE_TYPE = deviceConfig.type;
 
 
