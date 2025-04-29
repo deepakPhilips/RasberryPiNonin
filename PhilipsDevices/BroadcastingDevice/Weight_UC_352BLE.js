@@ -17,11 +17,6 @@ try {
   console.error('❌ Failed to set MAC address:', error.message);
 }
 
-if (typeof options.weight !== 'number' || isNaN(options.weight)) {
-  console.error("❌ Invalid or missing --weight. Please provide a valid number (e.g. --weight 78.5)");
-  process.exit(1);
-}
-
 
 program
     .option('--weight <n>', 'weight', parseFloat);
@@ -30,6 +25,13 @@ program.parse(process.argv);
 const options = program.opts(); 
 const deviceConfig = loadDeviceById(14);
 // const DEVICE_TYPE = deviceConfig.type;
+
+
+
+if (typeof options.weight !== 'number' || isNaN(options.weight)) {
+  console.error("❌ Invalid or missing --weight. Please provide a valid number (e.g. --weight 78.5)");
+  process.exit(1);
+}
 
 
 let updateValueCallback = null;
