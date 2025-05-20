@@ -2,7 +2,12 @@ const bleno = require('@abandonware/bleno');
 const { execSync, exec } = require('child_process');
 const { deviceInfoService, commandService, disconnectFromCentral, DateTimeCharacteristic } = require('./Pairing_CommonServices');
 const { registerAgent, set_mac } = require('./Pairinig_Registration');
+const crypto = require('crypto');
 
+function generateActivityId(deviceName, timestamp) {
+  const input = `${deviceName}-${timestamp}`;
+  return crypto.createHash('sha256').update(input).digest('hex').substring(0, 44);
+}
 
 function startWeightSimulation(deviceConfig, options) {
 
